@@ -1,112 +1,60 @@
 import React from 'react';
+import { Container, Menu, Segment } from 'semantic-ui-react';
 import { render } from 'react-dom';
-import CRUDTable,
-{
-  Fields,
-  Field,
-  CreateForm,
-  UpdateForm,
-  DeleteForm,
-  Pagination
-} from 'react-crud-table';
-
 import Service from '../services/Service';
-import {
-  validateModelRequiredValues,
-  validateModelDeletion,
-} from '../helpers/validation';
-
+import ModelCrud from './ModelCrud';
+import { getModel } from '../helpers/models';
 // Component's Base CSS
 import './index.css';
 
-const DescriptionRenderer = ({ field }) => <textarea {...field} />;
-
-const service = Service('foo');
-
 const styles = {
-  container: { margin: 'auto', width: 'fit-content' },
+  container: {
+    margin: 'auto',
+    width: 'fit-content',
+  },
+  segment: {
+    width: '95%',
+    margin: '3rem auto 0 auto',
+    paddingBottom: '4rem',
+    border: 0,
+    boxShadow: 'none',
+  },
 };
 
-
-
-const inCreationHiddenFields = (field) => {
-  return [
-    'createdAt',
-    'updatedAt',
-    'id',
-  ].indexOf(field) > -1;
-};
-
-const inUpdateHiddenFields = (field) => {
-  return [
-    'createdAt',
-    'updatedAt',
-    'id',
-  ].indexOf(field) > -1;
-};
-
-const getModel = (name) => {
-  const models = typeof window !=='undefined' && window.sailsModels ?
-  window.sailsModels : {};
-  return models[name] ? models[name] : {};
-};
-
-const Example = ({ model }) => (
+const Example = ({ modelName }) => (
   <div style={styles.container}>
-    <CRUDTable
-      caption="Foos"
-      fetchItems={payload => service.fetchItems(payload)}
-    >
-      <Fields>
-        {model &&
-          Object.keys(model).map((k) => (
-            <Field
-              name={k}
-              label={k}
-              hideInCreateForm={inCreationHiddenFields(k)}
-              hideInUpdateForm={inUpdateHiddenFields(k)}
-            />
-          ))
-        }
-      </Fields>
-      <CreateForm
-        title="Creation"
-        message="Create!"
-        trigger="Create"
-        onSubmit={task => service.create(task)}
-        submitText="Create"
-        validate={validateModelRequiredValues(model)}
-      />
-
-      <UpdateForm
-        title="Update Process"
-        message="Update"
-        trigger="Update"
-        onSubmit={data => service.update(data)}
-        submitText="Update"
-        validate={validateModelRequiredValues(model)}
-      />
-
-      <DeleteForm
-        title="Delete Process"
-        message="Are you sure you want to delete the item?"
-        trigger="Delete"
-        onSubmit={task => service.delete(task)}
-        submitText="Delete"
-        validate={validateModelDeletion}
-      />
-      <Pagination totalOfItems={10} /> 
-    </CRUDTable>
+    <ModelCrud
+      model={getModel(modelName)}
+      service={Service(modelName)}
+      caption={modelName}
+    />
   </div>
 );
 
-Example.propTypes = {};
+
+const FixedMenuLayout = () => (
+  <div>
+    <Menu>
+      <Container>
+        <Menu.Item as='div' header>
+          Admin
+        </Menu.Item>
+      </Container>
+    </Menu>
+
+    <Segment as="div" style={styles.segment}>
+      <Example modelName={'foo'} />
+    </Segment>
+  </div>
+)
 
 if (typeof window !== 'undefined' &&
   typeof window.document !== 'undefined' &&
   window.document.getElementById('app')
 ) {
-  render(<Example model={getModel('foo')} />, window.document.getElementById('app'));
+  render(<FixedMenuLayout />, window.document.getElementById('app'));
 }
 
-export default Example;
+
+
+export default FixedMenuLayout;

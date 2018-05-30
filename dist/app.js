@@ -125,7 +125,7 @@ var Page = function Page(_ref) {
   var body = _ref.body,
       title = _ref.title,
       injection = _ref.injection;
-  return "\n  <!DOCTYPE html>\n  <html>\n    <head>\n      <title>" + title + "</title>\n    </head>\n    <body style=\"margin:0\">\n      <div id=\"app\">" + body + "</div>\n      <script>\n        " + injection + "\n      </script>\n      <script src=\"/administrator/client.js\"> </script>\n    </body>\n  </html>\n";
+  return "\n  <!DOCTYPE html>\n  <html>\n    <head>\n      <title>" + title + "</title>\n      <link rel=\"stylesheet\" href=\"//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css\"></link>\n    </head>\n    <body style=\"margin:0\">\n      <div id=\"app\">" + body + "</div>\n      <script>\n        " + injection + "\n      </script>\n      <script src=\"/administrator/client.js\"> </script>\n    </body>\n  </html>\n";
 };
 
 exports.default = Page;
@@ -145,31 +145,186 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(5);
+var _semanticUiReact = __webpack_require__(5);
 
-var _reactCrudTable = __webpack_require__(6);
-
-var _reactCrudTable2 = _interopRequireDefault(_reactCrudTable);
+var _reactDom = __webpack_require__(6);
 
 var _Service = __webpack_require__(7);
 
 var _Service2 = _interopRequireDefault(_Service);
 
-var _validation = __webpack_require__(8);
+var _ModelCrud = __webpack_require__(9);
 
-__webpack_require__(9);
+var _ModelCrud2 = _interopRequireDefault(_ModelCrud);
+
+var _models = __webpack_require__(12);
+
+__webpack_require__(13);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var DescriptionRenderer = function DescriptionRenderer(_ref) {
-  var field = _ref.field;
-  return _react2.default.createElement('textarea', field);
+var styles = {
+  container: {
+    margin: 'auto',
+    width: 'fit-content'
+  },
+  segment: {
+    width: '95%',
+    margin: '3rem auto 0 auto',
+    paddingBottom: '4rem',
+    border: 0,
+    boxShadow: 'none'
+  }
 };
-
 // Component's Base CSS
 
 
-var service = (0, _Service2.default)('foo');
+var Example = function Example(_ref) {
+  var modelName = _ref.modelName;
+  return _react2.default.createElement(
+    'div',
+    { style: styles.container },
+    _react2.default.createElement(_ModelCrud2.default, {
+      model: (0, _models.getModel)(modelName),
+      service: (0, _Service2.default)(modelName),
+      caption: modelName
+    })
+  );
+};
+
+var FixedMenuLayout = function FixedMenuLayout() {
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(
+      _semanticUiReact.Menu,
+      null,
+      _react2.default.createElement(
+        _semanticUiReact.Container,
+        null,
+        _react2.default.createElement(
+          _semanticUiReact.Menu.Item,
+          { as: 'div', header: true },
+          'Admin'
+        )
+      )
+    ),
+    _react2.default.createElement(
+      _semanticUiReact.Segment,
+      { as: 'div', style: styles.segment },
+      _react2.default.createElement(Example, { modelName: 'foo' })
+    )
+  );
+};
+
+if (typeof window !== 'undefined' && typeof window.document !== 'undefined' && window.document.getElementById('app')) {
+  (0, _reactDom.render)(_react2.default.createElement(FixedMenuLayout, null), window.document.getElementById('app'));
+}
+
+exports.default = FixedMenuLayout;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = require("semantic-ui-react");
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-dom");
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var requester = __webpack_require__(8);
+
+var URL = function URL(model, id) {
+  return id ? '/' + model + '/' + id : '/' + model;
+};
+var COUNT_URL = '/administrator/model-count';
+var SEARCH_URL = '/administrator/model-search';
+
+var getDirection = function getDirection(d) {
+  return d === 'ascending' ? 'ASC' : 'DESC';
+};
+
+var Service = function Service(model) {
+  return {
+    fetchItems: function fetchItems(payload) {
+      var _payload$pagination = payload.pagination,
+          itemsPerPage = _payload$pagination.itemsPerPage,
+          activePage = _payload$pagination.activePage;
+      var _payload$sort = payload.sort,
+          field = _payload$sort.field,
+          direction = _payload$sort.direction;
+
+      return requester.post(SEARCH_URL, {
+        modelName: model,
+        limit: itemsPerPage,
+        skip: (activePage - 1) * itemsPerPage,
+        sort: field + ' ' + getDirection(direction),
+        queryRules: payload.queryRules
+      });
+    },
+    countItems: function countItems(payload) {
+      return requester.post(COUNT_URL, {
+        modelName: model,
+        queryRules: payload.queryRules
+      });
+    },
+    create: function create(item) {
+      return requester.post(URL(model), item);
+    },
+    update: function update(data) {
+      return requester.put(URL(model, data.id), data);
+    },
+    delete: function _delete(data) {
+      return requester.delete(URL(model, data.id));
+    }
+  };
+};
+
+exports.default = Service;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = require("simple-json-requester");
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactCrudTable = __webpack_require__(10);
+
+var _reactCrudTable2 = _interopRequireDefault(_reactCrudTable);
+
+var _validation = __webpack_require__(11);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// const DescriptionRenderer = ({ field }) => <textarea {...field} />;
 
 var styles = {
   container: { margin: 'auto', width: 'fit-content' }
@@ -183,33 +338,53 @@ var inUpdateHiddenFields = function inUpdateHiddenFields(field) {
   return ['createdAt', 'updatedAt', 'id'].indexOf(field) > -1;
 };
 
-var getModel = function getModel(name) {
-  var models = typeof window !== 'undefined' && window.sailsModels ? window.sailsModels : {};
-  return models[name] ? models[name] : {};
+var keysWeight = {
+  id: -1,
+  createdAt: 1,
+  updatedAt: 2
+};
+var weight = function weight(k) {
+  return keysWeight[k] || 0;
 };
 
-var Example = function Example(_ref2) {
-  var model = _ref2.model;
+var keysSorter = function keysSorter(a, b) {
+  return weight(a) - weight(b);
+};
+
+var getType = function getType(model, field) {
+  if (field === 'createdAt' || field === 'updatedAt') {
+    return 'date';
+  }
+  return model[field].type;
+};
+
+var ModelCrud = function ModelCrud(_ref) {
+  var model = _ref.model,
+      caption = _ref.caption,
+      service = _ref.service;
   return _react2.default.createElement(
     'div',
     { style: styles.container },
     _react2.default.createElement(
       _reactCrudTable2.default,
       {
-        caption: 'Foos',
+        caption: caption,
         fetchItems: function fetchItems(payload) {
           return service.fetchItems(payload);
-        }
+        },
+        showQueryBuilder: true
       },
       _react2.default.createElement(
         _reactCrudTable.Fields,
         null,
-        model && Object.keys(model).map(function (k) {
+        model && Object.keys(model).sort(keysSorter).map(function (k) {
           return _react2.default.createElement(_reactCrudTable.Field, {
             name: k,
             label: k,
             hideInCreateForm: inCreationHiddenFields(k),
-            hideInUpdateForm: inUpdateHiddenFields(k)
+            hideInUpdateForm: inUpdateHiddenFields(k),
+            type: getType(model, k),
+            queryable: !!model[k].type
           });
         })
       ),
@@ -243,72 +418,29 @@ var Example = function Example(_ref2) {
         submitText: 'Delete',
         validate: _validation.validateModelDeletion
       }),
-      _react2.default.createElement(_reactCrudTable.Pagination, { totalOfItems: 10 })
+      _react2.default.createElement(_reactCrudTable.Pagination, {
+        fetchTotalOfItems: function fetchTotalOfItems(payload) {
+          return service.countItems(payload);
+        },
+        itemsPerPage: 10,
+        activePage: 1
+      })
     )
   );
 };
 
-Example.propTypes = {};
+ModelCrud.propTypes = {};
 
-if (typeof window !== 'undefined' && typeof window.document !== 'undefined' && window.document.getElementById('app')) {
-  (0, _reactDom.render)(_react2.default.createElement(Example, { model: getModel('foo') }), window.document.getElementById('app'));
-}
-
-exports.default = Example;
+exports.default = ModelCrud;
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-dom");
-
-/***/ }),
-/* 6 */
+/* 10 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-crud-table");
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var Service = function Service(model) {
-  return {
-    fetchItems: function fetchItems(payload) {
-      return fetch("/" + model).then(function (r) {
-        return r.json();
-      });
-    },
-    create: function create(item) {
-      return fetch("/" + model, {
-        method: "POST",
-        body: JSON.stringify(item)
-      });
-    },
-    update: function update(data) {
-      return fetch("/" + model + "/" + data.id, {
-        method: "PUT",
-        body: JSON.stringify(data)
-      });
-    },
-    delete: function _delete(data) {
-      return fetch("/" + model + "/" + data.id, {
-        method: "DELETE"
-      });
-    }
-  };
-};
-
-exports.default = Service;
-
-/***/ }),
-/* 8 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -346,7 +478,26 @@ exports.default = {
 };
 
 /***/ }),
-/* 9 */
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var getModel = exports.getModel = function getModel(name) {
+  var models = typeof window !== 'undefined' && window.sailsModels ? window.sailsModels : {};
+  return models[name] ? models[name] : {};
+};
+
+exports.default = {
+  getModel: getModel
+};
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports) {
 
 

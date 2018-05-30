@@ -1,0 +1,40 @@
+{
+  "name": "sails-hook-crud-admin",
+  "version": "0.0.1",
+  "description": "An admin for SailsJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:server": "webpack --config webpack.server.config.js",
+    "build:client": "webpack --config webpack.client.config.js",
+    "build": "npm run build:server && npm run build:client"
+  },
+  "keywords": [
+    "Sails",
+    "CRUD",
+    "Admin"
+  ],
+  "author": "Victor Trejo",
+  "license": "MIT",
+  "sails": {
+    "isHook": true
+  },
+  "devDependencies": {
+    "babel-core": "^6.10.4",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "css-loader": "^0.28.11",
+    "ignore-loader": "^0.1.2",
+    "sails": "~0.11.0",
+    "style-loader": "^0.21.0",
+    "webpack": "^3.8.1",
+    "webpack-node-externals": "^1.2.0"
+  },
+  "dependencies": {
+    "react": "^16.4.0",
+    "react-crud-table": "0.0.2",
+    "react-dom": "^16.4.0"
+  }
+}

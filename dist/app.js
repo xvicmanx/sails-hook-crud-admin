@@ -125,7 +125,7 @@ var Page = function Page(_ref) {
   var body = _ref.body,
       title = _ref.title,
       injection = _ref.injection;
-  return "\n  <!DOCTYPE html>\n  <html>\n    <head>\n      <title>" + title + "</title>\n      <link rel=\"stylesheet\" href=\"//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css\"></link>\n    </head>\n    <body style=\"margin:0\">\n      <div id=\"app\">" + body + "</div>\n      <script>\n        " + injection + "\n      </script>\n      <script src=\"/administrator/client.js\"> </script>\n    </body>\n  </html>\n";
+  return "\n  <!DOCTYPE html>\n  <html>\n    <head>\n      <title>" + title + "</title>\n      <meta name=\"viewport\" content=\"width=device-width,initial-scale=1,shrink-to-fit=no\">\n      <link rel=\"stylesheet\" href=\"//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css\"></link>\n    </head>\n    <body style=\"margin:0\">\n      <div id=\"app\">" + body + "</div>\n      <script>\n        " + injection + "\n      </script>\n      <script src=\"/administrator/client.js\"> </script>\n    </body>\n  </html>\n";
 };
 
 exports.default = Page;
@@ -389,8 +389,8 @@ var ModelCrud = function ModelCrud(_ref) {
         })
       ),
       _react2.default.createElement(_reactCrudTable.CreateForm, {
-        title: 'Creation',
-        message: 'Create!',
+        title: 'Create Item',
+        message: 'Create a new item',
         trigger: 'Create',
         onSubmit: function onSubmit(task) {
           return service.create(task);
@@ -399,8 +399,8 @@ var ModelCrud = function ModelCrud(_ref) {
         validate: (0, _validation.validateModelRequiredValues)(model)
       }),
       _react2.default.createElement(_reactCrudTable.UpdateForm, {
-        title: 'Update Process',
-        message: 'Update',
+        title: 'Update Item',
+        message: 'Update an existing item',
         trigger: 'Update',
         onSubmit: function onSubmit(data) {
           return service.update(data);
@@ -409,13 +409,13 @@ var ModelCrud = function ModelCrud(_ref) {
         validate: (0, _validation.validateModelRequiredValues)(model)
       }),
       _react2.default.createElement(_reactCrudTable.DeleteForm, {
-        title: 'Delete Process',
-        message: 'Are you sure you want to delete the item?',
-        trigger: 'Delete',
+        title: 'Remove an existing item',
+        message: 'Are you sure you want to remove the item?',
+        trigger: 'Remove',
         onSubmit: function onSubmit(task) {
           return service.delete(task);
         },
-        submitText: 'Delete',
+        submitText: 'Remove',
         validate: _validation.validateModelDeletion
       }),
       _react2.default.createElement(_reactCrudTable.Pagination, {

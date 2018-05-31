@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 
 module.exports = {
@@ -10,7 +9,6 @@ module.exports = {
     publicPath: '/',
   },
   target: 'web',
-  // externals: nodeExternals(),
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
@@ -28,25 +26,14 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          },
-          {
-            loader: 'sass-loader'
-          }
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          { loader: 'sass-loader' }
         ]
       },
       {
         test: /\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {},
-          },
-        ],
+        use: [{ loader: 'file-loader' }],
       },
     ]
   }

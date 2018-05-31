@@ -71,6 +71,7 @@ const ModelCrud = ({ model, caption, service }) => (
               hideInUpdateForm={inUpdateHiddenFields(k)}
               type={getType(model, k)}
               queryable={!!model[k].type}
+              // tableValueResolver={}
             />
           ))
         }

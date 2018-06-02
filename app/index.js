@@ -1,11 +1,11 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import Page  from './components/layout/Page';
-import Example from './components/Example';
+import App from './components/App';
 
-const body = renderToString(<Example />);
+const body = renderToString(<App />);
 
-const title = 'Hello my friend';
+const title = 'Administrator';
 
 module.exports.renderPage = function(injection) {
   return Page({

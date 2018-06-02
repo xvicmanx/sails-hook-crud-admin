@@ -38,6 +38,7 @@
     "react": "^16.4.0",
     "react-crud-table": "0.0.2",
     "react-dom": "^16.4.0",
+    "react-router-dom": "^4.2.2",
     "sass-loader": "^7.0.1",
     "semantic-ui-css": "^2.3.1",
     "semantic-ui-react": "^0.80.2",

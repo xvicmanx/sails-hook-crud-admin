@@ -54,6 +54,25 @@ const getType = (model, field) => {
   return model[field].type;
 };
 
+const valueResolver = (field) => (item) => {
+  if (
+    field === 'createdAt' ||
+    field === 'updatedAt'
+  ) {
+    return new Date(+item[field]).toLocaleString();
+  }
+  return item[field];
+};
+
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+String.prototype.separateCamel = function() {
+  return this.replace(/([a-z])([A-Z])/g, '$1 $2');
+};
+
+
 const ModelCrud = ({ model, caption, service }) => (
   <div style={styles.container}>
     <CRUDTable
@@ -66,12 +85,12 @@ const ModelCrud = ({ model, caption, service }) => (
           Object.keys(model).sort(keysSorter).map((k) => (
             <Field
               name={k}
-              label={k}
+              label={k.separateCamel().capitalize()}
               hideInCreateForm={inCreationHiddenFields(k)}
               hideInUpdateForm={inUpdateHiddenFields(k)}
               type={getType(model, k)}
               queryable={!!model[k].type}
-              // tableValueResolver={}
+              tableValueResolver={valueResolver(k)}
             />
           ))
         }

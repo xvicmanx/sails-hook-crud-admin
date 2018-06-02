@@ -177,7 +177,7 @@ var _Routes = __webpack_require__(8);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
-__webpack_require__(16);
+__webpack_require__(18);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -432,6 +432,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -442,9 +444,54 @@ var _reactCrudTable2 = _interopRequireDefault(_reactCrudTable);
 
 var _validation = __webpack_require__(15);
 
+var _Select = __webpack_require__(16);
+
+var _Select2 = _interopRequireDefault(_Select);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// const DescriptionRenderer = ({ field }) => <textarea {...field} />;
+var DescriptionRenderer = function DescriptionRenderer(_ref) {
+  var field = _ref.field;
+  return _react2.default.createElement('textarea', field);
+};
+var InputRenderer = function InputRenderer(_ref2) {
+  var field = _ref2.field;
+  return _react2.default.createElement('input', field);
+};
+var CheckboxRenderer = function CheckboxRenderer(_ref3) {
+  var field = _ref3.field;
+  return _react2.default.createElement('input', _extends({}, field, {
+    type: 'checkbox',
+    checked: !!field.value
+  }));
+};
+
+var EnumSelectRenderer = function EnumSelectRenderer(items) {
+  return function (_ref4) {
+    var field = _ref4.field;
+    return _react2.default.createElement(_Select2.default, _extends({}, field, {
+      options: items.map(function (x) {
+        return {
+          value: x,
+          key: x,
+          text: x
+        };
+      })
+    }));
+  };
+};
+
+var renderer = function renderer(model, field) {
+  if (model[field].type === 'boolean') {
+    return CheckboxRenderer;
+  }
+
+  if (model[field].validations && model[field].validations.isIn) {
+    return EnumSelectRenderer(model[field].validations.isIn);
+  }
+
+  return InputRenderer;
+};
 
 var styles = {
   container: { margin: 'auto', width: 'fit-content' }
@@ -478,11 +525,16 @@ var getType = function getType(model, field) {
   return model[field].type;
 };
 
-var valueResolver = function valueResolver(field) {
+var valueResolver = function valueResolver(model, field) {
   return function (item) {
     if (field === 'createdAt' || field === 'updatedAt') {
       return new Date(+item[field]).toLocaleString();
     }
+
+    if (model[field].type === 'boolean') {
+      return item[field] ? 'true' : 'false';
+    }
+
     return item[field];
   };
 };
@@ -495,10 +547,10 @@ String.prototype.separateCamel = function () {
   return this.replace(/([a-z])([A-Z])/g, '$1 $2');
 };
 
-var ModelCrud = function ModelCrud(_ref) {
-  var model = _ref.model,
-      caption = _ref.caption,
-      service = _ref.service;
+var ModelCrud = function ModelCrud(_ref5) {
+  var model = _ref5.model,
+      caption = _ref5.caption,
+      service = _ref5.service;
   return _react2.default.createElement(
     'div',
     { style: styles.container },
@@ -522,7 +574,8 @@ var ModelCrud = function ModelCrud(_ref) {
             hideInUpdateForm: inUpdateHiddenFields(k),
             type: getType(model, k),
             queryable: !!model[k].type,
-            tableValueResolver: valueResolver(k)
+            tableValueResolver: valueResolver(model, k),
+            render: renderer(model, k)
           });
         })
       ),
@@ -617,6 +670,115 @@ exports.default = {
 
 /***/ }),
 /* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(17);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Select = function (_Component) {
+  _inherits(Select, _Component);
+
+  function Select(props) {
+    _classCallCheck(this, Select);
+
+    var _this = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
+
+    _this.state = { value: props.value };
+    _this.handleChange = _this.handleChange.bind(_this);
+    return _this;
+  }
+
+  _createClass(Select, [{
+    key: 'handleChange',
+    value: function handleChange(evt) {
+      this.props.onChange(evt, {
+        value: evt.target.value
+      });
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (nextProps.value !== this.props.value) {
+        this.setState({ value: nextProps.value });
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'select',
+        {
+          name: this.props.name,
+          onChange: this.handleChange,
+          value: this.props.value || ''
+        },
+        _react2.default.createElement(
+          'option',
+          {
+            value: '',
+            selected: !this.state.value
+          },
+          this.props.placeholder
+        ),
+        this.props.options.map(function (option) {
+          return _react2.default.createElement(
+            'option',
+            {
+              key: option.key,
+              value: option.value
+            },
+            option.text
+          );
+        })
+      );
+    }
+  }]);
+
+  return Select;
+}(_react.Component);
+
+Select.propTypes = {
+  value: _propTypes2.default.any,
+  options: _propTypes2.default.arrayOf(_propTypes2.default.shape({
+    key: _propTypes2.default.any,
+    value: _propTypes2.default.any,
+    text: _propTypes2.default.any
+  })).isRequired,
+  onChange: _propTypes2.default.func.isRequired
+};
+
+exports.default = Select;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = require("prop-types");
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports) {
 
 

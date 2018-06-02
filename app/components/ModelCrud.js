@@ -12,8 +12,42 @@ import {
   validateModelRequiredValues,
   validateModelDeletion,
 } from '../helpers/validation';
+import Select from './Select';
 
-// const DescriptionRenderer = ({ field }) => <textarea {...field} />;
+const DescriptionRenderer = ({ field }) => <textarea {...field} />;
+const InputRenderer = ({ field }) => <input {...field} />;
+const CheckboxRenderer = ({ field }) => (
+  <input
+    {...field}
+    type="checkbox"
+    checked={!!field.value}
+  />
+);
+
+const EnumSelectRenderer = (items) => ({ field }) => (
+  <Select
+    {...field}
+    options={items.map(x => (
+      {
+        value: x,
+        key: x,
+        text: x
+      }
+    ))}
+  />
+);
+
+const renderer = (model, field) => {
+  if (model[field].type === 'boolean') {
+    return CheckboxRenderer;
+  }
+
+  if (model[field].validations && model[field].validations.isIn) {
+    return EnumSelectRenderer(model[field].validations.isIn);
+  }
+
+  return InputRenderer;
+};
 
 const styles = {
   container: { margin: 'auto', width: 'fit-content' },
@@ -54,13 +88,18 @@ const getType = (model, field) => {
   return model[field].type;
 };
 
-const valueResolver = (field) => (item) => {
+const valueResolver = (model, field) => (item) => {
   if (
     field === 'createdAt' ||
     field === 'updatedAt'
   ) {
     return new Date(+item[field]).toLocaleString();
   }
+
+  if (model[field].type === 'boolean') {
+    return item[field] ? 'true' : 'false';
+  }
+
   return item[field];
 };
 
@@ -90,7 +129,8 @@ const ModelCrud = ({ model, caption, service }) => (
               hideInUpdateForm={inUpdateHiddenFields(k)}
               type={getType(model, k)}
               queryable={!!model[k].type}
-              tableValueResolver={valueResolver(k)}
+              tableValueResolver={valueResolver(model, k)}
+              render={renderer(model, k)}
             />
           ))
         }

@@ -3,8 +3,8 @@ const mapCondition = (x) => {
     case 'CONTAINS': return 'contains';
     case 'ENDS_WITH': return 'endsWith';
     case 'BEGINS_WITH': return 'startsWith';
-    case 'IS': return 'equals';
-    case 'IS_NOT': return '!=';
+    case 'IS': return 'is';
+    case 'IS_NOT': return 'isNot';
     case 'EQUALS_TO': return 'equals';
     case 'IS_NOT_EQUALS_TO': return '!=';
     case 'DOES_NOT_BEGIN_WITH': return '!=';
@@ -28,6 +28,10 @@ const buildQuery = (rules) => {
     const condition = mapCondition(rule.condition);
     if (condition === 'equals') {
       query[rule.field] = rule.value;
+    } else if (condition === 'is') {
+      query[rule.field] = true;
+    } else if (condition === 'isNot') {
+      query[rule.field] = false;
     } else {
       query[rule.field] = {
         [condition]: rule.value,

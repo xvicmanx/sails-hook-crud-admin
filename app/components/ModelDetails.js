@@ -2,6 +2,7 @@ import React from 'react';
 import Service from '../services/Service';
 import ModelCrud from './ModelCrud';
 import { getModel } from '../helpers/models';
+import {} from '../helpers/string';
 
 const styles = {
   container: {
@@ -16,7 +17,7 @@ const ModelDetails = ({ match }) => (
       key={match.params.modelName}
       model={getModel(match.params.modelName)}
       service={Service(match.params.modelName)}
-      caption={match.params.modelName}
+      caption={(match.params.modelName || '').asTitle()}
     />
   </div>
 );

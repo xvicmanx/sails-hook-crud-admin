@@ -12,77 +12,19 @@ import {
   validateModelRequiredValues,
   validateModelDeletion,
 } from '../helpers/validation';
-import { omit } from '../helpers/object';
+import {
+  inCreationHiddenFields,
+  inUpdateHiddenFields,
+  keysSorter,
+  getType,
+  valueResolver,
+} from '../helpers/models';
+import {} from '../helpers/string';
 import renderer from './renderers';
 
 const styles = {
   container: { margin: 'auto', width: 'fit-content' },
 };
-
-const inCreationHiddenFields = (field) => {
-  return [
-    'createdAt',
-    'updatedAt',
-    'id',
-  ].indexOf(field) > -1;
-};
-
-const inUpdateHiddenFields = (field) => {
-  return [
-    'createdAt',
-    'updatedAt',
-    'id',
-  ].indexOf(field) > -1;
-};
-
-const keysWeight = {
-  id: -1,
-  createdAt: 1,
-  updatedAt: 2,
-};
-const weight = k => keysWeight[k] || 0;
-
-const keysSorter = (a, b) => weight(a) - weight(b);
-
-const getType = (model, field) => {
-  if (
-    field === 'createdAt' ||
-    field === 'updatedAt'
-  ) {
-    return 'date';
-  }
-  return model[field].type;
-};
-
-const valueResolver = (model, field) => (item) => {
-  if (
-    field === 'createdAt' ||
-    field === 'updatedAt'
-  ) {
-    return new Date(+item[field]).toLocaleString();
-  }
-
-  if (model[field].type === 'boolean') {
-    return item[field] ? 'true' : 'false';
-  }
-
-  if (model[field].model || model[field].collection) {
-    return JSON.stringify(
-      omit(item[field], ['createdAt', 'updatedAt']),
-    );
-  }
-
-  return item[field];
-};
-
-String.prototype.capitalize = function() {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
-
-String.prototype.separateCamel = function() {
-  return this.replace(/([a-z])([A-Z])/g, '$1 $2');
-};
-
 
 const ModelCrud = ({ model, caption, service }) => (
   <div style={styles.container}>
@@ -96,7 +38,7 @@ const ModelCrud = ({ model, caption, service }) => (
           Object.keys(model).sort(keysSorter).map((k) => (
             <Field
               name={k}
-              label={k.separateCamel().capitalize()}
+              label={k.separateCamel().asTitle()}
               hideInCreateForm={inCreationHiddenFields(k)}
               hideInUpdateForm={inUpdateHiddenFields(k)}
               type={getType(model, k)}

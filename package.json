@@ -42,7 +42,8 @@
     "sass-loader": "^7.0.1",
     "semantic-ui-css": "^2.3.1",
     "semantic-ui-react": "^0.80.2",
-    "simple-json-requester": "0.0.4"
+    "simple-json-requester": "0.0.4",
+    "simple-json-table": "^1.0.0"
   },
   "jest": {
     "transform": {

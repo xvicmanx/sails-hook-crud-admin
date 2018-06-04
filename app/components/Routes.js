@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import ModelDetails from './ModelDetails';
 import { getModels } from '../helpers/models';
+import {} from '../helpers/string';
 
 const Routes = () => (
   <Router>
@@ -14,7 +15,7 @@ const Routes = () => (
         {Object.keys(getModels()).map(modelName => (
           <li className="models-navigator__link">
             <Link to={`/administrator/${modelName}`}>
-              {modelName}
+              {modelName.asTitle()}
             </Link>
           </li>
         ))}

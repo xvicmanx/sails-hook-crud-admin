@@ -61,7 +61,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -78,6 +78,12 @@ module.exports = require("prop-types");
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("semantic-ui-react");
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -94,6 +100,7 @@ var URL = function URL(model, id) {
 var COUNT_URL = '/administrator/model-count';
 var SEARCH_URL = '/administrator/model-search';
 var SEARCH_ALL_URL = '/administrator/model-search-all';
+var COUNT_ALL_MODELS_URL = '/administrator/all-models-count';
 var getDirection = function getDirection(d) {
   return d === 'ascending' ? 'ASC' : 'DESC';
 };
@@ -119,6 +126,9 @@ var Service = function Service(model) {
     fetchAllItems: function fetchAllItems() {
       return requester.get(SEARCH_ALL_URL, { modelName: model });
     },
+    countAllModels: function countAllModels() {
+      return requester.get(COUNT_ALL_MODELS_URL, {});
+    },
     countItems: function countItems(payload) {
       return requester.post(COUNT_URL, {
         modelName: model,
@@ -140,7 +150,7 @@ var Service = function Service(model) {
 exports.default = Service;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -155,7 +165,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _semanticUiReact = __webpack_require__(6);
+var _semanticUiReact = __webpack_require__(2);
 
 var _simpleJsonTable = __webpack_require__(19);
 
@@ -244,7 +254,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -264,7 +274,7 @@ String.prototype.separateCamel = function () {
 exports.default = {};
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -367,13 +377,13 @@ Select.propTypes = {
 exports.default = Select;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
-module.exports = require("semantic-ui-react");
+module.exports = require("react-router-dom");
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -383,13 +393,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _server = __webpack_require__(8);
+var _server = __webpack_require__(9);
 
-var _Page = __webpack_require__(9);
+var _Page = __webpack_require__(10);
 
 var _Page2 = _interopRequireDefault(_Page);
 
-var _App = __webpack_require__(10);
+var _App = __webpack_require__(11);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -408,13 +418,13 @@ module.exports.renderPage = function (injection) {
 };
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom/server");
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -433,7 +443,7 @@ var Page = function Page(_ref) {
 exports.default = Page;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -447,25 +457,26 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _semanticUiReact = __webpack_require__(6);
+var _semanticUiReact = __webpack_require__(2);
 
-var _reactDom = __webpack_require__(11);
+var _reactDom = __webpack_require__(12);
 
-var _Routes = __webpack_require__(12);
+var _Routes = __webpack_require__(13);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
-__webpack_require__(28);
+__webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var styles = {
   segment: {
     width: '95%',
-    margin: '3rem auto 0 auto',
+    margin: '0 auto',
     paddingBottom: '4rem',
     border: 0,
-    boxShadow: 'none'
+    boxShadow: 'none',
+    paddingTop: 0
   }
 };
 
@@ -508,13 +519,13 @@ if (typeof window !== 'undefined' && typeof window.document !== 'undefined' && w
 exports.default = App;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom");
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -524,60 +535,113 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(13);
+var _reactRouterDom = __webpack_require__(7);
+
+var _semanticUiReact = __webpack_require__(2);
 
 var _ModelDetails = __webpack_require__(14);
 
 var _ModelDetails2 = _interopRequireDefault(_ModelDetails);
 
-var _models = __webpack_require__(3);
+var _models = __webpack_require__(4);
 
-__webpack_require__(4);
+var _AllModelsNavigator = __webpack_require__(28);
+
+var _AllModelsNavigator2 = _interopRequireDefault(_AllModelsNavigator);
+
+var _Service = __webpack_require__(3);
+
+var _Service2 = _interopRequireDefault(_Service);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Routes = function Routes() {
-  return _react2.default.createElement(
-    _reactRouterDom.BrowserRouter,
-    null,
-    _react2.default.createElement(
-      'div',
-      null,
-      _react2.default.createElement(
-        'ul',
-        { className: 'models-navigator' },
-        Object.keys((0, _models.getModels)()).map(function (modelName) {
-          return _react2.default.createElement(
-            'li',
-            { className: 'models-navigator__link' },
-            _react2.default.createElement(
-              _reactRouterDom.Link,
-              { to: '/administrator/' + modelName },
-              modelName.asTitle()
-            )
-          );
-        })
-      ),
-      _react2.default.createElement('hr', { className: 'separator' }),
-      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/administrator', component: function component() {
-          return null;
-        } }),
-      _react2.default.createElement(_reactRouterDom.Route, { path: '/administrator/:modelName', component: _ModelDetails2.default })
-    )
-  );
-};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Routes = function (_React$Component) {
+  _inherits(Routes, _React$Component);
+
+  function Routes(props) {
+    _classCallCheck(this, Routes);
+
+    var _this = _possibleConstructorReturn(this, (Routes.__proto__ || Object.getPrototypeOf(Routes)).call(this, props));
+
+    _this.state = {
+      counts: {}
+    };
+    _this.handleChange = _this.handleChange.bind(_this);
+    return _this;
+  }
+
+  _createClass(Routes, [{
+    key: 'updateCounts',
+    value: function updateCounts() {
+      var _this2 = this;
+
+      (0, _Service2.default)().countAllModels().then(function (counts) {
+        _this2.setState({ counts: counts });
+      });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.updateCounts();
+    }
+  }, {
+    key: 'handleChange',
+    value: function handleChange() {
+      console.log("sdfsdf");
+      this.updateCounts();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var parent = this;
+      return _react2.default.createElement(
+        _reactRouterDom.HashRouter,
+        null,
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_reactRouterDom.Route, {
+            path: '/',
+            component: function component() {
+              return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_AllModelsNavigator2.default, { counts: parent.state.counts }),
+                _react2.default.createElement('hr', { className: 'separator' }),
+                _react2.default.createElement(_reactRouterDom.Route, {
+                  path: '/administrator/:modelName',
+                  component: function component(_ref) {
+                    var match = _ref.match;
+                    return _react2.default.createElement(_ModelDetails2.default, {
+                      onChange: parent.handleChange,
+                      modelName: match.params.modelName
+                    });
+                  }
+                })
+              );
+            }
+          })
+        )
+      );
+    }
+  }]);
+
+  return Routes;
+}(_react2.default.Component);
 
 exports.default = Routes;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-router-dom");
 
 /***/ }),
 /* 14 */
@@ -594,7 +658,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Service = __webpack_require__(2);
+var _Service = __webpack_require__(3);
 
 var _Service2 = _interopRequireDefault(_Service);
 
@@ -602,9 +666,9 @@ var _ModelCrud = __webpack_require__(16);
 
 var _ModelCrud2 = _interopRequireDefault(_ModelCrud);
 
-var _models = __webpack_require__(3);
+var _models = __webpack_require__(4);
 
-__webpack_require__(4);
+__webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -616,15 +680,17 @@ var styles = {
 };
 
 var ModelDetails = function ModelDetails(_ref) {
-  var match = _ref.match;
+  var modelName = _ref.modelName,
+      onChange = _ref.onChange;
   return _react2.default.createElement(
     'div',
     { style: styles.container },
     _react2.default.createElement(_ModelCrud2.default, {
-      key: match.params.modelName,
-      model: (0, _models.getModel)(match.params.modelName),
-      service: (0, _Service2.default)(match.params.modelName),
-      caption: (match.params.modelName || '').asTitle()
+      key: modelName,
+      model: (0, _models.getModel)(modelName),
+      service: (0, _Service2.default)(modelName),
+      caption: (modelName || '').asTitle(),
+      onChange: onChange
     })
   );
 };
@@ -658,9 +724,9 @@ var _reactCrudTable2 = _interopRequireDefault(_reactCrudTable);
 
 var _validation = __webpack_require__(18);
 
-var _models = __webpack_require__(3);
+var _models = __webpack_require__(4);
 
-__webpack_require__(4);
+__webpack_require__(5);
 
 var _renderers = __webpack_require__(21);
 
@@ -675,7 +741,8 @@ var styles = {
 var ModelCrud = function ModelCrud(_ref) {
   var model = _ref.model,
       caption = _ref.caption,
-      service = _ref.service;
+      service = _ref.service,
+      onChange = _ref.onChange;
   return _react2.default.createElement(
     'div',
     { style: styles.container },
@@ -710,7 +777,12 @@ var ModelCrud = function ModelCrud(_ref) {
         message: 'Create a new item',
         trigger: 'Create',
         onSubmit: function onSubmit(task) {
-          return service.create(task);
+          return new Promise(function (resolve) {
+            service.create(task).then(function (result) {
+              onChange();
+              resolve(result);
+            });
+          });
         },
         submitText: 'Create',
         validate: (0, _validation.validateModelRequiredValues)(model)
@@ -742,7 +814,12 @@ var ModelCrud = function ModelCrud(_ref) {
         message: 'Are you sure you want to remove the item?',
         trigger: 'Remove',
         onSubmit: function onSubmit(task) {
-          return service.delete(task);
+          return new Promise(function (resolve) {
+            service.delete(task).then(function (result) {
+              onChange();
+              resolve(result);
+            });
+          });
         },
         submitText: 'Remove',
         validate: _validation.validateModelDeletion
@@ -1044,7 +1121,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Select = __webpack_require__(5);
+var _Select = __webpack_require__(6);
 
 var _Select2 = _interopRequireDefault(_Select);
 
@@ -1092,11 +1169,11 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Select = __webpack_require__(5);
+var _Select = __webpack_require__(6);
 
 var _Select2 = _interopRequireDefault(_Select);
 
-var _Service = __webpack_require__(2);
+var _Service = __webpack_require__(3);
 
 var _Service2 = _interopRequireDefault(_Service);
 
@@ -1187,11 +1264,11 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Select = __webpack_require__(5);
+var _Select = __webpack_require__(6);
 
 var _Select2 = _interopRequireDefault(_Select);
 
-var _Service = __webpack_require__(2);
+var _Service = __webpack_require__(3);
 
 var _Service2 = _interopRequireDefault(_Service);
 
@@ -1270,6 +1347,69 @@ exports.default = function (model) {
 
 /***/ }),
 /* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _semanticUiReact = __webpack_require__(2);
+
+var _reactRouterDom = __webpack_require__(7);
+
+var _models = __webpack_require__(4);
+
+__webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AllModelsNavigator = function AllModelsNavigator(props) {
+  return _react2.default.createElement(
+    _semanticUiReact.Statistic.Group,
+    {
+      size: 'mini',
+      className: 'models-navigator'
+    },
+    Object.keys((0, _models.getModels)()).map(function (modelName) {
+      return _react2.default.createElement(
+        _semanticUiReact.Statistic,
+        {
+          className: 'models-navigator__link',
+          as: _reactRouterDom.Link,
+          to: '/administrator/' + modelName
+        },
+        _react2.default.createElement(
+          _semanticUiReact.Statistic.Value,
+          null,
+          props.counts[modelName] || 0
+        ),
+        _react2.default.createElement(
+          _semanticUiReact.Statistic.Label,
+          null,
+          modelName.asTitle()
+        )
+      );
+    })
+  );
+};
+
+AllModelsNavigator.propTypes = {};
+
+exports.default = AllModelsNavigator;
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports) {
 
 

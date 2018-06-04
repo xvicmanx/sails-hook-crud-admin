@@ -26,7 +26,7 @@ const styles = {
   container: { margin: 'auto', width: 'fit-content' },
 };
 
-const ModelCrud = ({ model, caption, service }) => (
+const ModelCrud = ({ model, caption, service, onChange }) => (
   <div style={styles.container}>
     <CRUDTable
       caption={caption}
@@ -54,7 +54,12 @@ const ModelCrud = ({ model, caption, service }) => (
         title="Create Item"
         message="Create a new item"
         trigger="Create"
-        onSubmit={task => service.create(task)}
+        onSubmit={task => new Promise((resolve) => {
+          service.create(task).then(result => {
+            onChange();
+            resolve(result);
+          })
+        })}
         submitText="Create"
         validate={validateModelRequiredValues(model)}
       />
@@ -84,7 +89,12 @@ const ModelCrud = ({ model, caption, service }) => (
         title="Remove an existing item"
         message="Are you sure you want to remove the item?"
         trigger="Remove"
-        onSubmit={task => service.delete(task)}
+        onSubmit={task => new Promise((resolve) => {
+          service.delete(task).then(result => {
+            onChange();
+            resolve(result);
+          })
+        })}
         submitText="Remove"
         validate={validateModelDeletion}
       />

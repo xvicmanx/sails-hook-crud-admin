@@ -8,10 +8,11 @@ import './index.css';
 const styles = {
   segment: {
     width: '95%',
-    margin: '3rem auto 0 auto',
+    margin: '0 auto',
     paddingBottom: '4rem',
     border: 0,
     boxShadow: 'none',
+    paddingTop: 0,
   },
 };
 

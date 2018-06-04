@@ -1,31 +1,67 @@
 import React from 'react'
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
-  Link
+  Link,
 } from 'react-router-dom';
+import { Statistic } from 'semantic-ui-react';
 import ModelDetails from './ModelDetails';
 import { getModels } from '../helpers/models';
-import {} from '../helpers/string';
+import AllModelsNavigator from './AllModelsNavigator';
+import Service from '../services/Service';
 
-const Routes = () => (
-  <Router>
-    <div>
-      <ul className="models-navigator">
-        {Object.keys(getModels()).map(modelName => (
-          <li className="models-navigator__link">
-            <Link to={`/administrator/${modelName}`}>
-              {modelName.asTitle()}
-            </Link>
-          </li>
-        ))}
-      </ul>
+class Routes extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      counts: {},
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+  
+  updateCounts() {
+    Service().countAllModels()
+      .then(counts => {
+        this.setState({ counts });
+      });
+  }
 
-      <hr className="separator" />
-      <Route exact path="/administrator" component={() => null}/>
-      <Route path="/administrator/:modelName" component={ModelDetails}/>
-    </div>
-  </Router>
-);
+  componentDidMount() {
+    this.updateCounts();
+  }
+
+  handleChange() {
+    this.updateCounts();
+  }
+
+  render() {
+    const parent = this;
+    return (
+      <Router>
+        <div>
+          <Route
+            path="/"
+            component={() => (
+              <div>
+                <AllModelsNavigator counts={parent.state.counts} />
+                <hr className="separator" />
+                <Route
+                  path="/administrator/:modelName"
+                  component={({ match }) => (
+                    <ModelDetails
+                      onChange={parent.handleChange}
+                      modelName={match.params.modelName}
+                    />
+                  )}
+                />
+              </div>
+            )}
+          />
+        </div>
+      </Router>
+    );
+  }
+}
+
 
 export default Routes;

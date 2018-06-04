@@ -65,6 +65,25 @@ module.exports = function (sails) {
           );
           return res.json(result);
         },
+        'GET /administrator/all-models-count': async function (req, res) {
+          const promises = Object.keys(sails.models).map(name => {
+            return new Promise((resolve) => {
+              sails.models[name].count({})
+                .then(count => {
+                  resolve({ name, count });
+                });
+            });
+          });
+
+          const counts = await Promise.all(promises);
+          const result = counts.reduce((acc, item) => {
+            const x = acc;
+            x[item.name] = item.count;
+            return x;
+          }, {});
+          
+          return res.json(result);
+        },
       },
     }
   };

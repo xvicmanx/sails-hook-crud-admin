@@ -11,13 +11,14 @@ const styles = {
   },
 };
 
-const ModelDetails = ({ match }) => (
+const ModelDetails = ({ modelName, onChange }) => (
   <div style={styles.container}>
     <ModelCrud
-      key={match.params.modelName}
-      model={getModel(match.params.modelName)}
-      service={Service(match.params.modelName)}
-      caption={(match.params.modelName || '').asTitle()}
+      key={modelName}
+      model={getModel(modelName)}
+      service={Service(modelName)}
+      caption={(modelName || '').asTitle()}
+      onChange={onChange}
     />
   </div>
 );

@@ -4,6 +4,7 @@ const URL = (model, id) => id ? `/${model}/${id}` : `/${model}`;
 const COUNT_URL = '/administrator/model-count';
 const SEARCH_URL = '/administrator/model-search';
 const SEARCH_ALL_URL = '/administrator/model-search-all';
+const COUNT_ALL_MODELS_URL = '/administrator/all-models-count';
 const getDirection = (d) => d === 'ascending' ? 'ASC' : 'DESC';
 
 
@@ -26,6 +27,12 @@ const Service = (model) => ({
     return requester.get(
       SEARCH_ALL_URL,
       { modelName: model }
+    );
+  },
+  countAllModels: () => {
+    return requester.get(
+      COUNT_ALL_MODELS_URL,
+      {}
     );
   },
   countItems: (payload) => {

@@ -2,7 +2,8 @@ import React from 'react';
 import { Popup, Button } from 'semantic-ui-react';
 import JSONTable from 'simple-json-table';
 import { omit, queryValue } from './object';
-import { getLabel } from './config';
+import { getLabel, getModelRelatedValue } from './config';
+import Constants from '../constants';
 import './string';
 
 export const getModels = () => {
@@ -66,7 +67,7 @@ export const valueResolver = (model, field) => (item) => {
   if (model[field].model || model[field].collection) {
     return (
       <Popup
-        trigger={<Button icon>See details</Button>}
+        trigger={<Button icon>{Constants.BUTTONS.SEE_DETAILS}</Button>}
         on='click'
       >
         <JSONTable
@@ -80,9 +81,9 @@ export const valueResolver = (model, field) => (item) => {
 };
 
 
-export const getFieldLabel = (model, field) => {
-  return getLabel(
-    field,
+export const getFieldLabel = (modelName, field) => {
+  return getModelRelatedValue(
+    `${modelName}.fields.${field}.label`,
     field.separateCamel().asTitle()
   );
 };

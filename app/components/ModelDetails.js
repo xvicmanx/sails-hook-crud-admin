@@ -1,7 +1,7 @@
 import React from 'react';
 import Service from '../services/Service';
 import ModelCrud from './ModelCrud';
-import { getModel } from '../helpers/models';
+import { getModel, } from '../helpers/models';
 
 const styles = {
   container: {

@@ -18,7 +18,7 @@ export const getModelRelatedValue = (query, defaultValue) => {
   const config = getConfig();
   return queryValue(
     config,
-    `models.${prop}`,
+    `models.${query}`,
     defaultValue
   );
 };

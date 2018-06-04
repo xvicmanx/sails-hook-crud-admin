@@ -22,40 +22,22 @@ import {
 } from '../helpers/models';
 import {
   getConfig,
-  getLabel,
-  getButtonText,
   getModelRelatedValue,
 } from '../helpers/config';
 import {} from '../helpers/string';
 import renderer from './renderers';
+import Constants from '../constants';
 
 const styles = {
   container: { margin: 'auto', width: 'fit-content' },
-};
-
-const Constants = {
-  BUTTONS: {
-    CREATE: getButtonText('create', 'Create'),
-    UPDATE: getButtonText('update', 'Update'),
-    REMOVE: getButtonText('remove', 'Remove'),
-  },
-  LABELS: {
-    ACTIONS: getLabel('actions', 'Actions'),
-    CREATE_FORM_TITLE: getLabel('createFormTitle', 'Create Item'),
-    UPDATE_FORM_TITLE: getLabel('updateFormTitle', 'Update Item'),
-    REMOVE_FORM_TITLE: getLabel('removeFormTitle', 'Remove existing Item'),
-    CREATE_FORM_MESSAGE: getLabel('createFormMessage', 'Create a new item'),
-    UPDATE_FORM_MESSAGE: getLabel('updateFormMessage', 'Update an existing item'),
-    REMOVE_FORM_MESSAGE: getLabel('removeFormMessage', 'Are you sure you want to remove the item?'),
-  },
 };
 
 const ModelCrud = ({ model, modelName, caption, service, onChange }) => (
   <div style={styles.container}>
     <CRUDTable
       caption={getModelRelatedValue(
-        `${modelName}.label` || modelName.asTitle(),
-      )}
+        `${modelName}.label`,
+      ) || modelName.asTitle() }
       fetchItems={payload => service.fetchItems(payload)}
       showQueryBuilder
       actionsLabel={Constants.LABELS.ACTIONS}
@@ -65,7 +47,7 @@ const ModelCrud = ({ model, modelName, caption, service, onChange }) => (
           Object.keys(model).sort(keysSorter).map((k) => (
             <Field
               name={k}
-              label={getFieldLabel(model, k)}
+              label={getFieldLabel(modelName, k)}
               hideInCreateForm={inCreationHiddenFields(k)}
               hideInUpdateForm={inUpdateHiddenFields(k)}
               type={getType(model, k)}

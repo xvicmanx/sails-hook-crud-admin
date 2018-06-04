@@ -4,6 +4,7 @@ import { Statistic } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { getModels } from '../helpers/models';
 import {} from '../helpers/string';
+import { getModelRelatedValue } from '../helpers/config';
 
 const AllModelsNavigator = (props) => {
   return (
@@ -21,7 +22,9 @@ const AllModelsNavigator = (props) => {
             {props.counts[modelName] || 0}
           </Statistic.Value>
           <Statistic.Label>
-            {modelName.asTitle()}
+            {getModelRelatedValue(
+              `${modelName}.label`,
+            ) || modelName.asTitle() }
           </Statistic.Label>
         </Statistic>
       ))}

@@ -15,7 +15,7 @@ const AllModelsNavigator = (props) => {
         <Statistic
           className="models-navigator__link"
           as={Link}
-          to={`/administrator/${modelName}`}
+          to={`/model/${modelName}`}
         >
           <Statistic.Value>
             {props.counts[modelName] || 0}

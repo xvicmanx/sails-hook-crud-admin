@@ -24,8 +24,11 @@ const App = () => (
   <div>
     <Menu>
       <Container>
-        <Menu.Item as='div' header>
-          Admin
+        <Menu.Item
+          as='a' header
+          href="/administrator"
+        >
+          Home
         </Menu.Item>
       </Container>
     </Menu>

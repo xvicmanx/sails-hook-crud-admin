@@ -18,12 +18,30 @@ import {
   keysSorter,
   getType,
   valueResolver,
+  getFieldLabel,
 } from '../helpers/models';
-import {} from '../helpers/string';
+import { getConfig, getLabel, getButtonText } from '../helpers/config';
 import renderer from './renderers';
 
 const styles = {
   container: { margin: 'auto', width: 'fit-content' },
+};
+
+const Constants = {
+  BUTTONS: {
+    CREATE: getButtonText('create', 'Create'),
+    UPDATE: getButtonText('update', 'Update'),
+    REMOVE: getButtonText('remove', 'Remove'),
+  },
+  LABELS: {
+    ACTIONS: getLabel('actions', 'Actions'),
+    CREATE_FORM_TITLE: getLabel('createFormTitle', 'Create Item'),
+    UPDATE_FORM_TITLE: getLabel('updateFormTitle', 'Update Item'),
+    REMOVE_FORM_TITLE: getLabel('removeFormTitle', 'Remove existing Item'),
+    CREATE_FORM_MESSAGE: getLabel('createFormMessage', 'Create a new item'),
+    UPDATE_FORM_MESSAGE: getLabel('updateFormMessage', 'Update an existing item'),
+    REMOVE_FORM_MESSAGE: getLabel('removeFormMessage', 'Are you sure you want to remove the item?'),
+  },
 };
 
 const ModelCrud = ({ model, caption, service, onChange }) => (
@@ -32,13 +50,14 @@ const ModelCrud = ({ model, caption, service, onChange }) => (
       caption={caption}
       fetchItems={payload => service.fetchItems(payload)}
       showQueryBuilder
+      actionsLabel={Constants.LABELS.ACTIONS}
     >
       <Fields>
         {model &&
           Object.keys(model).sort(keysSorter).map((k) => (
             <Field
               name={k}
-              label={k.separateCamel().asTitle()}
+              label={getFieldLabel(model, k)}
               hideInCreateForm={inCreationHiddenFields(k)}
               hideInUpdateForm={inUpdateHiddenFields(k)}
               type={getType(model, k)}
@@ -51,23 +70,23 @@ const ModelCrud = ({ model, caption, service, onChange }) => (
         }
       </Fields>
       <CreateForm
-        title="Create Item"
-        message="Create a new item"
-        trigger="Create"
+        title={Constants.LABELS.CREATE_FORM_TITLE}
+        message={Constants.LABELS.CREATE_FORM_MESSAGE}
+        trigger={Constants.BUTTONS.CREATE}
         onSubmit={task => new Promise((resolve) => {
           service.create(task).then(result => {
             onChange();
             resolve(result);
           })
         })}
-        submitText="Create"
+        submitText={Constants.BUTTONS.CREATE}
         validate={validateModelRequiredValues(model)}
       />
 
       <UpdateForm
-        title="Update Item"
-        message="Update an existing item"
-        trigger="Update"
+        title={Constants.LABELS.UPDATE_FORM_TITLE}
+        message={Constants.LABELS.UPDATE_FORM_MESSAGE}
+        trigger={Constants.BUTTONS.UPDATE}
         onSubmit={data => {
           const payload = data;
           Object.keys(payload).forEach(k => {
@@ -81,21 +100,21 @@ const ModelCrud = ({ model, caption, service, onChange }) => (
           });
           return service.update(payload);
         }}
-        submitText="Update"
+        submitText={Constants.BUTTONS.UPDATE}
         validate={validateModelRequiredValues(model)}
       />
 
       <DeleteForm
-        title="Remove an existing item"
-        message="Are you sure you want to remove the item?"
-        trigger="Remove"
+        title={Constants.LABELS.REMOVE_FORM_TITLE}
+        message={Constants.LABELS.REMOVE_FORM_MESSAGE}
+        trigger={Constants.BUTTONS.REMOVE}
         onSubmit={task => new Promise((resolve) => {
           service.delete(task).then(result => {
             onChange();
             resolve(result);
           })
         })}
-        submitText="Remove"
+        submitText={Constants.BUTTONS.REMOVE}
         validate={validateModelDeletion}
       />
       <Pagination

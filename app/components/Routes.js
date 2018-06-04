@@ -46,7 +46,7 @@ class Routes extends React.Component {
                 <AllModelsNavigator counts={parent.state.counts} />
                 <hr className="separator" />
                 <Route
-                  path="/administrator/:modelName"
+                  path="/model/:modelName"
                   component={({ match }) => (
                     <ModelDetails
                       onChange={parent.handleChange}

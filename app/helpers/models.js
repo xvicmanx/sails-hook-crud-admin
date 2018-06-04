@@ -1,7 +1,9 @@
 import React from 'react';
 import { Popup, Button } from 'semantic-ui-react';
 import JSONTable from 'simple-json-table';
-import { omit } from './object';
+import { omit, queryValue } from './object';
+import { getLabel } from './config';
+import './string';
 
 export const getModels = () => {
   return typeof window !== 'undefined' && window.sailsModels ?
@@ -77,6 +79,14 @@ export const valueResolver = (model, field) => (item) => {
   return item[field];
 };
 
+
+export const getFieldLabel = (model, field) => {
+  return getLabel(
+    field,
+    field.separateCamel().asTitle()
+  );
+};
+
 export default {
   getModel,
   getModels,
@@ -85,4 +95,5 @@ export default {
   keysSorter,
   getType,
   valueResolver,
+  getFieldLabel,
 };

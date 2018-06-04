@@ -29,6 +29,7 @@ module.exports = function (sails) {
         'GET /administrator': function (req, res) {
           const injection = `
             window.sailsModels = ${JSON.stringify(getDefinitions(sails.models))};
+            window.crudAdminConfig = ${JSON.stringify(sails.config.crudAdmin || {})};
           `;
           res.send(app.renderPage(injection));
         },

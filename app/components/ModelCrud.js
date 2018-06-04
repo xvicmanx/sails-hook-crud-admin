@@ -20,7 +20,13 @@ import {
   valueResolver,
   getFieldLabel,
 } from '../helpers/models';
-import { getConfig, getLabel, getButtonText } from '../helpers/config';
+import {
+  getConfig,
+  getLabel,
+  getButtonText,
+  getModelRelatedValue,
+} from '../helpers/config';
+import {} from '../helpers/string';
 import renderer from './renderers';
 
 const styles = {
@@ -44,10 +50,12 @@ const Constants = {
   },
 };
 
-const ModelCrud = ({ model, caption, service, onChange }) => (
+const ModelCrud = ({ model, modelName, caption, service, onChange }) => (
   <div style={styles.container}>
     <CRUDTable
-      caption={caption}
+      caption={getModelRelatedValue(
+        `${modelName}.label` || modelName.asTitle(),
+      )}
       fetchItems={payload => service.fetchItems(payload)}
       showQueryBuilder
       actionsLabel={Constants.LABELS.ACTIONS}

@@ -14,6 +14,15 @@ export const getLabel = (prop, defaultValue) => {
   );
 };
 
+export const getModelRelatedValue = (query, defaultValue) => {
+  const config = getConfig();
+  return queryValue(
+    config,
+    `models.${prop}`,
+    defaultValue
+  );
+};
+
 export const getButtonText = (button, defaultValue) => {
   const config = getConfig();
   return queryValue(
@@ -27,4 +36,5 @@ export default {
   getConfig,
   getLabel,
   getButtonText,
+  getModelRelatedValue,
 };

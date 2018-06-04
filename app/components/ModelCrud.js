@@ -12,42 +12,8 @@ import {
   validateModelRequiredValues,
   validateModelDeletion,
 } from '../helpers/validation';
-import Select from './Select';
-
-const DescriptionRenderer = ({ field }) => <textarea {...field} />;
-const InputRenderer = ({ field }) => <input {...field} />;
-const CheckboxRenderer = ({ field }) => (
-  <input
-    {...field}
-    type="checkbox"
-    checked={!!field.value}
-  />
-);
-
-const EnumSelectRenderer = (items) => ({ field }) => (
-  <Select
-    {...field}
-    options={items.map(x => (
-      {
-        value: x,
-        key: x,
-        text: x
-      }
-    ))}
-  />
-);
-
-const renderer = (model, field) => {
-  if (model[field].type === 'boolean') {
-    return CheckboxRenderer;
-  }
-
-  if (model[field].validations && model[field].validations.isIn) {
-    return EnumSelectRenderer(model[field].validations.isIn);
-  }
-
-  return InputRenderer;
-};
+import { omit } from '../helpers/object';
+import renderer from './renderers';
 
 const styles = {
   container: { margin: 'auto', width: 'fit-content' },
@@ -100,6 +66,12 @@ const valueResolver = (model, field) => (item) => {
     return item[field] ? 'true' : 'false';
   }
 
+  if (model[field].model || model[field].collection) {
+    return JSON.stringify(
+      omit(item[field], ['createdAt', 'updatedAt']),
+    );
+  }
+
   return item[field];
 };
 
@@ -129,6 +101,7 @@ const ModelCrud = ({ model, caption, service }) => (
               hideInUpdateForm={inUpdateHiddenFields(k)}
               type={getType(model, k)}
               queryable={!!model[k].type}
+              sortable={!!model[k].type}
               tableValueResolver={valueResolver(model, k)}
               render={renderer(model, k)}
             />
@@ -148,7 +121,19 @@ const ModelCrud = ({ model, caption, service }) => (
         title="Update Item"
         message="Update an existing item"
         trigger="Update"
-        onSubmit={data => service.update(data)}
+        onSubmit={data => {
+          const payload = data;
+          Object.keys(payload).forEach(k => {
+            if (model[k].collection) {
+              payload[k] = payload[k].map(x => x.id);
+            }
+
+            if (model[k].model) {
+              payload[k] = payload[k].id || payload[k];
+            }
+          });
+          return service.update(payload);
+        }}
         submitText="Update"
         validate={validateModelRequiredValues(model)}
       />

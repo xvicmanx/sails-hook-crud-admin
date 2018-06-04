@@ -170,6 +170,8 @@
   padding: .5rem 1rem;
   border-left: 1px solid rgba(34, 36, 38, .1);
   border-bottom: 1px solid rgba(4, 21, 37, 0.1);
+  max-width: 220px;
+  word-wrap: break-word;
 }
 
 .crud-table__cell-label {

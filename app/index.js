@@ -5,7 +5,7 @@ import App from './components/App';
 
 const body = renderToString(<App />);
 
-const title = 'Administrator';
+const title = 'Admin';
 
 module.exports.renderPage = function(injection) {
   return Page({

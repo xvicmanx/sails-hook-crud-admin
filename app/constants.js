@@ -8,6 +8,7 @@ const Constants = {
     SEE_DETAILS: getButtonText('seeDetails', 'See details')
   },
   LABELS: {
+    HOME: getLabel('home', 'Home'),
     ACTIONS: getLabel('actions', 'Actions'),
     CREATE_FORM_TITLE: getLabel('createFormTitle', 'Create Item'),
     UPDATE_FORM_TITLE: getLabel('updateFormTitle', 'Update Item'),

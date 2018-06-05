@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Menu, Segment } from 'semantic-ui-react';
 import { render } from 'react-dom';
 import Routes from './Routes';
+import Constants from '../constants';
 
 import './index.css';
 
@@ -27,12 +28,10 @@ const App = () => (
         <Menu.Item
           as='a' header
           href="/administrator"
-        >
-          Home
-        </Menu.Item>
+          content={Constants.LABELS.HOME}
+        />
       </Container>
     </Menu>
-
     <Segment
       as="div"
       style={styles.segment}

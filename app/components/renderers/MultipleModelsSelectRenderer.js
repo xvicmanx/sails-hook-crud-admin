@@ -48,26 +48,26 @@ class ModelsSelect extends Component {
   handleAdd(evt) {
     evt.preventDefault();
     evt.stopPropagation();
-
     const ids = [
       ...this.state.ids,
-      this.state.id,
+      +this.state.id,
     ];
     this.setState({ ids, id: null });
+    this.triggerOnChange(evt, ids);
+  }
 
-    this.props.field.onChange({
-      persist: () => {},
-      target: {
-        name: this.props.field.name,
-        value: ids,
-      },
-    });
+  triggerOnChange(evt, ids) {
+    const e = evt;
+    e.target = {
+      name: this.props.field.name,
+      value: ids,
+    };
+    this.props.field.onChange(e);
   }
 
   componentWillReceiveProps(nextProps) {
     const ids = nextProps.field.value &&
-      nextProps.field.value.map(x => x.id || x) || [];
-
+      nextProps.field.value.map(x => x && x.id || x) || [];
     this.setState({ ids });
   }
 
@@ -77,20 +77,11 @@ class ModelsSelect extends Component {
 
     const ids = this.state.ids.filter(x => x !== id);
     this.setState({ ids });
-
-    this.props.field.onChange({
-      persist: () => {},
-      target: {
-        name: this.props.field.name,
-        value: ids,
-      },
-    });
+    this.triggerOnChange(evt, ids);
   }
 
   handleChange(evt) {
-    this.setState({
-      id: evt.target.value
-    });
+    this.setState({ id: evt.target.value });
   }
 
   componentDidMount() {
@@ -100,7 +91,6 @@ class ModelsSelect extends Component {
     });
   }
   
-
   render() {
     return (
       <div style={styles.container}>
@@ -129,7 +119,9 @@ class ModelsSelect extends Component {
           <Select
             value={this.state.id}
             onChange={this.handleChange}
-            options={this.state.items.map(mapIdsToOptions(this.props.model))}
+            options={this.state.items.map(
+              mapIdsToOptions(this.props.model),
+            )}
           />
           <Button
             color="green"

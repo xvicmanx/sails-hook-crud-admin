@@ -171,15 +171,15 @@ var _simpleJsonTable = __webpack_require__(22);
 
 var _simpleJsonTable2 = _interopRequireDefault(_simpleJsonTable);
 
-var _object = __webpack_require__(9);
+var _object = __webpack_require__(10);
 
 var _config = __webpack_require__(5);
 
-var _constants = __webpack_require__(10);
+var _constants = __webpack_require__(6);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-__webpack_require__(6);
+__webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -278,7 +278,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getButtonText = exports.getModelRelatedValue = exports.getLabel = exports.getConfig = undefined;
 
-var _object = __webpack_require__(9);
+var _object = __webpack_require__(10);
 
 var getConfig = exports.getConfig = function getConfig() {
   return typeof window !== 'undefined' && window.crudAdminConfig ? window.crudAdminConfig : {};
@@ -316,6 +316,40 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _config = __webpack_require__(5);
+
+var Constants = {
+  BUTTONS: {
+    CREATE: (0, _config.getButtonText)('create', 'Create'),
+    UPDATE: (0, _config.getButtonText)('update', 'Update'),
+    REMOVE: (0, _config.getButtonText)('remove', 'Remove'),
+    SEE_DETAILS: (0, _config.getButtonText)('seeDetails', 'See details')
+  },
+  LABELS: {
+    HOME: (0, _config.getLabel)('home', 'Home'),
+    ACTIONS: (0, _config.getLabel)('actions', 'Actions'),
+    CREATE_FORM_TITLE: (0, _config.getLabel)('createFormTitle', 'Create Item'),
+    UPDATE_FORM_TITLE: (0, _config.getLabel)('updateFormTitle', 'Update Item'),
+    REMOVE_FORM_TITLE: (0, _config.getLabel)('removeFormTitle', 'Remove existing Item'),
+    CREATE_FORM_MESSAGE: (0, _config.getLabel)('createFormMessage', 'Create a new item'),
+    UPDATE_FORM_MESSAGE: (0, _config.getLabel)('updateFormMessage', 'Update an existing item'),
+    REMOVE_FORM_MESSAGE: (0, _config.getLabel)('removeFormMessage', 'Are you sure you want to remove the item?')
+  }
+};
+
+exports.default = Constants;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 String.prototype.asTitle = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
 };
@@ -327,7 +361,7 @@ String.prototype.separateCamel = function () {
 exports.default = {};
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -430,13 +464,13 @@ Select.propTypes = {
 exports.default = Select;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-router-dom");
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -493,39 +527,6 @@ exports.default = {
 };
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _config = __webpack_require__(5);
-
-var Constants = {
-  BUTTONS: {
-    CREATE: (0, _config.getButtonText)('create', 'Create'),
-    UPDATE: (0, _config.getButtonText)('update', 'Update'),
-    REMOVE: (0, _config.getButtonText)('remove', 'Remove'),
-    SEE_DETAILS: (0, _config.getButtonText)('seeDetails', 'See details')
-  },
-  LABELS: {
-    ACTIONS: (0, _config.getLabel)('actions', 'Actions'),
-    CREATE_FORM_TITLE: (0, _config.getLabel)('createFormTitle', 'Create Item'),
-    UPDATE_FORM_TITLE: (0, _config.getLabel)('updateFormTitle', 'Update Item'),
-    REMOVE_FORM_TITLE: (0, _config.getLabel)('removeFormTitle', 'Remove existing Item'),
-    CREATE_FORM_MESSAGE: (0, _config.getLabel)('createFormMessage', 'Create a new item'),
-    UPDATE_FORM_MESSAGE: (0, _config.getLabel)('updateFormMessage', 'Update an existing item'),
-    REMOVE_FORM_MESSAGE: (0, _config.getLabel)('removeFormMessage', 'Are you sure you want to remove the item?')
-  }
-};
-
-exports.default = Constants;
-
-/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -550,7 +551,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var body = (0, _server.renderToString)(_react2.default.createElement(_App2.default, null));
 
-var title = 'Administrator';
+var title = 'Admin';
 
 module.exports.renderPage = function (injection) {
   return (0, _Page2.default)({
@@ -608,6 +609,10 @@ var _Routes = __webpack_require__(16);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
+var _constants = __webpack_require__(6);
+
+var _constants2 = _interopRequireDefault(_constants);
+
 __webpack_require__(31);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -637,14 +642,11 @@ var App = function App() {
       _react2.default.createElement(
         _semanticUiReact.Container,
         null,
-        _react2.default.createElement(
-          _semanticUiReact.Menu.Item,
-          {
-            as: 'a', header: true,
-            href: '/administrator'
-          },
-          'Home'
-        )
+        _react2.default.createElement(_semanticUiReact.Menu.Item, {
+          as: 'a', header: true,
+          href: '/administrator',
+          content: _constants2.default.LABELS.HOME
+        })
       )
     ),
     _react2.default.createElement(
@@ -687,7 +689,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(8);
+var _reactRouterDom = __webpack_require__(9);
 
 var _semanticUiReact = __webpack_require__(2);
 
@@ -871,13 +873,13 @@ var _models = __webpack_require__(4);
 
 var _config = __webpack_require__(5);
 
-__webpack_require__(6);
+__webpack_require__(7);
 
 var _renderers = __webpack_require__(23);
 
 var _renderers2 = _interopRequireDefault(_renderers);
 
-var _constants = __webpack_require__(10);
+var _constants = __webpack_require__(6);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -947,7 +949,7 @@ var ModelCrud = function ModelCrud(_ref) {
           Object.keys(payload).forEach(function (k) {
             if (model[k].collection) {
               payload[k] = payload[k].map(function (x) {
-                return x.id;
+                return x.id || x;
               });
             }
 
@@ -1215,7 +1217,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Select = __webpack_require__(7);
+var _Select = __webpack_require__(8);
 
 var _Select2 = _interopRequireDefault(_Select);
 
@@ -1263,7 +1265,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Select = __webpack_require__(7);
+var _Select = __webpack_require__(8);
 
 var _Select2 = _interopRequireDefault(_Select);
 
@@ -1360,7 +1362,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _Select = __webpack_require__(7);
+var _Select = __webpack_require__(8);
 
 var _Select2 = _interopRequireDefault(_Select);
 
@@ -1434,25 +1436,26 @@ var ModelsSelect = function (_Component) {
     value: function handleAdd(evt) {
       evt.preventDefault();
       evt.stopPropagation();
-
-      var ids = [].concat(_toConsumableArray(this.state.ids), [this.state.id]);
+      var ids = [].concat(_toConsumableArray(this.state.ids), [+this.state.id]);
       this.setState({ ids: ids, id: null });
-
-      this.props.field.onChange({
-        persist: function persist() {},
-        target: {
-          name: this.props.field.name,
-          value: ids
-        }
-      });
+      this.triggerOnChange(evt, ids);
+    }
+  }, {
+    key: 'triggerOnChange',
+    value: function triggerOnChange(evt, ids) {
+      var e = evt;
+      e.target = {
+        name: this.props.field.name,
+        value: ids
+      };
+      this.props.field.onChange(e);
     }
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
       var ids = nextProps.field.value && nextProps.field.value.map(function (x) {
-        return x.id || x;
+        return x && x.id || x;
       }) || [];
-
       this.setState({ ids: ids });
     }
   }, {
@@ -1465,21 +1468,12 @@ var ModelsSelect = function (_Component) {
         return x !== id;
       });
       this.setState({ ids: ids });
-
-      this.props.field.onChange({
-        persist: function persist() {},
-        target: {
-          name: this.props.field.name,
-          value: ids
-        }
-      });
+      this.triggerOnChange(evt, ids);
     }
   }, {
     key: 'handleChange',
     value: function handleChange(evt) {
-      this.setState({
-        id: evt.target.value
-      });
+      this.setState({ id: evt.target.value });
     }
   }, {
     key: 'componentDidMount',
@@ -1584,11 +1578,11 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _reactRouterDom = __webpack_require__(8);
+var _reactRouterDom = __webpack_require__(9);
 
 var _models = __webpack_require__(4);
 
-__webpack_require__(6);
+__webpack_require__(7);
 
 var _config = __webpack_require__(5);
 

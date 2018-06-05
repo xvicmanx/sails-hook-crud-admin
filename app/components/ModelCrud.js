@@ -81,7 +81,7 @@ const ModelCrud = ({ model, modelName, caption, service, onChange }) => (
           const payload = data;
           Object.keys(payload).forEach(k => {
             if (model[k].collection) {
-              payload[k] = payload[k].map(x => x.id);
+              payload[k] = payload[k].map(x => x.id || x);
             }
 
             if (model[k].model) {

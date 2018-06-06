@@ -54,7 +54,7 @@ const ModelCrud = ({ model, modelName, caption, service, onChange }) => (
               queryable={!!model[k].type}
               sortable={!!model[k].type}
               tableValueResolver={valueResolver(model, k, modelName)}
-              render={renderer(model, k)}
+              render={renderer(model, k, modelName)}
             />
           ))
         }

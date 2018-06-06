@@ -42,15 +42,17 @@ const keysWeight = {
 };
 const weight = k => keysWeight[k] || 0;
 
+const isADateDefaultField = (field) => {
+  return [
+    'createdAt',
+    'updatedAt',
+  ].indexOf(field) > -1;
+};
+
 export const keysSorter = (a, b) => weight(a) - weight(b);
 
 export const getType = (model, field) => {
-  if (
-    field === 'createdAt' ||
-    field === 'updatedAt'
-  ) {
-    return 'date';
-  }
+  if (isADateDefaultField(field)) return 'date';
   return model[field].type;
 };
 
@@ -68,6 +70,14 @@ export const getModelValueTemplate = (modelName) => {
   );
 };
 
+const isHTML = text => /<(\/)?\w+\s*>/.test(text);
+const asHTML = (text) => {
+  const value = { __html: text };
+  return (
+    <div dangerouslySetInnerHTML={value} />
+  );
+};
+
 export const getModelValue = (modelName, item) => {
   const tpl = getModelValueTemplate(modelName);
   if (tpl) {
@@ -78,15 +88,15 @@ export const getModelValue = (modelName, item) => {
 
 export const valueResolver = (model, field, modelName) => (item) => {
   const tpl = getFieldValueTemplate(modelName, field);
-  if (tpl) {
+  const data = item[field];
+
+  if (tpl && data) {
     const compiler = template(tpl);
-    return compiler({ [field]: item[field], _ });
+    const compiled = compiler({ [field]: data, _ });
+    return isHTML(compiled) ? asHTML(compiled) : compiled;
   }
   
-  if (
-    field === 'createdAt' ||
-    field === 'updatedAt'
-  ) {
+  if (isADateDefaultField(field)) {
     return new Date(+item[field]).toLocaleString();
   }
 
@@ -110,10 +120,16 @@ export const valueResolver = (model, field, modelName) => (item) => {
   return item[field];
 };
 
-
 export const getFieldLabel = (modelName, field) => {
   return getModelRelatedValue(
     `${modelName}.fields.${field}.label`,
+    field.separateCamel().asTitle()
+  );
+};
+
+export const getFieldRenderer = (modelName, field) => {
+  return getModelRelatedValue(
+    `${modelName}.fields.${field}.renderer`,
     field.separateCamel().asTitle()
   );
 };
@@ -128,4 +144,5 @@ export default {
   valueResolver,
   getFieldLabel,
   getModelValue,
+  getFieldRenderer,
 };

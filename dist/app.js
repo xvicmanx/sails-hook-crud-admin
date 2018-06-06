@@ -86,7 +86,7 @@ module.exports = require("prop-types");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getFieldLabel = exports.valueResolver = exports.getModelValue = exports.getModelValueTemplate = exports.getFieldValueTemplate = exports.getType = exports.keysSorter = exports.inUpdateHiddenFields = exports.inCreationHiddenFields = exports.getModel = exports.getModels = undefined;
+exports.getFieldRenderer = exports.getFieldLabel = exports.valueResolver = exports.getModelValue = exports.getModelValueTemplate = exports.getFieldValueTemplate = exports.getType = exports.keysSorter = exports.inUpdateHiddenFields = exports.inCreationHiddenFields = exports.getModel = exports.getModels = undefined;
 
 var _react = __webpack_require__(0);
 
@@ -143,14 +143,16 @@ var weight = function weight(k) {
   return keysWeight[k] || 0;
 };
 
+var isADateDefaultField = function isADateDefaultField(field) {
+  return ['createdAt', 'updatedAt'].indexOf(field) > -1;
+};
+
 var keysSorter = exports.keysSorter = function keysSorter(a, b) {
   return weight(a) - weight(b);
 };
 
 var getType = exports.getType = function getType(model, field) {
-  if (field === 'createdAt' || field === 'updatedAt') {
-    return 'date';
-  }
+  if (isADateDefaultField(field)) return 'date';
   return model[field].type;
 };
 
@@ -160,6 +162,15 @@ var getFieldValueTemplate = exports.getFieldValueTemplate = function getFieldVal
 
 var getModelValueTemplate = exports.getModelValueTemplate = function getModelValueTemplate(modelName) {
   return (0, _config.getModelRelatedValue)(modelName + '.valueTemplate', null);
+};
+
+var isHTML = function isHTML(text) {
+  return (/<(\/)?\w+\s*>/.test(text)
+  );
+};
+var asHTML = function asHTML(text) {
+  var value = { __html: text };
+  return _react2.default.createElement('div', { dangerouslySetInnerHTML: value });
 };
 
 var getModelValue = exports.getModelValue = function getModelValue(modelName, item) {
@@ -175,14 +186,17 @@ var getModelValue = exports.getModelValue = function getModelValue(modelName, it
 var valueResolver = exports.valueResolver = function valueResolver(model, field, modelName) {
   return function (item) {
     var tpl = getFieldValueTemplate(modelName, field);
-    if (tpl) {
+    var data = item[field];
+
+    if (tpl && data) {
       var _compiler2;
 
       var compiler = template(tpl);
-      return compiler((_compiler2 = {}, _defineProperty(_compiler2, field, item[field]), _defineProperty(_compiler2, '_', _lodash2.default), _compiler2));
+      var compiled = compiler((_compiler2 = {}, _defineProperty(_compiler2, field, data), _defineProperty(_compiler2, '_', _lodash2.default), _compiler2));
+      return isHTML(compiled) ? asHTML(compiled) : compiled;
     }
 
-    if (field === 'createdAt' || field === 'updatedAt') {
+    if (isADateDefaultField(field)) {
       return new Date(+item[field]).toLocaleString();
     }
 
@@ -215,6 +229,10 @@ var getFieldLabel = exports.getFieldLabel = function getFieldLabel(modelName, fi
   return (0, _config.getModelRelatedValue)(modelName + '.fields.' + field + '.label', field.separateCamel().asTitle());
 };
 
+var getFieldRenderer = exports.getFieldRenderer = function getFieldRenderer(modelName, field) {
+  return (0, _config.getModelRelatedValue)(modelName + '.fields.' + field + '.renderer', field.separateCamel().asTitle());
+};
+
 exports.default = {
   getModel: getModel,
   getModels: getModels,
@@ -224,7 +242,8 @@ exports.default = {
   getType: getType,
   valueResolver: valueResolver,
   getFieldLabel: getFieldLabel,
-  getModelValue: getModelValue
+  getModelValue: getModelValue,
+  getFieldRenderer: getFieldRenderer
 };
 
 /***/ }),
@@ -955,7 +974,7 @@ var ModelCrud = function ModelCrud(_ref) {
             queryable: !!model[k].type,
             sortable: !!model[k].type,
             tableValueResolver: (0, _models.valueResolver)(model, k, modelName),
-            render: (0, _renderers2.default)(model, k)
+            render: (0, _renderers2.default)(model, k, modelName)
           });
         })
       ),
@@ -1099,6 +1118,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _models = __webpack_require__(2);
+
 var _DescriptionRenderer = __webpack_require__(26);
 
 var _DescriptionRenderer2 = _interopRequireDefault(_DescriptionRenderer);
@@ -1125,24 +1146,50 @@ var _MultipleModelsSelectRenderer2 = _interopRequireDefault(_MultipleModelsSelec
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var renderer = function renderer(model, field) {
-  if (model[field].type === 'boolean') {
+var RENDERERS = {
+  textarea: function textarea(model) {
+    return _DescriptionRenderer2.default;
+  },
+  input: function input(model) {
+    return _InputRenderer2.default;
+  },
+  checkbox: function checkbox(model) {
     return _CheckboxRenderer2.default;
+  },
+  enum: function _enum(model, field) {
+    return (0, _EnumSelectRenderer2.default)(model[field].validations.isIn);
+  },
+  modelSelect: function modelSelect(model, field) {
+    return (0, _ModelsSelectRenderer2.default)(model[field].model);
+  },
+  modelMultipleSelect: function modelMultipleSelect(model, field) {
+    return (0, _MultipleModelsSelectRenderer2.default)(model[field].collection);
+  }
+};
+
+var renderer = function renderer(model, field, modelName) {
+  var rendererType = (0, _models.getFieldRenderer)(modelName, field);
+  if (rendererType && RENDERERS[rendererType]) {
+    return RENDERERS[rendererType](model, field);
+  }
+
+  if (model[field].type === 'boolean') {
+    return RENDERERS.checkbox(model);
   }
 
   if (model[field].validations && model[field].validations.isIn) {
-    return (0, _EnumSelectRenderer2.default)(model[field].validations.isIn);
+    return RENDERERS.enum(model, field);
   }
 
   if (model[field].model) {
-    return (0, _ModelsSelectRenderer2.default)(model[field].model);
+    return RENDERERS.modelSelect(model, field);
   }
 
   if (model[field].collection) {
-    return (0, _MultipleModelsSelectRenderer2.default)(model[field].collection);
+    return RENDERERS.modelMultipleSelect(model, field);
   }
 
-  return _InputRenderer2.default;
+  return RENDERERS.input(model);;
 };
 
 exports.default = renderer;

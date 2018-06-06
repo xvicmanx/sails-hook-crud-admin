@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Select from './Select';
 import Service from '../../services/Service';
+import { getModelValue } from '../../helpers/models';
 
-const mapIdsToOptions = model => x => (
+const mapOptions = model => x => (
   {
     value: x.id,
     key: x.id,
-    text: `${model} (id: ${x.id})`
+    text: getModelValue(model, x) ||
+      `${model} (id: ${x.id})`,
   }
 );
 
@@ -32,7 +34,7 @@ class ModelsSelect extends Component {
       <Select
         {...this.props.field}
         value={this.props.field.value && this.props.field.value.id || this.props.field.value}
-        options={this.state.items.map(mapIdsToOptions(this.props.model))}
+        options={this.state.items.map(mapOptions(this.props.model))}
       />
     );
   }

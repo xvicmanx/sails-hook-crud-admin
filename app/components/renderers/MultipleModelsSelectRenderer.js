@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import { Button, List, Divider } from 'semantic-ui-react';
 import Select from './Select';
 import Service from '../../services/Service';
+import { getModelValue } from '../../helpers/models';
 
-const mapIdsToOptions = model => x => ({
+const getText = (model, x) => getModelValue(model, x) ||
+`${model} (id: ${x.id})`;
+
+const mapOption = model => x => ({
   value: x.id,
   key: x.id,
-  text: `${model} (id: ${x.id})`,
+  text: getText(model, x),
 });
 
 const styles = {
@@ -100,7 +104,10 @@ class ModelsSelect extends Component {
               key={id}
             >
               <List.Content style={styles.item}>
-                {this.props.model} (id: {id})&nbsp;
+                {getText(
+                  this.props.model,
+                  this.state.items.find(x => x.id === id)
+                )}&nbsp;
                 <Button
                   color="red"
                   onClick={(evt) => {
@@ -120,7 +127,7 @@ class ModelsSelect extends Component {
             value={this.state.id}
             onChange={this.handleChange}
             options={this.state.items.map(
-              mapIdsToOptions(this.props.model),
+              mapOption(this.props.model),
             )}
           />
           <Button

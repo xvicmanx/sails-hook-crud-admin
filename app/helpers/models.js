@@ -1,4 +1,5 @@
 import React from 'react';
+const template = require('lodash.template');
 import { Popup, Button } from 'semantic-ui-react';
 import JSONTable from 'simple-json-table';
 import { omit, queryValue } from './object';
@@ -52,7 +53,35 @@ export const getType = (model, field) => {
   return model[field].type;
 };
 
-export const valueResolver = (model, field) => (item) => {
+export const getFieldValueTemplate = (modelName, field) => {
+  return getModelRelatedValue(
+    `${modelName}.fields.${field}.valueTemplate`,
+    null
+  );
+};
+
+export const getModelValueTemplate = (modelName) => {
+  return getModelRelatedValue(
+    `${modelName}.valueTemplate`,
+    null
+  );
+};
+
+export const getModelValue = (modelName, item) => {
+  const tpl = getModelValueTemplate(modelName);
+  if (tpl) {
+    const compiler = template(tpl);
+    return compiler(item);
+  }
+};
+
+export const valueResolver = (model, field, modelName) => (item) => {
+  const tpl = getFieldValueTemplate(modelName, field);
+  if (tpl) {
+    const compiler = template(tpl);
+    return compiler(item[field]);
+  }
+  
   if (
     field === 'createdAt' ||
     field === 'updatedAt'
@@ -97,4 +126,5 @@ export default {
   getType,
   valueResolver,
   getFieldLabel,
+  getModelValue,
 };

@@ -78,12 +78,153 @@ module.exports = require("prop-types");
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getFieldLabel = exports.valueResolver = exports.getModelValue = exports.getModelValueTemplate = exports.getFieldValueTemplate = exports.getType = exports.keysSorter = exports.inUpdateHiddenFields = exports.inCreationHiddenFields = exports.getModel = exports.getModels = undefined;
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(3);
+
+var _simpleJsonTable = __webpack_require__(22);
+
+var _simpleJsonTable2 = _interopRequireDefault(_simpleJsonTable);
+
+var _object = __webpack_require__(10);
+
+var _config = __webpack_require__(5);
+
+var _constants = __webpack_require__(6);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+__webpack_require__(7);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var template = __webpack_require__(23);
+var getModels = exports.getModels = function getModels() {
+  return typeof window !== 'undefined' && window.sailsModels ? window.sailsModels : {};
+};
+
+var getModel = exports.getModel = function getModel(name) {
+  var models = getModels();
+  return models[name] ? models[name] : {};
+};
+
+var inCreationHiddenFields = exports.inCreationHiddenFields = function inCreationHiddenFields(field) {
+  return ['createdAt', 'updatedAt', 'id'].indexOf(field) > -1;
+};
+
+var inUpdateHiddenFields = exports.inUpdateHiddenFields = function inUpdateHiddenFields(field) {
+  return ['createdAt', 'updatedAt', 'id'].indexOf(field) > -1;
+};
+
+var keysWeight = {
+  id: -1,
+  createdAt: 1,
+  updatedAt: 2
+};
+var weight = function weight(k) {
+  return keysWeight[k] || 0;
+};
+
+var keysSorter = exports.keysSorter = function keysSorter(a, b) {
+  return weight(a) - weight(b);
+};
+
+var getType = exports.getType = function getType(model, field) {
+  if (field === 'createdAt' || field === 'updatedAt') {
+    return 'date';
+  }
+  return model[field].type;
+};
+
+var getFieldValueTemplate = exports.getFieldValueTemplate = function getFieldValueTemplate(modelName, field) {
+  return (0, _config.getModelRelatedValue)(modelName + '.fields.' + field + '.valueTemplate', null);
+};
+
+var getModelValueTemplate = exports.getModelValueTemplate = function getModelValueTemplate(modelName) {
+  return (0, _config.getModelRelatedValue)(modelName + '.valueTemplate', null);
+};
+
+var getModelValue = exports.getModelValue = function getModelValue(modelName, item) {
+  var tpl = getModelValueTemplate(modelName);
+  if (tpl) {
+    var compiler = template(tpl);
+    return compiler(item);
+  }
+};
+
+var valueResolver = exports.valueResolver = function valueResolver(model, field, modelName) {
+  return function (item) {
+    var tpl = getFieldValueTemplate(modelName, field);
+    if (tpl) {
+      var compiler = template(tpl);
+      return compiler(item[field]);
+    }
+
+    if (field === 'createdAt' || field === 'updatedAt') {
+      return new Date(+item[field]).toLocaleString();
+    }
+
+    if (model[field].type === 'boolean') {
+      return item[field] ? 'true' : 'false';
+    }
+
+    if (model[field].model || model[field].collection) {
+      return _react2.default.createElement(
+        _semanticUiReact.Popup,
+        {
+          trigger: _react2.default.createElement(
+            _semanticUiReact.Button,
+            { icon: true },
+            _constants2.default.BUTTONS.SEE_DETAILS
+          ),
+          on: 'click'
+        },
+        _react2.default.createElement(_simpleJsonTable2.default, {
+          source: (0, _object.omit)(item[field], ['createdAt', 'updatedAt'])
+        })
+      );
+    }
+
+    return item[field];
+  };
+};
+
+var getFieldLabel = exports.getFieldLabel = function getFieldLabel(modelName, field) {
+  return (0, _config.getModelRelatedValue)(modelName + '.fields.' + field + '.label', field.separateCamel().asTitle());
+};
+
+exports.default = {
+  getModel: getModel,
+  getModels: getModels,
+  inCreationHiddenFields: inCreationHiddenFields,
+  inUpdateHiddenFields: inUpdateHiddenFields,
+  keysSorter: keysSorter,
+  getType: getType,
+  valueResolver: valueResolver,
+  getFieldLabel: getFieldLabel,
+  getModelValue: getModelValue
+};
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 module.exports = require("semantic-ui-react");
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -148,123 +289,6 @@ var Service = function Service(model) {
 };
 
 exports.default = Service;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getFieldLabel = exports.valueResolver = exports.getType = exports.keysSorter = exports.inUpdateHiddenFields = exports.inCreationHiddenFields = exports.getModel = exports.getModels = undefined;
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _semanticUiReact = __webpack_require__(2);
-
-var _simpleJsonTable = __webpack_require__(22);
-
-var _simpleJsonTable2 = _interopRequireDefault(_simpleJsonTable);
-
-var _object = __webpack_require__(10);
-
-var _config = __webpack_require__(5);
-
-var _constants = __webpack_require__(6);
-
-var _constants2 = _interopRequireDefault(_constants);
-
-__webpack_require__(7);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var getModels = exports.getModels = function getModels() {
-  return typeof window !== 'undefined' && window.sailsModels ? window.sailsModels : {};
-};
-
-var getModel = exports.getModel = function getModel(name) {
-  var models = getModels();
-  return models[name] ? models[name] : {};
-};
-
-var inCreationHiddenFields = exports.inCreationHiddenFields = function inCreationHiddenFields(field) {
-  return ['createdAt', 'updatedAt', 'id'].indexOf(field) > -1;
-};
-
-var inUpdateHiddenFields = exports.inUpdateHiddenFields = function inUpdateHiddenFields(field) {
-  return ['createdAt', 'updatedAt', 'id'].indexOf(field) > -1;
-};
-
-var keysWeight = {
-  id: -1,
-  createdAt: 1,
-  updatedAt: 2
-};
-var weight = function weight(k) {
-  return keysWeight[k] || 0;
-};
-
-var keysSorter = exports.keysSorter = function keysSorter(a, b) {
-  return weight(a) - weight(b);
-};
-
-var getType = exports.getType = function getType(model, field) {
-  if (field === 'createdAt' || field === 'updatedAt') {
-    return 'date';
-  }
-  return model[field].type;
-};
-
-var valueResolver = exports.valueResolver = function valueResolver(model, field) {
-  return function (item) {
-    if (field === 'createdAt' || field === 'updatedAt') {
-      return new Date(+item[field]).toLocaleString();
-    }
-
-    if (model[field].type === 'boolean') {
-      return item[field] ? 'true' : 'false';
-    }
-
-    if (model[field].model || model[field].collection) {
-      return _react2.default.createElement(
-        _semanticUiReact.Popup,
-        {
-          trigger: _react2.default.createElement(
-            _semanticUiReact.Button,
-            { icon: true },
-            _constants2.default.BUTTONS.SEE_DETAILS
-          ),
-          on: 'click'
-        },
-        _react2.default.createElement(_simpleJsonTable2.default, {
-          source: (0, _object.omit)(item[field], ['createdAt', 'updatedAt'])
-        })
-      );
-    }
-
-    return item[field];
-  };
-};
-
-var getFieldLabel = exports.getFieldLabel = function getFieldLabel(modelName, field) {
-  return (0, _config.getModelRelatedValue)(modelName + '.fields.' + field + '.label', field.separateCamel().asTitle());
-};
-
-exports.default = {
-  getModel: getModel,
-  getModels: getModels,
-  inCreationHiddenFields: inCreationHiddenFields,
-  inUpdateHiddenFields: inUpdateHiddenFields,
-  keysSorter: keysSorter,
-  getType: getType,
-  valueResolver: valueResolver,
-  getFieldLabel: getFieldLabel
-};
 
 /***/ }),
 /* 5 */
@@ -601,7 +625,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _semanticUiReact = __webpack_require__(2);
+var _semanticUiReact = __webpack_require__(3);
 
 var _reactDom = __webpack_require__(15);
 
@@ -613,7 +637,7 @@ var _constants = __webpack_require__(6);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-__webpack_require__(31);
+__webpack_require__(32);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -691,19 +715,19 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(9);
 
-var _semanticUiReact = __webpack_require__(2);
+var _semanticUiReact = __webpack_require__(3);
 
 var _ModelDetails = __webpack_require__(17);
 
 var _ModelDetails2 = _interopRequireDefault(_ModelDetails);
 
-var _models = __webpack_require__(4);
+var _models = __webpack_require__(2);
 
-var _AllModelsNavigator = __webpack_require__(30);
+var _AllModelsNavigator = __webpack_require__(31);
 
 var _AllModelsNavigator2 = _interopRequireDefault(_AllModelsNavigator);
 
-var _Service = __webpack_require__(3);
+var _Service = __webpack_require__(4);
 
 var _Service2 = _interopRequireDefault(_Service);
 
@@ -805,7 +829,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Service = __webpack_require__(3);
+var _Service = __webpack_require__(4);
 
 var _Service2 = _interopRequireDefault(_Service);
 
@@ -813,7 +837,7 @@ var _ModelCrud = __webpack_require__(19);
 
 var _ModelCrud2 = _interopRequireDefault(_ModelCrud);
 
-var _models = __webpack_require__(4);
+var _models = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -869,13 +893,13 @@ var _reactCrudTable2 = _interopRequireDefault(_reactCrudTable);
 
 var _validation = __webpack_require__(21);
 
-var _models = __webpack_require__(4);
+var _models = __webpack_require__(2);
 
 var _config = __webpack_require__(5);
 
 __webpack_require__(7);
 
-var _renderers = __webpack_require__(23);
+var _renderers = __webpack_require__(24);
 
 var _renderers2 = _interopRequireDefault(_renderers);
 
@@ -920,7 +944,7 @@ var ModelCrud = function ModelCrud(_ref) {
             type: (0, _models.getType)(model, k),
             queryable: !!model[k].type,
             sortable: !!model[k].type,
-            tableValueResolver: (0, _models.valueResolver)(model, k),
+            tableValueResolver: (0, _models.valueResolver)(model, k, modelName),
             render: (0, _renderers2.default)(model, k)
           });
         })
@@ -1044,6 +1068,12 @@ module.exports = require("simple-json-table");
 
 /***/ }),
 /* 23 */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash.template");
+
+/***/ }),
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1053,27 +1083,27 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _DescriptionRenderer = __webpack_require__(24);
+var _DescriptionRenderer = __webpack_require__(25);
 
 var _DescriptionRenderer2 = _interopRequireDefault(_DescriptionRenderer);
 
-var _InputRenderer = __webpack_require__(25);
+var _InputRenderer = __webpack_require__(26);
 
 var _InputRenderer2 = _interopRequireDefault(_InputRenderer);
 
-var _CheckboxRenderer = __webpack_require__(26);
+var _CheckboxRenderer = __webpack_require__(27);
 
 var _CheckboxRenderer2 = _interopRequireDefault(_CheckboxRenderer);
 
-var _EnumSelectRenderer = __webpack_require__(27);
+var _EnumSelectRenderer = __webpack_require__(28);
 
 var _EnumSelectRenderer2 = _interopRequireDefault(_EnumSelectRenderer);
 
-var _ModelsSelectRenderer = __webpack_require__(28);
+var _ModelsSelectRenderer = __webpack_require__(29);
 
 var _ModelsSelectRenderer2 = _interopRequireDefault(_ModelsSelectRenderer);
 
-var _MultipleModelsSelectRenderer = __webpack_require__(29);
+var _MultipleModelsSelectRenderer = __webpack_require__(30);
 
 var _MultipleModelsSelectRenderer2 = _interopRequireDefault(_MultipleModelsSelectRenderer);
 
@@ -1102,7 +1132,7 @@ var renderer = function renderer(model, field) {
 exports.default = renderer;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1132,7 +1162,7 @@ DescriptionRenderer.propTypes = {};
 exports.default = DescriptionRenderer;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1162,7 +1192,7 @@ InputRenderer.propTypes = {};
 exports.default = InputRenderer;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1197,7 +1227,7 @@ CheckboxRenderer.propTypes = {};
 exports.default = CheckboxRenderer;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1243,7 +1273,7 @@ EnumSelectRenderer.propTypes = {};
 exports.default = EnumSelectRenderer;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1269,9 +1299,11 @@ var _Select = __webpack_require__(8);
 
 var _Select2 = _interopRequireDefault(_Select);
 
-var _Service = __webpack_require__(3);
+var _Service = __webpack_require__(4);
 
 var _Service2 = _interopRequireDefault(_Service);
+
+var _models = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1281,12 +1313,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var mapIdsToOptions = function mapIdsToOptions(model) {
+var mapOptions = function mapOptions(model) {
   return function (x) {
     return {
       value: x.id,
       key: x.id,
-      text: model + ' (id: ' + x.id + ')'
+      text: (0, _models.getModelValue)(model, x) || model + ' (id: ' + x.id + ')'
     };
   };
 };
@@ -1320,7 +1352,7 @@ var ModelsSelect = function (_Component) {
     value: function render() {
       return _react2.default.createElement(_Select2.default, _extends({}, this.props.field, {
         value: this.props.field.value && this.props.field.value.id || this.props.field.value,
-        options: this.state.items.map(mapIdsToOptions(this.props.model))
+        options: this.state.items.map(mapOptions(this.props.model))
       }));
     }
   }]);
@@ -1340,7 +1372,7 @@ exports.default = function (model) {
 };
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1360,15 +1392,17 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _semanticUiReact = __webpack_require__(2);
+var _semanticUiReact = __webpack_require__(3);
 
 var _Select = __webpack_require__(8);
 
 var _Select2 = _interopRequireDefault(_Select);
 
-var _Service = __webpack_require__(3);
+var _Service = __webpack_require__(4);
 
 var _Service2 = _interopRequireDefault(_Service);
+
+var _models = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1380,12 +1414,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var mapIdsToOptions = function mapIdsToOptions(model) {
+var getText = function getText(model, x) {
+  return (0, _models.getModelValue)(model, x) || model + ' (id: ' + x.id + ')';
+};
+
+var mapOption = function mapOption(model) {
   return function (x) {
     return {
       value: x.id,
       key: x.id,
-      text: model + ' (id: ' + x.id + ')'
+      text: getText(model, x)
     };
   };
 };
@@ -1505,10 +1543,10 @@ var ModelsSelect = function (_Component) {
               _react2.default.createElement(
                 _semanticUiReact.List.Content,
                 { style: styles.item },
-                _this3.props.model,
-                ' (id: ',
-                id,
-                ')\xA0',
+                getText(_this3.props.model, _this3.state.items.find(function (x) {
+                  return x.id === id;
+                })),
+                '\xA0',
                 _react2.default.createElement(_semanticUiReact.Button, {
                   color: 'red',
                   onClick: function onClick(evt) {
@@ -1529,7 +1567,7 @@ var ModelsSelect = function (_Component) {
           _react2.default.createElement(_Select2.default, {
             value: this.state.id,
             onChange: this.handleChange,
-            options: this.state.items.map(mapIdsToOptions(this.props.model))
+            options: this.state.items.map(mapOption(this.props.model))
           }),
           _react2.default.createElement(_semanticUiReact.Button, {
             color: 'green',
@@ -1558,7 +1596,7 @@ exports.default = function (model) {
 };
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1576,11 +1614,11 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _semanticUiReact = __webpack_require__(2);
+var _semanticUiReact = __webpack_require__(3);
 
 var _reactRouterDom = __webpack_require__(9);
 
-var _models = __webpack_require__(4);
+var _models = __webpack_require__(2);
 
 __webpack_require__(7);
 
@@ -1623,7 +1661,7 @@ AllModelsNavigator.propTypes = {};
 exports.default = AllModelsNavigator;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 

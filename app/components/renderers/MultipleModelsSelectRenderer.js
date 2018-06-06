@@ -5,7 +5,7 @@ import Select from './Select';
 import Service from '../../services/Service';
 import { getModelValue } from '../../helpers/models';
 
-const getText = (model, x) => getModelValue(model, x) ||
+const getText = (model, x) => x && getModelValue(model, x) ||
 `${model} (id: ${x.id})`;
 
 const mapOption = model => x => ({
@@ -52,12 +52,14 @@ class ModelsSelect extends Component {
   handleAdd(evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    const ids = [
-      ...this.state.ids,
-      +this.state.id,
-    ];
-    this.setState({ ids, id: null });
-    this.triggerOnChange(evt, ids);
+    if (this.state.id) {
+      const ids = [
+        ...this.state.ids,
+        +this.state.id,
+      ];
+      this.setState({ ids, id: null });
+      this.triggerOnChange(evt, ids);
+    }
   }
 
   triggerOnChange(evt, ids) {

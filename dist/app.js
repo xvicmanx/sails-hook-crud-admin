@@ -1478,7 +1478,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var getText = function getText(model, x) {
-  return (0, _models.getModelValue)(model, x) || model + ' (id: ' + x.id + ')';
+  return x && (0, _models.getModelValue)(model, x) || model + ' (id: ' + x.id + ')';
 };
 
 var mapOption = function mapOption(model) {
@@ -1537,9 +1537,11 @@ var ModelsSelect = function (_Component) {
     value: function handleAdd(evt) {
       evt.preventDefault();
       evt.stopPropagation();
-      var ids = [].concat(_toConsumableArray(this.state.ids), [+this.state.id]);
-      this.setState({ ids: ids, id: null });
-      this.triggerOnChange(evt, ids);
+      if (this.state.id) {
+        var ids = [].concat(_toConsumableArray(this.state.ids), [+this.state.id]);
+        this.setState({ ids: ids, id: null });
+        this.triggerOnChange(evt, ids);
+      }
     }
   }, {
     key: 'triggerOnChange',

@@ -2,6 +2,7 @@ import React from 'react';
 const template = require('lodash.template');
 import { Popup, Button } from 'semantic-ui-react';
 import JSONTable from 'simple-json-table';
+import _ from 'lodash';
 import { omit, queryValue } from './object';
 import { getLabel, getModelRelatedValue } from './config';
 import Constants from '../constants';
@@ -71,7 +72,7 @@ export const getModelValue = (modelName, item) => {
   const tpl = getModelValueTemplate(modelName);
   if (tpl) {
     const compiler = template(tpl);
-    return compiler(item);
+    return compiler({ [modelName]: item, _ });
   }
 };
 
@@ -79,7 +80,7 @@ export const valueResolver = (model, field, modelName) => (item) => {
   const tpl = getFieldValueTemplate(modelName, field);
   if (tpl) {
     const compiler = template(tpl);
-    return compiler(item[field]);
+    return compiler({ [field]: item[field], _ });
   }
   
   if (

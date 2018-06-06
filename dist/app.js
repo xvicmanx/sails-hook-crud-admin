@@ -98,6 +98,10 @@ var _simpleJsonTable = __webpack_require__(22);
 
 var _simpleJsonTable2 = _interopRequireDefault(_simpleJsonTable);
 
+var _lodash = __webpack_require__(23);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 var _object = __webpack_require__(10);
 
 var _config = __webpack_require__(5);
@@ -110,7 +114,9 @@ __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var template = __webpack_require__(23);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var template = __webpack_require__(24);
 var getModels = exports.getModels = function getModels() {
   return typeof window !== 'undefined' && window.sailsModels ? window.sailsModels : {};
 };
@@ -159,8 +165,10 @@ var getModelValueTemplate = exports.getModelValueTemplate = function getModelVal
 var getModelValue = exports.getModelValue = function getModelValue(modelName, item) {
   var tpl = getModelValueTemplate(modelName);
   if (tpl) {
+    var _compiler;
+
     var compiler = template(tpl);
-    return compiler(item);
+    return compiler((_compiler = {}, _defineProperty(_compiler, modelName, item), _defineProperty(_compiler, '_', _lodash2.default), _compiler));
   }
 };
 
@@ -168,8 +176,10 @@ var valueResolver = exports.valueResolver = function valueResolver(model, field,
   return function (item) {
     var tpl = getFieldValueTemplate(modelName, field);
     if (tpl) {
+      var _compiler2;
+
       var compiler = template(tpl);
-      return compiler(item[field]);
+      return compiler((_compiler2 = {}, _defineProperty(_compiler2, field, item[field]), _defineProperty(_compiler2, '_', _lodash2.default), _compiler2));
     }
 
     if (field === 'createdAt' || field === 'updatedAt') {
@@ -637,7 +647,7 @@ var _constants = __webpack_require__(6);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-__webpack_require__(32);
+__webpack_require__(33);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -723,7 +733,7 @@ var _ModelDetails2 = _interopRequireDefault(_ModelDetails);
 
 var _models = __webpack_require__(2);
 
-var _AllModelsNavigator = __webpack_require__(31);
+var _AllModelsNavigator = __webpack_require__(32);
 
 var _AllModelsNavigator2 = _interopRequireDefault(_AllModelsNavigator);
 
@@ -899,7 +909,7 @@ var _config = __webpack_require__(5);
 
 __webpack_require__(7);
 
-var _renderers = __webpack_require__(24);
+var _renderers = __webpack_require__(25);
 
 var _renderers2 = _interopRequireDefault(_renderers);
 
@@ -1070,10 +1080,16 @@ module.exports = require("simple-json-table");
 /* 23 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash.template");
+module.exports = require("lodash");
 
 /***/ }),
 /* 24 */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash.template");
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1083,27 +1099,27 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _DescriptionRenderer = __webpack_require__(25);
+var _DescriptionRenderer = __webpack_require__(26);
 
 var _DescriptionRenderer2 = _interopRequireDefault(_DescriptionRenderer);
 
-var _InputRenderer = __webpack_require__(26);
+var _InputRenderer = __webpack_require__(27);
 
 var _InputRenderer2 = _interopRequireDefault(_InputRenderer);
 
-var _CheckboxRenderer = __webpack_require__(27);
+var _CheckboxRenderer = __webpack_require__(28);
 
 var _CheckboxRenderer2 = _interopRequireDefault(_CheckboxRenderer);
 
-var _EnumSelectRenderer = __webpack_require__(28);
+var _EnumSelectRenderer = __webpack_require__(29);
 
 var _EnumSelectRenderer2 = _interopRequireDefault(_EnumSelectRenderer);
 
-var _ModelsSelectRenderer = __webpack_require__(29);
+var _ModelsSelectRenderer = __webpack_require__(30);
 
 var _ModelsSelectRenderer2 = _interopRequireDefault(_ModelsSelectRenderer);
 
-var _MultipleModelsSelectRenderer = __webpack_require__(30);
+var _MultipleModelsSelectRenderer = __webpack_require__(31);
 
 var _MultipleModelsSelectRenderer2 = _interopRequireDefault(_MultipleModelsSelectRenderer);
 
@@ -1132,7 +1148,7 @@ var renderer = function renderer(model, field) {
 exports.default = renderer;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1162,7 +1178,7 @@ DescriptionRenderer.propTypes = {};
 exports.default = DescriptionRenderer;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1192,7 +1208,7 @@ InputRenderer.propTypes = {};
 exports.default = InputRenderer;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1227,7 +1243,7 @@ CheckboxRenderer.propTypes = {};
 exports.default = CheckboxRenderer;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1273,7 +1289,7 @@ EnumSelectRenderer.propTypes = {};
 exports.default = EnumSelectRenderer;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1372,7 +1388,7 @@ exports.default = function (model) {
 };
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1596,7 +1612,7 @@ exports.default = function (model) {
 };
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1661,7 +1677,7 @@ AllModelsNavigator.propTypes = {};
 exports.default = AllModelsNavigator;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 

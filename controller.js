@@ -35,7 +35,7 @@ class Controller {
   }
 
   index(req, res) {
-    console.log(sails.config.appPath);
+    console.log();
     const injection = `
       window.sailsModels = ${JSON.stringify(getDefinitions(this.sails.models))};
       window.crudAdminConfig = ${JSON.stringify(this.sails.config.crudAdmin || {})};

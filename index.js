@@ -1,9 +1,22 @@
 const Controller = require('./controller');
+const setupDB = require('./setupDB');
+const seedDB = require('./seedDB');
 
 module.exports = function (sails) {
   const controller = new Controller(sails);
   
   return {
+    initialize: function(cb) {
+      const eventsToWaitFor = ['hook:orm:loaded'];
+      sails.after(eventsToWaitFor, function() {
+        const adminModels = setupDB(sails);
+        seedDB(sails, adminModels);
+        
+        console.log('adminModels models', adminModels);
+
+        return cb();
+      });
+    },
     routes: {
       before: {
         'GET /administrator': controller.index,

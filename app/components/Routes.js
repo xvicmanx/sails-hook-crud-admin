@@ -4,11 +4,25 @@ import {
   Route,
   Link,
 } from 'react-router-dom';
-import { Statistic } from 'semantic-ui-react';
-import ModelDetails from './ModelDetails';
+import { Statistic, Segment } from 'semantic-ui-react';
+import Header from './layout/Header';
+import AllModelsNavigator from './layout/AllModelsNavigator';
+import LoginScreen from '../screens/LoginScreen';
+import ModelDetailsScreen from '../screens/ModelDetailsScreen';
 import { getModels } from '../helpers/models';
-import AllModelsNavigator from './AllModelsNavigator';
 import Service from '../services/Service';
+
+
+const styles = {
+  segment: {
+    width: '95%',
+    margin: '0 auto',
+    paddingBottom: '4rem',
+    border: 0,
+    boxShadow: 'none',
+    paddingTop: 0,
+  },
+};
 
 class Routes extends React.Component {
   constructor(props) {
@@ -40,22 +54,30 @@ class Routes extends React.Component {
       <Router>
         <div>
           <Route
-            path="/"
+            path="/model"
             component={() => (
               <div>
-                <AllModelsNavigator counts={parent.state.counts} />
-                <hr className="separator" />
-                <Route
-                  path="/model/:modelName"
-                  component={({ match }) => (
-                    <ModelDetails
-                      onChange={parent.handleChange}
-                      modelName={match.params.modelName}
-                    />
-                  )}
-                />
+                <Header />
+                <Segment style={styles.segment}>
+                  <AllModelsNavigator counts={parent.state.counts} />
+                  <hr className="separator" />
+                  <Route
+                    path="/model/:modelName"
+                    component={({ match }) => (
+                      <ModelDetailsScreen
+                        onChange={parent.handleChange}
+                        modelName={match.params.modelName}
+                      />
+                    )}
+                  />
+                </Segment>
               </div>
             )}
+          />
+          <Route
+            exact
+            path="/"
+            component={LoginScreen}
           />
         </div>
       </Router>

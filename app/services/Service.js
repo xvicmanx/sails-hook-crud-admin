@@ -5,8 +5,9 @@ const COUNT_URL = '/administrator/model-count';
 const SEARCH_URL = '/administrator/model-search';
 const SEARCH_ALL_URL = '/administrator/model-search-all';
 const COUNT_ALL_MODELS_URL = '/administrator/all-models-count';
-const getDirection = (d) => d === 'ascending' ? 'ASC' : 'DESC';
+const LOGIN_URL = '/administrator/login';
 
+const getDirection = (d) => d === 'ascending' ? 'ASC' : 'DESC';
 
 const Service = (model) => ({
   fetchItems: (payload) => {
@@ -42,6 +43,12 @@ const Service = (model) => ({
         modelName: model,
         queryRules: payload.queryRules,
       }
+    );
+  },
+  login: (data) => {
+    return requester.post(
+      LOGIN_URL,
+      data
     );
   },
   create: (item) => {

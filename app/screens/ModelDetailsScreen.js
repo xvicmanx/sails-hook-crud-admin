@@ -1,6 +1,6 @@
 import React from 'react';
 import Service from '../services/Service';
-import ModelCrud from './ModelCrud';
+import ModelCrud from '../components/ModelCrud';
 import { getModel, } from '../helpers/models';
 
 const styles = {
@@ -10,7 +10,7 @@ const styles = {
   },
 };
 
-const ModelDetails = ({ modelName, onChange }) => (
+const ModelDetailsScreen = ({ modelName, onChange }) => (
   <div style={styles.container}>
     <ModelCrud
       key={modelName}
@@ -22,4 +22,4 @@ const ModelDetails = ({ modelName, onChange }) => (
   </div>
 );
 
-export default ModelDetails;
+export default ModelDetailsScreen;

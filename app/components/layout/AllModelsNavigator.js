@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Statistic } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { getModels } from '../helpers/models';
-import {} from '../helpers/string';
-import { getModelRelatedValue } from '../helpers/config';
+import { getModels } from '../../helpers/models';
+import {} from '../../helpers/string';
+import { getModelRelatedValue } from '../../helpers/config';
 
 const AllModelsNavigator = (props) => {
   return (

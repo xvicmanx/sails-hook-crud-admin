@@ -61,7 +61,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -78,6 +78,12 @@ module.exports = require("prop-types");
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("semantic-ui-react");
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92,17 +98,17 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _semanticUiReact = __webpack_require__(3);
+var _semanticUiReact = __webpack_require__(2);
 
-var _simpleJsonTable = __webpack_require__(22);
+var _simpleJsonTable = __webpack_require__(19);
 
 var _simpleJsonTable2 = _interopRequireDefault(_simpleJsonTable);
 
-var _lodash = __webpack_require__(23);
+var _lodash = __webpack_require__(20);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _object = __webpack_require__(10);
+var _object = __webpack_require__(11);
 
 var _config = __webpack_require__(5);
 
@@ -116,7 +122,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var template = __webpack_require__(24);
+var template = __webpack_require__(21);
 var getModels = exports.getModels = function getModels() {
   return typeof window !== 'undefined' && window.sailsModels ? window.sailsModels : {};
 };
@@ -247,12 +253,6 @@ exports.default = {
 };
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = require("semantic-ui-react");
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -262,7 +262,7 @@ module.exports = require("semantic-ui-react");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var requester = __webpack_require__(18);
+var requester = __webpack_require__(25);
 
 var URL = function URL(model, id) {
   return id ? '/' + model + '/' + id : '/' + model;
@@ -271,6 +271,8 @@ var COUNT_URL = '/administrator/model-count';
 var SEARCH_URL = '/administrator/model-search';
 var SEARCH_ALL_URL = '/administrator/model-search-all';
 var COUNT_ALL_MODELS_URL = '/administrator/all-models-count';
+var LOGIN_URL = '/administrator/login';
+
 var getDirection = function getDirection(d) {
   return d === 'ascending' ? 'ASC' : 'DESC';
 };
@@ -305,6 +307,9 @@ var Service = function Service(model) {
         queryRules: payload.queryRules
       });
     },
+    login: function login(data) {
+      return requester.post(LOGIN_URL, data);
+    },
     create: function create(item) {
       return requester.post(URL(model), item);
     },
@@ -331,7 +336,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getButtonText = exports.getModelRelatedValue = exports.getLabel = exports.getConfig = undefined;
 
-var _object = __webpack_require__(10);
+var _object = __webpack_require__(11);
 
 var getConfig = exports.getConfig = function getConfig() {
   return typeof window !== 'undefined' && window.crudAdminConfig ? window.crudAdminConfig : {};
@@ -520,10 +525,16 @@ exports.default = Select;
 /* 9 */
 /***/ (function(module, exports) {
 
-module.exports = require("react-router-dom");
+module.exports = require("react-dom");
 
 /***/ }),
 /* 10 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-router-dom");
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -580,7 +591,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -590,13 +601,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _server = __webpack_require__(12);
+var _server = __webpack_require__(13);
 
-var _Page = __webpack_require__(13);
+var _Page = __webpack_require__(14);
 
 var _Page2 = _interopRequireDefault(_Page);
 
-var _App = __webpack_require__(14);
+var _App = __webpack_require__(15);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -615,13 +626,13 @@ module.exports.renderPage = function (injection) {
 };
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom/server");
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -640,7 +651,7 @@ var Page = function Page(_ref) {
 exports.default = Page;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -654,32 +665,17 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _semanticUiReact = __webpack_require__(3);
+var _semanticUiReact = __webpack_require__(2);
 
-var _reactDom = __webpack_require__(15);
+var _reactDom = __webpack_require__(9);
 
 var _Routes = __webpack_require__(16);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
-var _constants = __webpack_require__(6);
-
-var _constants2 = _interopRequireDefault(_constants);
-
-__webpack_require__(33);
+__webpack_require__(37);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var styles = {
-  segment: {
-    width: '95%',
-    margin: '0 auto',
-    paddingBottom: '4rem',
-    border: 0,
-    boxShadow: 'none',
-    paddingTop: 0
-  }
-};
 
 var isBrowser = function isBrowser() {
   return typeof window !== 'undefined' && window.document;
@@ -689,27 +685,7 @@ var App = function App() {
   return _react2.default.createElement(
     'div',
     null,
-    _react2.default.createElement(
-      _semanticUiReact.Menu,
-      null,
-      _react2.default.createElement(
-        _semanticUiReact.Container,
-        null,
-        _react2.default.createElement(_semanticUiReact.Menu.Item, {
-          as: 'a', header: true,
-          href: '/administrator',
-          content: _constants2.default.LABELS.HOME
-        })
-      )
-    ),
-    _react2.default.createElement(
-      _semanticUiReact.Segment,
-      {
-        as: 'div',
-        style: styles.segment
-      },
-      isBrowser() && _react2.default.createElement(_Routes2.default, null)
-    )
+    isBrowser() && _react2.default.createElement(_Routes2.default, null)
   );
 };
 
@@ -718,12 +694,6 @@ if (typeof window !== 'undefined' && typeof window.document !== 'undefined' && w
 }
 
 exports.default = App;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-dom");
 
 /***/ }),
 /* 16 */
@@ -742,19 +712,27 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(9);
+var _reactRouterDom = __webpack_require__(10);
 
-var _semanticUiReact = __webpack_require__(3);
+var _semanticUiReact = __webpack_require__(2);
 
-var _ModelDetails = __webpack_require__(17);
+var _Header = __webpack_require__(17);
 
-var _ModelDetails2 = _interopRequireDefault(_ModelDetails);
+var _Header2 = _interopRequireDefault(_Header);
 
-var _models = __webpack_require__(2);
-
-var _AllModelsNavigator = __webpack_require__(32);
+var _AllModelsNavigator = __webpack_require__(18);
 
 var _AllModelsNavigator2 = _interopRequireDefault(_AllModelsNavigator);
+
+var _LoginScreen = __webpack_require__(22);
+
+var _LoginScreen2 = _interopRequireDefault(_LoginScreen);
+
+var _ModelDetailsScreen = __webpack_require__(26);
+
+var _ModelDetailsScreen2 = _interopRequireDefault(_ModelDetailsScreen);
+
+var _models = __webpack_require__(3);
 
 var _Service = __webpack_require__(4);
 
@@ -767,6 +745,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var styles = {
+  segment: {
+    width: '95%',
+    margin: '0 auto',
+    paddingBottom: '4rem',
+    border: 0,
+    boxShadow: 'none',
+    paddingTop: 0
+  }
+};
 
 var Routes = function (_React$Component) {
   _inherits(Routes, _React$Component);
@@ -813,25 +802,35 @@ var Routes = function (_React$Component) {
           'div',
           null,
           _react2.default.createElement(_reactRouterDom.Route, {
-            path: '/',
+            path: '/model',
             component: function component() {
               return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_AllModelsNavigator2.default, { counts: parent.state.counts }),
-                _react2.default.createElement('hr', { className: 'separator' }),
-                _react2.default.createElement(_reactRouterDom.Route, {
-                  path: '/model/:modelName',
-                  component: function component(_ref) {
-                    var match = _ref.match;
-                    return _react2.default.createElement(_ModelDetails2.default, {
-                      onChange: parent.handleChange,
-                      modelName: match.params.modelName
-                    });
-                  }
-                })
+                _react2.default.createElement(_Header2.default, null),
+                _react2.default.createElement(
+                  _semanticUiReact.Segment,
+                  { style: styles.segment },
+                  _react2.default.createElement(_AllModelsNavigator2.default, { counts: parent.state.counts }),
+                  _react2.default.createElement('hr', { className: 'separator' }),
+                  _react2.default.createElement(_reactRouterDom.Route, {
+                    path: '/model/:modelName',
+                    component: function component(_ref) {
+                      var match = _ref.match;
+                      return _react2.default.createElement(_ModelDetailsScreen2.default, {
+                        onChange: parent.handleChange,
+                        modelName: match.params.modelName
+                      });
+                    }
+                  })
+                )
               );
             }
+          }),
+          _react2.default.createElement(_reactRouterDom.Route, {
+            exact: true,
+            path: '/',
+            component: _LoginScreen2.default
           })
         )
       );
@@ -858,15 +857,346 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _semanticUiReact = __webpack_require__(2);
+
+var _constants = __webpack_require__(6);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Header = function Header() {
+  return _react2.default.createElement(
+    _semanticUiReact.Menu,
+    null,
+    _react2.default.createElement(
+      _semanticUiReact.Container,
+      null,
+      _react2.default.createElement(_semanticUiReact.Menu.Item, {
+        as: 'a', header: true,
+        href: '/administrator',
+        content: _constants2.default.LABELS.HOME
+      })
+    )
+  );
+};
+
+Header.propTypes = {};
+
+exports.default = Header;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _semanticUiReact = __webpack_require__(2);
+
+var _reactRouterDom = __webpack_require__(10);
+
+var _models = __webpack_require__(3);
+
+__webpack_require__(7);
+
+var _config = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AllModelsNavigator = function AllModelsNavigator(props) {
+  return _react2.default.createElement(
+    _semanticUiReact.Statistic.Group,
+    {
+      size: 'mini',
+      className: 'models-navigator'
+    },
+    Object.keys((0, _models.getModels)()).map(function (modelName) {
+      return _react2.default.createElement(
+        _semanticUiReact.Statistic,
+        {
+          className: 'models-navigator__link',
+          as: _reactRouterDom.Link,
+          to: '/model/' + modelName
+        },
+        _react2.default.createElement(
+          _semanticUiReact.Statistic.Value,
+          null,
+          props.counts[modelName] || 0
+        ),
+        _react2.default.createElement(
+          _semanticUiReact.Statistic.Label,
+          null,
+          (0, _config.getModelRelatedValue)(modelName + '.label') || modelName.asTitle()
+        )
+      );
+    })
+  );
+};
+
+AllModelsNavigator.propTypes = {};
+
+exports.default = AllModelsNavigator;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = require("simple-json-table");
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash");
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash.template");
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(2);
+
+var _LoginForm = __webpack_require__(23);
+
+var _LoginForm2 = _interopRequireDefault(_LoginForm);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var styles = {
+  container: {
+    height: '100vh',
+    position: 'relative',
+    width: '100%'
+  },
+  grid: {
+    height: '100vh',
+    width: '100%'
+  },
+  loginWrapper: {
+    maxWidth: 450,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
+  }
+};
+
+var LoginScreen = function LoginScreen() {
+  return _react2.default.createElement(
+    'div',
+    { style: styles.container },
+    _react2.default.createElement(
+      _semanticUiReact.Grid,
+      {
+        textAlign: 'center',
+        style: styles.grid,
+        verticalAlign: 'middle'
+      },
+      _react2.default.createElement(
+        _semanticUiReact.Grid.Column,
+        { style: styles.loginWrapper },
+        _react2.default.createElement(
+          _semanticUiReact.Header,
+          {
+            as: 'h2',
+            color: 'teal',
+            textAlign: 'center'
+          },
+          'Login'
+        ),
+        _react2.default.createElement(_LoginForm2.default, null)
+      )
+    )
+  );
+};
+
+exports.default = LoginScreen;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(9);
+
+var _formik = __webpack_require__(24);
+
+var _semanticUiReact = __webpack_require__(2);
+
 var _Service = __webpack_require__(4);
 
 var _Service2 = _interopRequireDefault(_Service);
 
-var _ModelCrud = __webpack_require__(19);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var inputClass = function inputClass(field) {
+  return function (errors, touched) {
+    return errors[field] && touched[field] ? 'text-input error' : 'text-input';
+  };
+};
+
+var LoginForm = function LoginForm(props) {
+  var values = props.values,
+      touched = props.touched,
+      errors = props.errors,
+      isSubmitting = props.isSubmitting,
+      handleChange = props.handleChange,
+      handleBlur = props.handleBlur,
+      handleSubmit = props.handleSubmit;
+
+  return _react2.default.createElement(
+    _semanticUiReact.Form,
+    {
+      onSubmit: handleSubmit,
+      size: 'large'
+    },
+    _react2.default.createElement(
+      _semanticUiReact.Segment,
+      null,
+      _react2.default.createElement(_semanticUiReact.Form.Input, {
+        fluid: true,
+        name: 'username',
+        icon: 'user',
+        iconPosition: 'left',
+        placeholder: 'Username',
+        value: values.username,
+        onChange: handleChange,
+        onBlur: handleBlur,
+        className: inputClass('username')(errors, touched)
+      }),
+      _react2.default.createElement(_semanticUiReact.Form.Input, {
+        fluid: true,
+        name: 'password',
+        icon: 'lock',
+        iconPosition: 'left',
+        placeholder: 'password',
+        type: 'Password',
+        value: values.password,
+        onChange: handleChange,
+        onBlur: handleBlur,
+        className: inputClass('password')(errors, touched)
+      }),
+      _react2.default.createElement(
+        _semanticUiReact.Button,
+        {
+          color: 'teal',
+          icon: 'send',
+          fluid: true, size: 'large',
+          disabled: isSubmitting
+        },
+        'Login'
+      )
+    )
+  );
+};
+
+exports.default = (0, _formik.withFormik)({
+  mapPropsToValues: function mapPropsToValues() {
+    return {
+      username: '',
+      password: ''
+    };
+  },
+  validate: function validate(values) {
+    var errors = {};
+    if (!values.username) {
+      errors.username = 'Required';
+    }
+    if (!values.password) {
+      errors.password = 'Required';
+    }
+    return errors;
+  },
+  handleSubmit: function handleSubmit(values, _ref) {
+    var setSubmitting = _ref.setSubmitting;
+
+    return (0, _Service2.default)().login(values).then(function (res) {
+      setSubmitting(false);
+      return res;
+    });
+  },
+  displayName: 'LoginForm'
+})(LoginForm);
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+module.exports = require("formik");
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+module.exports = require("simple-json-requester");
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Service = __webpack_require__(4);
+
+var _Service2 = _interopRequireDefault(_Service);
+
+var _ModelCrud = __webpack_require__(27);
 
 var _ModelCrud2 = _interopRequireDefault(_ModelCrud);
 
-var _models = __webpack_require__(2);
+var _models = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -877,7 +1207,7 @@ var styles = {
   }
 };
 
-var ModelDetails = function ModelDetails(_ref) {
+var ModelDetailsScreen = function ModelDetailsScreen(_ref) {
   var modelName = _ref.modelName,
       onChange = _ref.onChange;
   return _react2.default.createElement(
@@ -893,16 +1223,10 @@ var ModelDetails = function ModelDetails(_ref) {
   );
 };
 
-exports.default = ModelDetails;
+exports.default = ModelDetailsScreen;
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-module.exports = require("simple-json-requester");
-
-/***/ }),
-/* 19 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -916,19 +1240,19 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactCrudTable = __webpack_require__(20);
+var _reactCrudTable = __webpack_require__(28);
 
 var _reactCrudTable2 = _interopRequireDefault(_reactCrudTable);
 
-var _validation = __webpack_require__(21);
+var _validation = __webpack_require__(29);
 
-var _models = __webpack_require__(2);
+var _models = __webpack_require__(3);
 
 var _config = __webpack_require__(5);
 
 __webpack_require__(7);
 
-var _renderers = __webpack_require__(25);
+var _renderers = __webpack_require__(30);
 
 var _renderers2 = _interopRequireDefault(_renderers);
 
@@ -1046,13 +1370,13 @@ ModelCrud.propTypes = {};
 exports.default = ModelCrud;
 
 /***/ }),
-/* 20 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-crud-table");
 
 /***/ }),
-/* 21 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1090,25 +1414,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
-module.exports = require("simple-json-table");
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports) {
-
-module.exports = require("lodash");
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports) {
-
-module.exports = require("lodash.template");
-
-/***/ }),
-/* 25 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1118,29 +1424,29 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _models = __webpack_require__(2);
+var _models = __webpack_require__(3);
 
-var _DescriptionRenderer = __webpack_require__(26);
+var _DescriptionRenderer = __webpack_require__(31);
 
 var _DescriptionRenderer2 = _interopRequireDefault(_DescriptionRenderer);
 
-var _InputRenderer = __webpack_require__(27);
+var _InputRenderer = __webpack_require__(32);
 
 var _InputRenderer2 = _interopRequireDefault(_InputRenderer);
 
-var _CheckboxRenderer = __webpack_require__(28);
+var _CheckboxRenderer = __webpack_require__(33);
 
 var _CheckboxRenderer2 = _interopRequireDefault(_CheckboxRenderer);
 
-var _EnumSelectRenderer = __webpack_require__(29);
+var _EnumSelectRenderer = __webpack_require__(34);
 
 var _EnumSelectRenderer2 = _interopRequireDefault(_EnumSelectRenderer);
 
-var _ModelsSelectRenderer = __webpack_require__(30);
+var _ModelsSelectRenderer = __webpack_require__(35);
 
 var _ModelsSelectRenderer2 = _interopRequireDefault(_ModelsSelectRenderer);
 
-var _MultipleModelsSelectRenderer = __webpack_require__(31);
+var _MultipleModelsSelectRenderer = __webpack_require__(36);
 
 var _MultipleModelsSelectRenderer2 = _interopRequireDefault(_MultipleModelsSelectRenderer);
 
@@ -1195,7 +1501,7 @@ var renderer = function renderer(model, field, modelName) {
 exports.default = renderer;
 
 /***/ }),
-/* 26 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1225,7 +1531,7 @@ DescriptionRenderer.propTypes = {};
 exports.default = DescriptionRenderer;
 
 /***/ }),
-/* 27 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1255,7 +1561,7 @@ InputRenderer.propTypes = {};
 exports.default = InputRenderer;
 
 /***/ }),
-/* 28 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1290,7 +1596,7 @@ CheckboxRenderer.propTypes = {};
 exports.default = CheckboxRenderer;
 
 /***/ }),
-/* 29 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1336,7 +1642,7 @@ EnumSelectRenderer.propTypes = {};
 exports.default = EnumSelectRenderer;
 
 /***/ }),
-/* 30 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1366,7 +1672,7 @@ var _Service = __webpack_require__(4);
 
 var _Service2 = _interopRequireDefault(_Service);
 
-var _models = __webpack_require__(2);
+var _models = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1435,7 +1741,7 @@ exports.default = function (model) {
 };
 
 /***/ }),
-/* 31 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1455,7 +1761,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _semanticUiReact = __webpack_require__(3);
+var _semanticUiReact = __webpack_require__(2);
 
 var _Select = __webpack_require__(8);
 
@@ -1465,7 +1771,7 @@ var _Service = __webpack_require__(4);
 
 var _Service2 = _interopRequireDefault(_Service);
 
-var _models = __webpack_require__(2);
+var _models = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1661,72 +1967,7 @@ exports.default = function (model) {
 };
 
 /***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _semanticUiReact = __webpack_require__(3);
-
-var _reactRouterDom = __webpack_require__(9);
-
-var _models = __webpack_require__(2);
-
-__webpack_require__(7);
-
-var _config = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var AllModelsNavigator = function AllModelsNavigator(props) {
-  return _react2.default.createElement(
-    _semanticUiReact.Statistic.Group,
-    {
-      size: 'mini',
-      className: 'models-navigator'
-    },
-    Object.keys((0, _models.getModels)()).map(function (modelName) {
-      return _react2.default.createElement(
-        _semanticUiReact.Statistic,
-        {
-          className: 'models-navigator__link',
-          as: _reactRouterDom.Link,
-          to: '/model/' + modelName
-        },
-        _react2.default.createElement(
-          _semanticUiReact.Statistic.Value,
-          null,
-          props.counts[modelName] || 0
-        ),
-        _react2.default.createElement(
-          _semanticUiReact.Statistic.Label,
-          null,
-          (0, _config.getModelRelatedValue)(modelName + '.label') || modelName.asTitle()
-        )
-      );
-    })
-  );
-};
-
-AllModelsNavigator.propTypes = {};
-
-exports.default = AllModelsNavigator;
-
-/***/ }),
-/* 33 */
+/* 37 */
 /***/ (function(module, exports) {
 
 

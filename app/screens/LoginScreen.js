@@ -1,6 +1,7 @@
 import React from 'react'
 import { Grid, Header } from 'semantic-ui-react';
 import LoginForm from '../components/forms/LoginForm';
+import { Redirect } from 'react-router';
 
 const styles = {
   container: {
@@ -21,25 +22,42 @@ const styles = {
   },
 };
 
-const LoginScreen = () => (
-  <div style={styles.container}>
-    <Grid
-      textAlign='center'
-      style={styles.grid}
-      verticalAlign='middle'
-    >
-      <Grid.Column style={styles.loginWrapper}>
-        <Header
-          as='h2'
-          color='teal'
+class LoginScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedIn: false,
+    };
+  }
+  
+  render() {
+    if (this.state.loggedIn) {
+      return <Redirect to="/model"/>;
+    }
+    return (
+      <div style={styles.container}>
+        <Grid
           textAlign='center'
+          style={styles.grid}
+          verticalAlign='middle'
         >
-          Login
-        </Header>
-        <LoginForm />
-      </Grid.Column>
-    </Grid>
-  </div>
-)
+          <Grid.Column style={styles.loginWrapper}>
+            <Header
+              as='h2'
+              color='teal'
+              textAlign='center'
+            >
+              Login
+            </Header>
+            <LoginForm onSubmitSuccess={() => {
+                this.setState({ loggedIn: true });
+              }}
+            />
+          </Grid.Column>
+        </Grid>
+      </div>
+    );
+  }
+}
 
 export default LoginScreen;

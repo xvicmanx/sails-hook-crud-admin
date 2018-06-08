@@ -52,23 +52,25 @@ class ModelsSelect extends Component {
   handleAdd(evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    if (this.state.id) {
-      const ids = [
-        ...this.state.ids,
-        +this.state.id,
+    const  { id, ids } = this.state;
+    if (id) {
+      const newIds = [
+        ...ids,
+        +id,
       ];
-      this.setState({ ids, id: null });
-      this.triggerOnChange(evt, ids);
+      this.setState({ ids: newIds, id: null });
+      this.triggerOnChange(evt, newIds);
     }
   }
 
   triggerOnChange(evt, ids) {
+    const { field } = this.props;
     const e = evt;
     e.target = {
-      name: this.props.field.name,
+      name: field.name,
       value: ids,
     };
-    this.props.field.onChange(e);
+    field.onChange(e);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -145,10 +147,13 @@ class ModelsSelect extends Component {
   }
 }
 
-
-
 ModelsSelect.propTypes = {
   model: PropTypes.string.isRequired,
 };
 
-export default (model) => ({ field }) => <ModelsSelect field={field} model={model} />;
+export default (model) => ({ field }) => (
+  <ModelsSelect
+    field={field}
+    model={model}
+  />
+);

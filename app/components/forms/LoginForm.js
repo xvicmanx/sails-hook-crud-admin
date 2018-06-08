@@ -5,6 +5,8 @@ import {
   Button,
   Form,
   Segment,
+  Label,
+  Input,
 } from 'semantic-ui-react';
 import Service from '../../services/Service';
 
@@ -13,6 +15,20 @@ const inputClass = field => (errors, touched) => errors[field] &&
   ('text-input error') :
   ('text-input');
 
+const Error = ({ field, errors, touched }) => {
+  if (!touched[field] || !errors[field]) return null;
+  return (
+    <Label basic color='red' pointing>
+      {errors[field]}
+    </Label>
+  );
+};
+
+const styles = {
+  field: {
+    textAlign: 'left',
+  },
+};
 
 const LoginForm = props => {
   const {
@@ -24,13 +40,19 @@ const LoginForm = props => {
     handleBlur,
     handleSubmit,
   } = props;
+  const userFieldClass = inputClass('username')(errors, touched);
+  const passwordFieldClass = inputClass('password')(errors, touched);
   return (
     <Form
       onSubmit={handleSubmit}
       size='large'
     >
       <Segment>
-        <Form.Input
+      <Form.Field
+        style={styles.field}
+        className={userFieldClass}
+      >
+        <Input
           fluid
           name="username"
           icon='user'
@@ -39,24 +61,39 @@ const LoginForm = props => {
           value={values.username}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={inputClass('username')(errors, touched)}
         />
-        <Form.Input
+        <Error
+          field="username"
+          touched={touched}
+          errors={errors}
+        />
+      </Form.Field>
+      <Form.Field
+        style={styles.field}
+        className={passwordFieldClass}
+      >
+        <Input
           fluid
           name="password"
           icon='lock'
           iconPosition='left'
           placeholder='password'
-          type='Password'
+          type='password'
           value={values.password}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={inputClass('password')(errors, touched)}
         />
+        <Error
+          field="password"
+          touched={touched}
+          errors={errors}
+        />
+      </Form.Field>
         <Button
           color='teal'
           icon="send"
-          fluid size='large'
+          fluid
+          size='large'
           disabled={isSubmitting}
         >
           Login
@@ -66,6 +103,17 @@ const LoginForm = props => {
   );
 };
 
+const transformAPIErrors = (error) => {
+  const errors = {};
+  if (error.fields) {
+    Object.keys(error.fields)
+      .forEach(k => {
+        errors[k] = error.fields[k];
+      });
+  }
+  return errors;
+}
+
 export default withFormik({
   mapPropsToValues: () => ({
     username: '',
@@ -74,17 +122,22 @@ export default withFormik({
   validate: values => {
     let errors = {};
     if (!values.username) {
-      errors.username = 'Required';
+      errors.username = 'The username is required!';
     }
     if (!values.password) {
-      errors.password = 'Required';
+      errors.password = 'The password is required!';
     }
     return errors;
   },
-  handleSubmit: (values, { setSubmitting }) => {
+  handleSubmit: (values, { setSubmitting, setErrors, props }) => {
     return Service()
       .login(values)
       .then(res => {
+        if (res.error) {
+          setErrors(transformAPIErrors(res.error))
+        } else if (res.token && res.success){
+          props.onSubmitSuccess(res);
+        }
         setSubmitting(false);
         return res;
       });

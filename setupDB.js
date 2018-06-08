@@ -1,9 +1,10 @@
 const low = require('lowdb');
 const lodashId = require('lodash-id')
 const FileSync = require('lowdb/adapters/FileSync');
+const DB_FILE =  'crud-admin-db.json';
 
 module.exports = function(sails){
-  const adapter = new FileSync(sails.config.appPath + '/crud-admin-db.json')
+  const adapter = new FileSync(`${sails.config.appPath}/${DB_FILE}`);
   let db = low(adapter)
 
   db._.mixin(lodashId)

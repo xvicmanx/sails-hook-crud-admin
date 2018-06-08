@@ -1,30 +1,32 @@
-const Controller = require('./controller');
+const MainController = require('./MainController');
+const AuthController = require('./AuthController');
 const setupDB = require('./setupDB');
 const seedDB = require('./seedDB');
 
 module.exports = function (sails) {
-  const controller = new Controller(sails);
+  const data = {};
+  const mainController = new MainController(sails);
+  const authController = new AuthController(sails, data);
   
   return {
     initialize: function(cb) {
       const eventsToWaitFor = ['hook:orm:loaded'];
       sails.after(eventsToWaitFor, function() {
-        const adminModels = setupDB(sails);
-        seedDB(sails, adminModels);
-        
-        console.log('adminModels models', adminModels);
-
+        data.adminModels = setupDB(sails);
+        seedDB(sails, data.adminModels);
         return cb();
       });
     },
     routes: {
       before: {
-        'GET /administrator': controller.index,
-        'GET /administrator/client.js': controller.clientJS,
-        'POST /administrator/model-count': controller.modelCount,
-        'POST /administrator/model-search': controller.modelSearch,
-        'GET /administrator/model-search-all': controller.modelSearchAll,
-        'GET /administrator/all-models-count': controller.countAll,
+        'GET /administrator': mainController.index,
+        'GET /administrator/client.js': mainController.clientJS,
+        'POST /administrator/model-count': mainController.modelCount,
+        'POST /administrator/model-search': mainController.modelSearch,
+        'GET /administrator/model-search-all': mainController.modelSearchAll,
+        'GET /administrator/all-models-count': mainController.countAll,
+
+        'POST /administrator/login': authController.authenticate,
       },
     }
   };

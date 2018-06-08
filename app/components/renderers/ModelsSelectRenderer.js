@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Select from './Select';
 import Service from '../../services/Service';
 import { getModelValue } from '../../helpers/models';
+import { queryValue } from '../../helpers/object';
 
 const mapOptions = model => x => (
   {
@@ -23,27 +24,32 @@ class ModelsSelect extends Component {
   
   componentDidMount() {
     const service = Service(this.props.model);
-    service.fetchAllItems({}).then((items) => {
-      this.setState({ items });
-    });
+    service.fetchAllItems({})
+      .then((items) => {
+        this.setState({ items });
+      });
   }
   
-
   render() {
+    const { field, model } = this.props;
+    const { items } = this.state;
     return (
       <Select
-        {...this.props.field}
-        value={this.props.field.value && this.props.field.value.id || this.props.field.value}
-        options={this.state.items.map(mapOptions(this.props.model))}
+        {...field}
+        value={queryValue(field, 'value.id', field.value)}
+        options={items.map(mapOptions(model))}
       />
     );
   }
 }
 
-
-
 ModelsSelect.propTypes = {
   model: PropTypes.string.isRequired,
 };
 
-export default (model) => ({ field }) => <ModelsSelect field={field} model={model} />;
+export default (model) => ({ field }) => (
+  <ModelsSelect
+    field={field}
+    model={model}
+  />
+);

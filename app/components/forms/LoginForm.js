@@ -24,6 +24,11 @@ const Error = ({ field, errors, touched }) => {
   );
 };
 
+const styles = {
+  field: {
+    textAlign: 'left',
+  },
+};
 
 const LoginForm = props => {
   const {
@@ -35,6 +40,8 @@ const LoginForm = props => {
     handleBlur,
     handleSubmit,
   } = props;
+  const userFieldClass = inputClass('username')(errors, touched);
+  const passwordFieldClass = inputClass('password')(errors, touched);
   return (
     <Form
       onSubmit={handleSubmit}
@@ -42,8 +49,8 @@ const LoginForm = props => {
     >
       <Segment>
       <Form.Field
-        style={{ textAlign: 'left' }}
-        className={inputClass('username')(errors, touched)}
+        style={styles.field}
+        className={userFieldClass}
       >
         <Input
           fluid
@@ -62,8 +69,8 @@ const LoginForm = props => {
         />
       </Form.Field>
       <Form.Field
-        style={{ textAlign: 'left' }}
-        className={inputClass('password')(errors, touched)}
+        style={styles.field}
+        className={passwordFieldClass}
       >
         <Input
           fluid
@@ -71,7 +78,7 @@ const LoginForm = props => {
           icon='lock'
           iconPosition='left'
           placeholder='password'
-          type='Password'
+          type='password'
           value={values.password}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -85,7 +92,8 @@ const LoginForm = props => {
         <Button
           color='teal'
           icon="send"
-          fluid size='large'
+          fluid
+          size='large'
           disabled={isSubmitting}
         >
           Login
@@ -114,10 +122,10 @@ export default withFormik({
   validate: values => {
     let errors = {};
     if (!values.username) {
-      errors.username = 'Required';
+      errors.username = 'The username is required!';
     }
     if (!values.password) {
-      errors.password = 'Required';
+      errors.password = 'The password is required!';
     }
     return errors;
   },

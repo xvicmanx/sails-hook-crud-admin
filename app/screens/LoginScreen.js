@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, Header } from 'semantic-ui-react';
 import LoginForm from '../components/forms/LoginForm';
 import { Redirect } from 'react-router';
+import AuthStore from '../AuthStore';
 
 const styles = {
   container: {
@@ -49,7 +50,12 @@ class LoginScreen extends React.Component {
             >
               Login
             </Header>
-            <LoginForm onSubmitSuccess={() => {
+            <LoginForm onSubmitSuccess={(res) => {
+                AuthStore.storeTokenInfo(
+                  res.token,
+                  res.exp
+                );
+                AuthStore.storeUserData(res.userData);
                 this.setState({ loggedIn: true });
               }}
             />

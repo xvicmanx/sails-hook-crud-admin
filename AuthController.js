@@ -51,7 +51,7 @@ class AuthController {
         const userData = {
           id: user.id,
           name: user.name,
-          rights: []
+          rights: ['read::author']
         };
         const exp = Math.floor(Date.now() / 1000) + ONE_DAY;
         const token = jwt.sign(

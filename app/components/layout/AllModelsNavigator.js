@@ -5,6 +5,12 @@ import { Link } from 'react-router-dom';
 import { getModels } from '../../helpers/models';
 import {} from '../../helpers/string';
 import { getModelRelatedValue } from '../../helpers/config';
+import rightProtected from '../high-order/RightProtected';
+
+const ProtectedStat = rightProtected(
+  null,
+  null
+)(Statistic);
 
 const AllModelsNavigator = (props) => {
   return (
@@ -13,7 +19,8 @@ const AllModelsNavigator = (props) => {
       className="models-navigator"
     >
       {Object.keys(getModels()).map(modelName => (
-        <Statistic
+        <ProtectedStat
+          right={`read::${modelName}`}
           className="models-navigator__link"
           as={Link}
           to={`/model/${modelName}`}
@@ -26,7 +33,7 @@ const AllModelsNavigator = (props) => {
               `${modelName}.label`,
             ) || modelName.asTitle() }
           </Statistic.Label>
-        </Statistic>
+        </ProtectedStat>
       ))}
     </Statistic.Group>
   );

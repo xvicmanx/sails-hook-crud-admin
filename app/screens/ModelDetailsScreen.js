@@ -1,7 +1,19 @@
 import React from 'react';
+import { Message } from 'semantic-ui-react';
 import Service from '../services/Service';
 import ModelCrud from '../components/ModelCrud';
 import { getModel, } from '../helpers/models';
+import rightProtected from '../components/high-order/RightProtected';
+
+const ProtectedModelCrud = rightProtected(
+  null,
+  <Message
+    size="huge"
+    visible
+    error
+    content="You do not have permission to view"
+  />
+)(ModelCrud);
 
 const styles = {
   container: {
@@ -12,7 +24,8 @@ const styles = {
 
 const ModelDetailsScreen = ({ modelName, onChange }) => (
   <div style={styles.container}>
-    <ModelCrud
+    <ProtectedModelCrud
+      right={`read::${modelName}`}
       key={modelName}
       model={getModel(modelName)}
       service={Service(modelName)}

@@ -1,9 +1,15 @@
-const app = require('./dist/app.js');
 const fs = require('fs');
-const { buildQuery } = require('./app/helpers/query');
+const app = require('../../dist/app.js');
+const { buildQuery } = require('../../app/helpers/query');
+const crudConfig = require('../admin-config/crud');
+
+const MODELS_FILTER = (m) => {
+  return m.indexOf('crudgroup_') < 0
+};
 
 const getDefinitions = (models) => {
   return Object.keys(models)
+    .filter(MODELS_FILTER)
     .reduce(function (result, k) {
       result[k] = models[k].attributes;
       return result;
@@ -22,7 +28,6 @@ const populate = async (resultPromise, modelName, sails) => {
   return result;
 };
 
-
 class Controller {
   constructor(sails) {
     this.sails = sails;
@@ -35,17 +40,21 @@ class Controller {
   }
 
   index(req, res) {
-    console.log();
+    const config = Object.assign(
+      {},
+      this.sails.config.crudAdmin || {},
+      crudConfig, 
+    );
     const injection = `
       window.sailsModels = ${JSON.stringify(getDefinitions(this.sails.models))};
-      window.crudAdminConfig = ${JSON.stringify(this.sails.config.crudAdmin || {})};
+      window.crudAdminConfig = ${JSON.stringify(config)};
     `;
     res.send(app.renderPage(injection));
   }
 
   clientJS(req, res) {
     res.send(
-      fs.readFileSync(__dirname + '/dist/client.js')
+      fs.readFileSync(__dirname + '/../../dist/client.js')
     );
   }
 

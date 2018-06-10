@@ -1430,9 +1430,10 @@ var _RightProtected2 = _interopRequireDefault(_RightProtected);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ProtectedModelCrud = (0, _RightProtected2.default)(null, _react2.default.createElement(_semanticUiReact.Message, {
+  size: 'huge',
   visible: true,
   error: true,
-  content: 'You do not have permission'
+  content: 'You do not have permission to view'
 }))(_ModelCrud2.default);
 
 var styles = {

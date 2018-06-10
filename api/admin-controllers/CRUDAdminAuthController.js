@@ -12,13 +12,12 @@ const missingParamError = (param) => ({
 });
 
 class AuthController {
-  constructor(sails, data) {
+  constructor(sails) {
     this.sails = sails;
-    this.data = data;
     this.authenticate = this.authenticate.bind(this);
   }
 
-  authenticate(req, res) {
+  async authenticate(req, res) {
     if (!req.body.username) {
       res.status(400)
         .send(missingParamError('username'));
@@ -29,11 +28,11 @@ class AuthController {
         .send(missingParamError('password'));
     }
 
-    const user = this.data.adminModels.users
-      .find({
-        name: req.body.username,
-        password: req.body.password })
-      .value();
+    const user = await this.sails.models.cruduser
+      .findOne({
+        username: req.body.username,
+        password: req.body.password,
+      }).populate('groups');
 
     if (!user) {
       res.status(400)
@@ -48,10 +47,20 @@ class AuthController {
         });
     } else {
       try {
+        const groups = await this.sails.models.crudgroup
+          .find({ id: { in: user.groups.map(g => g.id), } })
+          .populate('rights');
+        let rights = [];
+        groups.forEach((group) => {
+          rights = rights.concat(
+            group.rights.map(r => r.name)
+          );
+        });
+
         const userData = {
           id: user.id,
-          name: user.name,
-          rights: ['read::author']
+          name: user.username,
+          rights,
         };
         const exp = Math.floor(Date.now() / 1000) + ONE_DAY;
         const token = jwt.sign(
@@ -60,6 +69,7 @@ class AuthController {
         );
         res.send({ userData, token, exp, success: true });
       } catch(err) {
+        sails.log(err);
         res.status(500)
         .send({
           error: {

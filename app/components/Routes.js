@@ -11,12 +11,14 @@ import {
   CRUD_MODELS_FILTER,
 } from '../helpers/models';
 import Service from '../services/Service';
+import loggedInProtected from './high-order/LoggedInProtected';
 import ModelsNavigator from './layout/ModelsNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import ModelDetailsScreen from '../screens/ModelDetailsScreen';
-import Main from './layout/Main';
+import LayoutMain from './layout/Main';
 import MainBreadcrumb from './layout/MainBreadcrumb';
 
+const Main = loggedInProtected(LayoutMain);
 
 class Routes extends React.Component {
   constructor(props) {

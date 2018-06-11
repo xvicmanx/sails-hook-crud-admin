@@ -49,7 +49,7 @@ const AuthStore = {
   },
   isTokenExpired() {
     const tokenInfo = readValue(KEYS.TOKEN_INFO);
-    if(!tokenInfo || !tokenInfo.exp || !token.value) {
+    if(!tokenInfo || !tokenInfo.exp || !tokenInfo.value) {
       return true;
     }
     return tokenInfo.exp < Math.floor(new Date().getTime()/1000);

@@ -1,6 +1,5 @@
 import Constants from './constants';
 
-
 const storeValue = (key, value) => {
   if (typeof(Storage) !== 'undefined') {
     window.localStorage.setItem(

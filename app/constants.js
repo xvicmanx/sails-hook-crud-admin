@@ -17,6 +17,7 @@ const Constants = {
   },
   LABELS: {
     HOME: getLabel('home', 'Home'),
+    LOGOUT: getLabel('logout', 'Logout'),
     PERMISSIONS: getLabel('permissions', 'Permissions'),
     ACTIONS: getLabel('actions', 'Actions'),
     CREATE_FORM_TITLE: getLabel('createFormTitle', 'Create Item'),

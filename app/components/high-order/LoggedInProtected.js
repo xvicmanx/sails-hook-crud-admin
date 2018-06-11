@@ -5,7 +5,7 @@ import AuthStore from '../../AuthStore';
 export default (TargetComponent) => (props) => {
   const allowed = !AuthStore.isTokenExpired();
 
-  if (!allowed) return <Redirect  to="/" />;
+  if (!allowed) return <Redirect  to="/logout" />;
   
   return <TargetComponent {...props} />;
 };

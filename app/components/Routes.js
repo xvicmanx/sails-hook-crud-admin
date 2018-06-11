@@ -3,22 +3,22 @@ import {
   HashRouter as Router,
   Route,
   Link,
+  withRouter,
 } from 'react-router-dom';
-import queryString from 'query-string';
-import {
-  getModels,
-  NON_CRUD_MODELS_FILTER,
-  CRUD_MODELS_FILTER,
-} from '../helpers/models';
 import Service from '../services/Service';
-import loggedInProtected from './high-order/LoggedInProtected';
 import ModelsNavigator from './layout/ModelsNavigator';
 import LoginScreen from '../screens/LoginScreen';
+import LogoutScreen from '../screens/LogoutScreen';
 import ModelDetailsScreen from '../screens/ModelDetailsScreen';
-import LayoutMain from './layout/Main';
-import MainBreadcrumb from './layout/MainBreadcrumb';
+import PermissionsScreen from '../screens/PermissionsScreen';
+import ModelsScreen from '../screens/ModelsScreen';
 
-const Main = loggedInProtected(LayoutMain);
+
+const NAVIGATOR_PATHS = [
+  '/model',
+  '/permissions',
+];
+
 
 class Routes extends React.Component {
   constructor(props) {
@@ -26,9 +26,8 @@ class Routes extends React.Component {
     this.state = {
       counts: {},
     };
-    this.handleChange = this.handleChange.bind(this);
   }
-  
+
   updateCounts() {
     Service().countAllModels()
       .then(counts => {
@@ -38,75 +37,58 @@ class Routes extends React.Component {
 
   componentDidMount() {
     this.updateCounts();
-  }
-
-  handleChange() {
-    this.updateCounts();
+    this.props.history.listen((data) => {
+      if (NAVIGATOR_PATHS.indexOf(data.pathname) >= 0) {
+        this.updateCounts();
+      }
+    });
   }
 
   render() {
-    const parent = this;
-    const models = Object.keys(getModels());
-    const nonCrudModels = models.filter(NON_CRUD_MODELS_FILTER);
-    const crudModels = models.filter(CRUD_MODELS_FILTER);
     return (
-      <Router>
-        <div>
-          <Route
-            exact
-            path="/model/:modelName"
-            component={({ match, location }) => {
-              const values = queryString.parse(location.search);
-              return (
-                <Main>
-                  <MainBreadcrumb
-                    area={values.area || 'home'}
-                    modelName={match.params.modelName}
-                  />
-                  <ModelDetailsScreen
-                    onChange={parent.handleChange}
-                    modelName={match.params.modelName}
-                  />
-                </Main>
-              );
-            }}
-          />
-          <Route
-            exact
-            path="/model"
-            component={() => (
-              <Main>
-                <ModelsNavigator
-                  models={nonCrudModels}
-                  counts={parent.state.counts}
-                />
-              </Main>
-            )}
-          />
-
-          <Route
-            exact
-            path="/permissions"
-            component={() => (
-              <Main>
-                <ModelsNavigator
-                  models={crudModels}
-                  counts={parent.state.counts}
-                  area="permissions"
-                />
-              </Main>
-            )}
-          />
-          <Route
-            exact
-            path="/"
-            component={LoginScreen}
-          />
-        </div>
-      </Router>
+      <div>
+        <Route
+          exact
+          path="/model/:modelName"
+          component={ModelDetailsScreen}
+        />
+        <Route
+          exact
+          path="/model"
+          component={() => (
+            <ModelsScreen
+              counts={this.state.counts}
+            />
+          )}
+        />
+        <Route
+          exact
+          path="/permissions"
+          component={() => (
+            <PermissionsScreen
+              counts={this.state.counts}
+            />
+          )}
+        />
+        <Route
+          exact
+          path="/"
+          component={LoginScreen}
+        />
+        <Route
+          exact
+          path="/logout"
+          component={LogoutScreen}
+        />
+      </div>
     );
   }
 }
 
+const AppRoutes = withRouter(Routes);
 
-export default Routes;
+export default () => (
+  <Router>
+    <AppRoutes />
+  </Router>
+);

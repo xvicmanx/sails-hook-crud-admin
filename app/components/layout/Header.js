@@ -34,6 +34,12 @@ const Header = () => (
           content={Constants.LABELS.PERMISSIONS}
         />
       )}
+      <Menu.Item
+        as={Link}
+        header
+        to="/logout"
+        content={Constants.LABELS.LOGOUT}
+      />
     </Container>
   </Menu>
 );

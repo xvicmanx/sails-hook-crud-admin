@@ -194,6 +194,10 @@ class ModelCrud extends React.Component {
   }
 }
 
+ModelCrud.defaultProps = {
+  onChange: () => {},
+};
+
 ModelCrud.propTypes = {};
 
 export default ModelCrud;

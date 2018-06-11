@@ -1,6 +1,4 @@
-const jwt = require('jsonwebtoken');
-const SECRET = 'secret';
-const ONE_DAY = 24 * 60 * 60;
+const AuthService = require('../admin-services/AuthService');
 
 const missingParamError = (param) => ({
   error: {
@@ -8,7 +6,7 @@ const missingParamError = (param) => ({
     fields: {
       [param]: `'${param}' missing!`,
     },
-  }
+  },
 });
 
 class AuthController {
@@ -62,12 +60,13 @@ class AuthController {
           name: user.username,
           rights,
         };
-        const exp = Math.floor(Date.now() / 1000) + ONE_DAY;
-        const token = jwt.sign(
-          { userData, exp },
-          SECRET,
-        );
-        res.send({ userData, token, exp, success: true });
+        const { token, exp } = AuthService.generateTokenInfo(userData);
+        res.send({
+          userData,
+          token,
+          exp,
+          success: true,
+        });
       } catch(err) {
         sails.log(err);
         res.status(500)
@@ -78,17 +77,6 @@ class AuthController {
         });
       } 
     }
-  }
-
-  verify(req, res) {
-    // if (!req.body || !req.body.username) {
-    //   res.sendStatus(400);
-    // }
-    // try {
-    //   var decoded = jwt.verify(token, 'wrong-secret');
-    // } catch(err) {
-    //   // err
-    // }
   }
 };
 

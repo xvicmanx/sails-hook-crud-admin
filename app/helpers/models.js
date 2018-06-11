@@ -142,6 +142,33 @@ export const CRUD_MODELS_FILTER = (model) => {
   return Constants.CRUD_MODELS.indexOf(model) >= 0;
 };
 
+export const modelTitle = (modelName) => {
+  return getModelRelatedValue(
+    `${modelName}.label`,
+  ) || modelName.asTitle()
+};
+
+export const createRights = (modelName) => [
+  '*::*',
+  `*::${modelName}`,
+  'create::*',
+  `create::${modelName}`,
+];
+
+export const removeRights = (modelName) => [
+  '*::*',
+  `*::${modelName}`,
+  'delete::*',
+  `delete::${modelName}`,
+];
+
+export const updateRights = (modelName) => [
+  '*::*',
+  `*::${modelName}`,
+  'update::*',
+  `update::${modelName}`,
+];
+
 export default {
   getModel,
   getModels,
@@ -155,4 +182,8 @@ export default {
   getFieldRenderer,
   NON_CRUD_MODELS_FILTER,
   CRUD_MODELS_FILTER,
+  modelTitle,
+  createRights,
+  updateRights,
+  removeRights,
 };

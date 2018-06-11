@@ -54,6 +54,10 @@ const AuthStore = {
     }
     return tokenInfo.exp < Math.floor(new Date().getTime()/1000);
   },
+  getToken() {
+    const tokenInfo = readValue(KEYS.TOKEN_INFO);
+    return tokenInfo && tokenInfo.value;
+  },
   getRights() {
     const userData = readValue(KEYS.USER_DATA);
     if(!userData || !userData.rights) {
@@ -61,11 +65,14 @@ const AuthStore = {
     }
     return userData.rights;
   },
-  canAccessPermissionsArea() {
+  hasAnyOfRights(expectedRights) {
     const rights = AuthStore.getRights();
     return rights.reduce((result, right) => {
-      return result || permissionAreaRights.indexOf(right) > -1;
+      return result || expectedRights.indexOf(right) > -1;
     }, false);
+  },
+  canAccessPermissionsArea() {
+    return AuthStore.hasAnyOfRights(permissionAreaRights);
   },
   clear() {
     storeValue(KEYS.USER_DATA, null);

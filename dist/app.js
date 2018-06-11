@@ -92,7 +92,7 @@ module.exports = require("prop-types");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CRUD_MODELS_FILTER = exports.NON_CRUD_MODELS_FILTER = exports.getFieldRenderer = exports.getFieldLabel = exports.valueResolver = exports.getModelValue = exports.getModelValueTemplate = exports.getFieldValueTemplate = exports.getType = exports.keysSorter = exports.inUpdateHiddenFields = exports.inCreationHiddenFields = exports.getModel = exports.getModels = undefined;
+exports.updateRights = exports.removeRights = exports.createRights = exports.modelTitle = exports.CRUD_MODELS_FILTER = exports.NON_CRUD_MODELS_FILTER = exports.getFieldRenderer = exports.getFieldLabel = exports.valueResolver = exports.getModelValue = exports.getModelValueTemplate = exports.getFieldValueTemplate = exports.getType = exports.keysSorter = exports.inUpdateHiddenFields = exports.inCreationHiddenFields = exports.getModel = exports.getModels = undefined;
 
 var _react = __webpack_require__(0);
 
@@ -108,7 +108,7 @@ var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _object = __webpack_require__(9);
+var _object = __webpack_require__(10);
 
 var _config = __webpack_require__(6);
 
@@ -116,7 +116,7 @@ var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-__webpack_require__(8);
+__webpack_require__(9);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -247,6 +247,22 @@ var CRUD_MODELS_FILTER = exports.CRUD_MODELS_FILTER = function CRUD_MODELS_FILTE
   return _constants2.default.CRUD_MODELS.indexOf(model) >= 0;
 };
 
+var modelTitle = exports.modelTitle = function modelTitle(modelName) {
+  return (0, _config.getModelRelatedValue)(modelName + '.label') || modelName.asTitle();
+};
+
+var createRights = exports.createRights = function createRights(modelName) {
+  return ['*::*', '*::' + modelName, 'create::*', 'create::' + modelName];
+};
+
+var removeRights = exports.removeRights = function removeRights(modelName) {
+  return ['*::*', '*::' + modelName, 'delete::*', 'delete::' + modelName];
+};
+
+var updateRights = exports.updateRights = function updateRights(modelName) {
+  return ['*::*', '*::' + modelName, 'update::*', 'update::' + modelName];
+};
+
 exports.default = {
   getModel: getModel,
   getModels: getModels,
@@ -259,7 +275,11 @@ exports.default = {
   getModelValue: getModelValue,
   getFieldRenderer: getFieldRenderer,
   NON_CRUD_MODELS_FILTER: NON_CRUD_MODELS_FILTER,
-  CRUD_MODELS_FILTER: CRUD_MODELS_FILTER
+  CRUD_MODELS_FILTER: CRUD_MODELS_FILTER,
+  modelTitle: modelTitle,
+  createRights: createRights,
+  updateRights: updateRights,
+  removeRights: removeRights
 };
 
 /***/ }),
@@ -318,7 +338,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getButtonText = exports.getModelRelatedValue = exports.getLabel = exports.getConfig = undefined;
 
-var _object = __webpack_require__(9);
+var _object = __webpack_require__(10);
 
 var getConfig = exports.getConfig = function getConfig() {
   return typeof window !== 'undefined' && window.crudAdminConfig ? window.crudAdminConfig : {};
@@ -356,19 +376,38 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _AuthStore = __webpack_require__(8);
+
+var _AuthStore2 = _interopRequireDefault(_AuthStore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var requester = __webpack_require__(23);
+
 
 var URL = function URL(model, id) {
   return id ? '/' + model + '/' + id : '/' + model;
 };
 var COUNT_URL = '/administrator/model-count';
 var SEARCH_URL = '/administrator/model-search';
+var DELETE_URL = '/administrator/model-delete';
+var CREATE_URL = '/administrator/model-create';
+var UPDATE_URL = '/administrator/model-update';
 var SEARCH_ALL_URL = '/administrator/model-search-all';
 var COUNT_ALL_MODELS_URL = '/administrator/all-models-count';
 var LOGIN_URL = '/administrator/login';
 
 var getDirection = function getDirection(d) {
   return d === 'ascending' ? 'ASC' : 'DESC';
+};
+
+var getConfig = function getConfig() {
+  return {
+    extraHeaders: {
+      'jwt-token': _AuthStore2.default.getToken()
+    }
+  };
 };
 
 var Service = function Service(model) {
@@ -387,31 +426,38 @@ var Service = function Service(model) {
         skip: (activePage - 1) * itemsPerPage,
         sort: field + ' ' + getDirection(direction),
         queryRules: payload.queryRules
+      }, getConfig()).then(function (result) {
+        return Array.isArray(result) ? result : [];
       });
     },
     fetchAllItems: function fetchAllItems() {
-      return requester.get(SEARCH_ALL_URL, { modelName: model });
+      return requester.get(SEARCH_ALL_URL, { modelName: model }, getConfig()).then(function (result) {
+        return Array.isArray(result) ? result : [];
+      });
     },
     countAllModels: function countAllModels() {
-      return requester.get(COUNT_ALL_MODELS_URL, {});
+      return requester.get(COUNT_ALL_MODELS_URL, {}, getConfig());
     },
     countItems: function countItems(payload) {
       return requester.post(COUNT_URL, {
         modelName: model,
         queryRules: payload.queryRules
-      });
+      }, getConfig());
     },
     login: function login(data) {
       return requester.post(LOGIN_URL, data);
     },
     create: function create(item) {
-      return requester.post(URL(model), item);
+      item.modelName = model;
+      return requester.post(CREATE_URL, item, getConfig());
     },
     update: function update(data) {
-      return requester.put(URL(model, data.id), data);
+      data.modelName = model;
+      return requester.put(UPDATE_URL + '/' + data.id, data, getConfig());
     },
     delete: function _delete(data) {
-      return requester.delete(URL(model, data.id));
+      data.modelName = model;
+      return requester.delete(DELETE_URL + '/' + data.id, data, getConfig());
     }
   };
 };
@@ -420,83 +466,6 @@ exports.default = Service;
 
 /***/ }),
 /* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-String.prototype.asTitle = function () {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
-
-String.prototype.separateCamel = function () {
-  return this.replace(/([a-z])([A-Z])/g, '$1 $2');
-};
-
-exports.default = {};
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var queryValue = exports.queryValue = function queryValue(source) {
-  var query = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-  var defaultValue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
-  var value = query.split('.').reduce(function (result, key) {
-    return result && result[key] ? result[key] : null;
-  }, source);
-  return value || defaultValue;
-};
-
-var anyPropLike = exports.anyPropLike = function anyPropLike(props, value) {
-  return function (obj) {
-    if (!props || props.length <= 0) return true;
-    return props.reduce(function (acc, x) {
-      var target = ('' + queryValue(obj, x, '')).toLowerCase();
-      var needle = ('' + value).toLowerCase();
-      return acc || target.indexOf(needle) >= 0;
-    }, false);
-  };
-};
-
-var omit = exports.omit = function omit(source, props) {
-  if (!source) return source;
-
-  if (Array.isArray(source)) {
-    var result = JSON.parse(JSON.stringify(source));
-    result.forEach(function (element, index) {
-      result[index] = omit(result[index], props);
-    });
-    return result;
-  }
-
-  return Object.keys(source).filter(function (k) {
-    return props.indexOf(k) < 0;
-  }).reduce(function (acc, key) {
-    var result = acc;
-    result[key] = source[key];
-    return result;
-  }, {});
-};
-
-exports.default = {
-  queryValue: queryValue,
-  anyPropLike: anyPropLike,
-  omit: omit
-};
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -554,6 +523,10 @@ var AuthStore = {
     }
     return tokenInfo.exp < Math.floor(new Date().getTime() / 1000);
   },
+  getToken: function getToken() {
+    var tokenInfo = readValue(KEYS.TOKEN_INFO);
+    return tokenInfo && tokenInfo.value;
+  },
   getRights: function getRights() {
     var userData = readValue(KEYS.USER_DATA);
     if (!userData || !userData.rights) {
@@ -561,11 +534,14 @@ var AuthStore = {
     }
     return userData.rights;
   },
-  canAccessPermissionsArea: function canAccessPermissionsArea() {
+  hasAnyOfRights: function hasAnyOfRights(expectedRights) {
     var rights = AuthStore.getRights();
     return rights.reduce(function (result, right) {
-      return result || permissionAreaRights.indexOf(right) > -1;
+      return result || expectedRights.indexOf(right) > -1;
     }, false);
+  },
+  canAccessPermissionsArea: function canAccessPermissionsArea() {
+    return AuthStore.hasAnyOfRights(permissionAreaRights);
   },
   clear: function clear() {
     storeValue(KEYS.USER_DATA, null);
@@ -574,6 +550,83 @@ var AuthStore = {
 };
 
 exports.default = AuthStore;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+String.prototype.asTitle = function () {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+String.prototype.separateCamel = function () {
+  return this.replace(/([a-z])([A-Z])/g, '$1 $2');
+};
+
+exports.default = {};
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var queryValue = exports.queryValue = function queryValue(source) {
+  var query = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var defaultValue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+  var value = query.split('.').reduce(function (result, key) {
+    return result && result[key] ? result[key] : null;
+  }, source);
+  return value || defaultValue;
+};
+
+var anyPropLike = exports.anyPropLike = function anyPropLike(props, value) {
+  return function (obj) {
+    if (!props || props.length <= 0) return true;
+    return props.reduce(function (acc, x) {
+      var target = ('' + queryValue(obj, x, '')).toLowerCase();
+      var needle = ('' + value).toLowerCase();
+      return acc || target.indexOf(needle) >= 0;
+    }, false);
+  };
+};
+
+var omit = exports.omit = function omit(source, props) {
+  if (!source) return source;
+
+  if (Array.isArray(source)) {
+    var result = JSON.parse(JSON.stringify(source));
+    result.forEach(function (element, index) {
+      result[index] = omit(result[index], props);
+    });
+    return result;
+  }
+
+  return Object.keys(source).filter(function (k) {
+    return props.indexOf(k) < 0;
+  }).reduce(function (acc, key) {
+    var result = acc;
+    result[key] = source[key];
+    return result;
+  }, {});
+};
+
+exports.default = {
+  queryValue: queryValue,
+  anyPropLike: anyPropLike,
+  omit: omit
+};
 
 /***/ }),
 /* 11 */
@@ -701,7 +754,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(5);
 
-var _AuthStore = __webpack_require__(10);
+var _AuthStore = __webpack_require__(8);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -1058,7 +1111,7 @@ var _semanticUiReact = __webpack_require__(1);
 
 var _reactRouterDom = __webpack_require__(5);
 
-__webpack_require__(8);
+__webpack_require__(9);
 
 var _config = __webpack_require__(6);
 
@@ -1149,7 +1202,7 @@ var _LoginForm2 = _interopRequireDefault(_LoginForm);
 
 var _reactRouter = __webpack_require__(28);
 
-var _AuthStore = __webpack_require__(10);
+var _AuthStore = __webpack_require__(8);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -1508,6 +1561,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -1522,7 +1577,7 @@ var _models = __webpack_require__(3);
 
 var _config = __webpack_require__(6);
 
-__webpack_require__(8);
+__webpack_require__(9);
 
 var _renderers = __webpack_require__(33);
 
@@ -1532,110 +1587,204 @@ var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
+var _AuthStore = __webpack_require__(8);
+
+var _AuthStore2 = _interopRequireDefault(_AuthStore);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var styles = {
   container: { margin: 'auto', width: 'fit-content' }
 };
 
-var ModelCrud = function ModelCrud(_ref) {
-  var model = _ref.model,
-      modelName = _ref.modelName,
-      caption = _ref.caption,
-      service = _ref.service,
-      onChange = _ref.onChange;
-  return _react2.default.createElement(
-    'div',
-    { style: styles.container },
-    _react2.default.createElement(
-      _reactCrudTable2.default,
-      {
-        caption: (0, _config.getModelRelatedValue)(modelName + '.label') || modelName.asTitle(),
-        fetchItems: function fetchItems(payload) {
-          return service.fetchItems(payload);
-        },
-        showQueryBuilder: true,
-        actionsLabel: _constants2.default.LABELS.ACTIONS
-      },
-      _react2.default.createElement(
-        _reactCrudTable.Fields,
-        null,
-        model && Object.keys(model).sort(_models.keysSorter).map(function (k) {
-          return _react2.default.createElement(_reactCrudTable.Field, {
-            name: k,
-            label: (0, _models.getFieldLabel)(modelName, k),
-            hideInCreateForm: (0, _models.inCreationHiddenFields)(k),
-            hideInUpdateForm: (0, _models.inUpdateHiddenFields)(k),
-            type: (0, _models.getType)(model, k),
-            queryable: !!model[k].type,
-            sortable: !!model[k].type,
-            tableValueResolver: (0, _models.valueResolver)(model, k, modelName),
-            render: (0, _renderers2.default)(model, k, modelName)
+var ModelCrud = function (_React$Component) {
+  _inherits(ModelCrud, _React$Component);
+
+  function ModelCrud(props) {
+    _classCallCheck(this, ModelCrud);
+
+    var _this = _possibleConstructorReturn(this, (ModelCrud.__proto__ || Object.getPrototypeOf(ModelCrud)).call(this, props));
+
+    _this.handleCreateSubmit = _this.handleCreateSubmit.bind(_this);
+    _this.handleUpdateSubmit = _this.handleUpdateSubmit.bind(_this);
+    _this.handleDeleteSubmit = _this.handleDeleteSubmit.bind(_this);
+    return _this;
+  }
+
+  _createClass(ModelCrud, [{
+    key: 'handleCreateSubmit',
+    value: function handleCreateSubmit(item) {
+      var _props = this.props,
+          service = _props.service,
+          onChange = _props.onChange;
+
+      return new Promise(function (resolve) {
+        service.create(item).then(function (result) {
+          onChange();
+          resolve(result);
+        });
+      });
+    }
+  }, {
+    key: 'handleUpdateSubmit',
+    value: function handleUpdateSubmit(data) {
+      var _props2 = this.props,
+          model = _props2.model,
+          service = _props2.service;
+
+      var payload = data;
+      Object.keys(payload).forEach(function (k) {
+        if (model[k] && model[k].collection) {
+          payload[k] = payload[k].map(function (x) {
+            return x.id || x;
           });
-        })
-      ),
-      _react2.default.createElement(_reactCrudTable.CreateForm, {
+        }
+
+        if (model[k] && model[k].model) {
+          payload[k] = payload[k].id || payload[k];
+        }
+      });
+      return service.update(payload);
+    }
+  }, {
+    key: 'handleDeleteSubmit',
+    value: function handleDeleteSubmit(item) {
+      var _props3 = this.props,
+          onChange = _props3.onChange,
+          service = _props3.service;
+
+      return new Promise(function (resolve) {
+        service.delete(item).then(function (result) {
+          onChange();
+          resolve(result);
+        });
+      });
+    }
+  }, {
+    key: 'getCreateForm',
+    value: function getCreateForm() {
+      var _props4 = this.props,
+          model = _props4.model,
+          modelName = _props4.modelName;
+
+      var allowed = _AuthStore2.default.hasAnyOfRights((0, _models.createRights)(modelName));
+
+      if (!allowed) return null;
+
+      return _react2.default.createElement(_reactCrudTable.CreateForm, {
         title: _constants2.default.LABELS.CREATE_FORM_TITLE,
         message: _constants2.default.LABELS.CREATE_FORM_MESSAGE,
         trigger: _constants2.default.BUTTONS.CREATE,
-        onSubmit: function onSubmit(task) {
-          return new Promise(function (resolve) {
-            service.create(task).then(function (result) {
-              onChange();
-              resolve(result);
-            });
-          });
-        },
+        onSubmit: this.handleCreateSubmit,
         submitText: _constants2.default.BUTTONS.CREATE,
         validate: (0, _validation.validateModelRequiredValues)(model)
-      }),
-      _react2.default.createElement(_reactCrudTable.UpdateForm, {
+      });
+    }
+  }, {
+    key: 'getUpdateForm',
+    value: function getUpdateForm() {
+      var _props5 = this.props,
+          modelName = _props5.modelName,
+          model = _props5.model;
+
+      var allowed = _AuthStore2.default.hasAnyOfRights((0, _models.updateRights)(modelName));
+
+      if (!allowed) return null;
+
+      return _react2.default.createElement(_reactCrudTable.UpdateForm, {
         title: _constants2.default.LABELS.UPDATE_FORM_TITLE,
         message: _constants2.default.LABELS.UPDATE_FORM_MESSAGE,
         trigger: _constants2.default.BUTTONS.UPDATE,
-        onSubmit: function onSubmit(data) {
-          var payload = data;
-          Object.keys(payload).forEach(function (k) {
-            if (model[k].collection) {
-              payload[k] = payload[k].map(function (x) {
-                return x.id || x;
-              });
-            }
-
-            if (model[k].model) {
-              payload[k] = payload[k].id || payload[k];
-            }
-          });
-          return service.update(payload);
-        },
+        onSubmit: this.handleUpdateSubmit,
         submitText: _constants2.default.BUTTONS.UPDATE,
         validate: (0, _validation.validateModelRequiredValues)(model)
-      }),
-      _react2.default.createElement(_reactCrudTable.DeleteForm, {
+      });
+    }
+  }, {
+    key: 'getDeleteForm',
+    value: function getDeleteForm() {
+      var _props6 = this.props,
+          model = _props6.model,
+          modelName = _props6.modelName,
+          service = _props6.service,
+          onChange = _props6.onChange;
+
+      var allowed = _AuthStore2.default.hasAnyOfRights((0, _models.removeRights)(modelName));
+
+      if (!allowed) return null;
+
+      return _react2.default.createElement(_reactCrudTable.DeleteForm, {
         title: _constants2.default.LABELS.REMOVE_FORM_TITLE,
         message: _constants2.default.LABELS.REMOVE_FORM_MESSAGE,
         trigger: _constants2.default.BUTTONS.REMOVE,
-        onSubmit: function onSubmit(task) {
-          return new Promise(function (resolve) {
-            service.delete(task).then(function (result) {
-              onChange();
-              resolve(result);
-            });
-          });
-        },
+        onSubmit: this.handleDeleteSubmit,
         submitText: _constants2.default.BUTTONS.REMOVE,
         validate: _validation.validateModelDeletion
-      }),
-      _react2.default.createElement(_reactCrudTable.Pagination, {
-        fetchTotalOfItems: function fetchTotalOfItems(payload) {
-          return service.countItems(payload);
-        },
-        itemsPerPage: 10,
-        activePage: 1
-      })
-    )
-  );
-};
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props7 = this.props,
+          model = _props7.model,
+          modelName = _props7.modelName,
+          caption = _props7.caption,
+          service = _props7.service,
+          onChange = _props7.onChange;
+
+      return _react2.default.createElement(
+        'div',
+        { style: styles.container },
+        _react2.default.createElement(
+          _reactCrudTable2.default,
+          {
+            caption: (0, _models.modelTitle)(modelName),
+            fetchItems: function fetchItems(payload) {
+              return service.fetchItems(payload);
+            },
+            showQueryBuilder: true,
+            actionsLabel: _constants2.default.LABELS.ACTIONS
+          },
+          _react2.default.createElement(
+            _reactCrudTable.Fields,
+            null,
+            model && Object.keys(model).sort(_models.keysSorter).map(function (k) {
+              return _react2.default.createElement(_reactCrudTable.Field, {
+                name: k,
+                label: (0, _models.getFieldLabel)(modelName, k),
+                hideInCreateForm: (0, _models.inCreationHiddenFields)(k),
+                hideInUpdateForm: (0, _models.inUpdateHiddenFields)(k),
+                type: (0, _models.getType)(model, k),
+                queryable: !!model[k].type,
+                sortable: !!model[k].type,
+                tableValueResolver: (0, _models.valueResolver)(model, k, modelName),
+                render: (0, _renderers2.default)(model, k, modelName)
+              });
+            })
+          ),
+          this.getCreateForm(),
+          this.getUpdateForm(),
+          this.getDeleteForm(),
+          _react2.default.createElement(_reactCrudTable.Pagination, {
+            fetchTotalOfItems: function fetchTotalOfItems(payload) {
+              return service.countItems(payload);
+            },
+            itemsPerPage: 15,
+            activePage: 1
+          })
+        )
+      );
+    }
+  }]);
+
+  return ModelCrud;
+}(_react2.default.Component);
 
 ModelCrud.propTypes = {};
 
@@ -1946,7 +2095,7 @@ var _Service2 = _interopRequireDefault(_Service);
 
 var _models = __webpack_require__(3);
 
-var _object = __webpack_require__(9);
+var _object = __webpack_require__(10);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2349,7 +2498,7 @@ var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _AuthStore = __webpack_require__(10);
+var _AuthStore = __webpack_require__(8);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -2485,7 +2634,7 @@ var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-__webpack_require__(8);
+__webpack_require__(9);
 
 var _config = __webpack_require__(6);
 

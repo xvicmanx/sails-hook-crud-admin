@@ -1251,11 +1251,11 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _LoginForm = __webpack_require__(24);
+var _reactRouter = __webpack_require__(24);
+
+var _LoginForm = __webpack_require__(25);
 
 var _LoginForm2 = _interopRequireDefault(_LoginForm);
-
-var _reactRouter = __webpack_require__(26);
 
 var _AuthStore = __webpack_require__(4);
 
@@ -1300,14 +1300,20 @@ var LoginScreen = function (_React$Component) {
     _this.state = {
       loggedIn: false
     };
+    _this.handleSubmit = _this.handleSubmit.bind(_this);
     return _this;
   }
 
   _createClass(LoginScreen, [{
+    key: 'handleSubmit',
+    value: function handleSubmit(res) {
+      _AuthStore2.default.storeTokenInfo(res.token, res.exp);
+      _AuthStore2.default.storeUserData(res.userData);
+      this.setState({ loggedIn: true });
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
       if (this.state.loggedIn) {
         return _react2.default.createElement(_reactRouter.Redirect, { to: '/model' });
       }
@@ -1324,20 +1330,8 @@ var LoginScreen = function (_React$Component) {
           _react2.default.createElement(
             _semanticUiReact.Grid.Column,
             { style: styles.loginWrapper },
-            _react2.default.createElement(
-              _semanticUiReact.Header,
-              {
-                as: 'h2',
-                color: 'teal',
-                textAlign: 'center'
-              },
-              'Login'
-            ),
-            _react2.default.createElement(_LoginForm2.default, { onSubmitSuccess: function onSubmitSuccess(res) {
-                _AuthStore2.default.storeTokenInfo(res.token, res.exp);
-                _AuthStore2.default.storeUserData(res.userData);
-                _this2.setState({ loggedIn: true });
-              }
+            _react2.default.createElement(_LoginForm2.default, {
+              onSubmitSuccess: this.handleSubmit
             })
           )
         )
@@ -1352,6 +1346,12 @@ exports.default = LoginScreen;
 
 /***/ }),
 /* 24 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-router");
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1367,7 +1367,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(15);
 
-var _formik = __webpack_require__(25);
+var _formik = __webpack_require__(26);
 
 var _semanticUiReact = __webpack_require__(2);
 
@@ -1422,6 +1422,12 @@ var LoginForm = function LoginForm(props) {
     _react2.default.createElement(
       _semanticUiReact.Segment,
       null,
+      _react2.default.createElement(_semanticUiReact.Header, {
+        as: 'h2',
+        color: 'teal',
+        textAlign: 'center',
+        content: 'Login'
+      }),
       _react2.default.createElement(
         _semanticUiReact.Form.Field,
         {
@@ -1528,16 +1534,10 @@ exports.default = (0, _formik.withFormik)({
 })(LoginForm);
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports) {
-
-module.exports = require("formik");
-
-/***/ }),
 /* 26 */
 /***/ (function(module, exports) {
 
-module.exports = require("react-router");
+module.exports = require("formik");
 
 /***/ }),
 /* 27 */

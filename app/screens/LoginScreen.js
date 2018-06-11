@@ -44,14 +44,14 @@ class LoginScreen extends React.Component {
   
   render() {
     if (this.state.loggedIn) {
-      return <Redirect to="/model"/>;
+      return <Redirect to="/model" />;
     }
     return (
       <div style={styles.container}>
         <Grid
-          textAlign='center'
+          textAlign="center"
           style={styles.grid}
-          verticalAlign='middle'
+          verticalAlign="middle"
         >
           <Grid.Column style={styles.loginWrapper}>
             <LoginForm

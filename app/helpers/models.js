@@ -134,20 +134,12 @@ export const getFieldRenderer = (modelName, field) => {
   );
 };
 
-const CRUD_MODELS = [
-  'crudaction',
-  'crudresource',
-  'crudright',
-  'crudgroup',
-  'cruduser',
-];
-
 export const NON_CRUD_MODELS_FILTER = (model) => {
-  return CRUD_MODELS.indexOf(model) < 0
+  return Constants.CRUD_MODELS.indexOf(model) < 0
 };
 
 export const CRUD_MODELS_FILTER = (model) => {
-  return CRUD_MODELS.indexOf(model) >= 0;
+  return Constants.CRUD_MODELS.indexOf(model) >= 0;
 };
 
 export default {

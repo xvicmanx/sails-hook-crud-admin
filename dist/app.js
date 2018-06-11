@@ -110,9 +110,9 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 var _object = __webpack_require__(9);
 
-var _config = __webpack_require__(5);
+var _config = __webpack_require__(6);
 
-var _constants = __webpack_require__(6);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -239,14 +239,12 @@ var getFieldRenderer = exports.getFieldRenderer = function getFieldRenderer(mode
   return (0, _config.getModelRelatedValue)(modelName + '.fields.' + field + '.renderer', field.separateCamel().asTitle());
 };
 
-var CRUD_MODELS = ['crudaction', 'crudresource', 'crudright', 'crudgroup', 'cruduser'];
-
 var NON_CRUD_MODELS_FILTER = exports.NON_CRUD_MODELS_FILTER = function NON_CRUD_MODELS_FILTER(model) {
-  return CRUD_MODELS.indexOf(model) < 0;
+  return _constants2.default.CRUD_MODELS.indexOf(model) < 0;
 };
 
 var CRUD_MODELS_FILTER = exports.CRUD_MODELS_FILTER = function CRUD_MODELS_FILTER(model) {
-  return CRUD_MODELS.indexOf(model) >= 0;
+  return _constants2.default.CRUD_MODELS.indexOf(model) >= 0;
 };
 
 exports.default = {
@@ -266,12 +264,50 @@ exports.default = {
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _config = __webpack_require__(6);
+
+var CRUD_MODELS = ['crudaction', 'crudresource', 'crudright', 'crudgroup', 'cruduser'];
+
+var Constants = {
+  BUTTONS: {
+    CREATE: (0, _config.getButtonText)('create', 'Create'),
+    UPDATE: (0, _config.getButtonText)('update', 'Update'),
+    REMOVE: (0, _config.getButtonText)('remove', 'Remove'),
+    SEE_DETAILS: (0, _config.getButtonText)('seeDetails', 'See details')
+  },
+  LABELS: {
+    HOME: (0, _config.getLabel)('home', 'Home'),
+    PERMISSIONS: (0, _config.getLabel)('permissions', 'Permissions'),
+    ACTIONS: (0, _config.getLabel)('actions', 'Actions'),
+    CREATE_FORM_TITLE: (0, _config.getLabel)('createFormTitle', 'Create Item'),
+    UPDATE_FORM_TITLE: (0, _config.getLabel)('updateFormTitle', 'Update Item'),
+    REMOVE_FORM_TITLE: (0, _config.getLabel)('removeFormTitle', 'Remove existing Item'),
+    CREATE_FORM_MESSAGE: (0, _config.getLabel)('createFormMessage', 'Create a new item'),
+    UPDATE_FORM_MESSAGE: (0, _config.getLabel)('updateFormMessage', 'Update an existing item'),
+    REMOVE_FORM_MESSAGE: (0, _config.getLabel)('removeFormMessage', 'Are you sure you want to remove the item?')
+  },
+  CRUD_MODELS: CRUD_MODELS
+};
+
+exports.default = Constants;
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-router-dom");
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -309,41 +345,6 @@ exports.default = {
   getButtonText: getButtonText,
   getModelRelatedValue: getModelRelatedValue
 };
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _config = __webpack_require__(5);
-
-var Constants = {
-  BUTTONS: {
-    CREATE: (0, _config.getButtonText)('create', 'Create'),
-    UPDATE: (0, _config.getButtonText)('update', 'Update'),
-    REMOVE: (0, _config.getButtonText)('remove', 'Remove'),
-    SEE_DETAILS: (0, _config.getButtonText)('seeDetails', 'See details')
-  },
-  LABELS: {
-    HOME: (0, _config.getLabel)('home', 'Home'),
-    PERMISSIONS: (0, _config.getLabel)('permissions', 'Permissions'),
-    ACTIONS: (0, _config.getLabel)('actions', 'Actions'),
-    CREATE_FORM_TITLE: (0, _config.getLabel)('createFormTitle', 'Create Item'),
-    UPDATE_FORM_TITLE: (0, _config.getLabel)('updateFormTitle', 'Update Item'),
-    REMOVE_FORM_TITLE: (0, _config.getLabel)('removeFormTitle', 'Remove existing Item'),
-    CREATE_FORM_MESSAGE: (0, _config.getLabel)('createFormMessage', 'Create a new item'),
-    UPDATE_FORM_MESSAGE: (0, _config.getLabel)('updateFormMessage', 'Update an existing item'),
-    REMOVE_FORM_MESSAGE: (0, _config.getLabel)('removeFormMessage', 'Are you sure you want to remove the item?')
-  }
-};
-
-exports.default = Constants;
 
 /***/ }),
 /* 7 */
@@ -505,6 +506,86 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _constants = __webpack_require__(4);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var storeValue = function storeValue(key, value) {
+  if (typeof Storage !== 'undefined') {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  }
+};
+
+var readValue = function readValue(key) {
+  if (typeof Storage !== 'undefined') {
+    var value = window.localStorage.getItem(key);
+    if (!value) return null;
+    return JSON.parse(value);
+  }
+};
+
+var KEYS = {
+  TOKEN_INFO: 'tokenInfo',
+  USER_DATA: 'userData'
+};
+
+var permissionAreaRights = ['*::*', 'read::*'];
+
+_constants2.default.CRUD_MODELS.forEach(function (c) {
+  permissionAreaRights.push('*::' + c);
+  permissionAreaRights.push('read::' + c);
+});
+
+var AuthStore = {
+  storeTokenInfo: function storeTokenInfo(value, exp) {
+    storeValue(KEYS.TOKEN_INFO, {
+      value: value, exp: exp
+    });
+  },
+  storeUserData: function storeUserData(userData) {
+    storeValue(KEYS.USER_DATA, userData);
+  },
+  isTokenExpired: function isTokenExpired() {
+    var tokenInfo = readValue(KEYS.TOKEN_INFO);
+    if (!tokenInfo || !tokenInfo.exp || !token.value) {
+      return true;
+    }
+    return tokenInfo.exp < Math.floor(new Date().getTime() / 1000);
+  },
+  getRights: function getRights() {
+    var userData = readValue(KEYS.USER_DATA);
+    if (!userData || !userData.rights) {
+      return [];
+    }
+    return userData.rights;
+  },
+  canAccessPermissionsArea: function canAccessPermissionsArea() {
+    var rights = AuthStore.getRights();
+    return rights.reduce(function (result, right) {
+      return result || permissionAreaRights.indexOf(right) > -1;
+    }, false);
+  },
+  clear: function clear() {
+    storeValue(KEYS.USER_DATA, null);
+    storeValue(KEYS.TOKEN_INFO, null);
+  }
+};
+
+exports.default = AuthStore;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -598,13 +679,13 @@ Select.propTypes = {
 exports.default = Select;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom");
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -618,9 +699,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(4);
+var _reactRouterDom = __webpack_require__(5);
 
-var _AuthStore = __webpack_require__(13);
+var _AuthStore = __webpack_require__(10);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -648,65 +729,6 @@ exports.default = function () {
     };
   };
 };
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var storeValue = function storeValue(key, value) {
-  if (typeof Storage !== 'undefined') {
-    window.localStorage.setItem(key, JSON.stringify(value));
-  }
-};
-
-var readValue = function readValue(key) {
-  if (typeof Storage !== 'undefined') {
-    var value = window.localStorage.getItem(key);
-    if (!value) return null;
-    return JSON.parse(value);
-  }
-};
-var KEYS = {
-  TOKEN_INFO: 'tokenInfo',
-  USER_DATA: 'userData'
-};
-
-var AuthStore = {
-  storeTokenInfo: function storeTokenInfo(value, exp) {
-    storeValue(KEYS.TOKEN_INFO, {
-      value: value, exp: exp
-    });
-  },
-  storeUserData: function storeUserData(userData) {
-    storeValue(KEYS.USER_DATA, userData);
-  },
-  isTokenExpired: function isTokenExpired() {
-    var tokenInfo = readValue(KEYS.TOKEN_INFO);
-    if (!tokenInfo || !tokenInfo.exp || !token.value) {
-      return true;
-    }
-    return tokenInfo.exp < Math.floor(new Date().getTime() / 1000);
-  },
-  getRights: function getRights() {
-    var userData = readValue(KEYS.USER_DATA);
-    if (!userData || !userData.rights) {
-      return [];
-    }
-    return userData.rights;
-  },
-  clear: function clear() {
-    storeValue(KEYS.USER_DATA, null);
-    storeValue(KEYS.TOKEN_INFO, null);
-  }
-};
-
-exports.default = AuthStore;
 
 /***/ }),
 /* 14 */
@@ -785,7 +807,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(1);
 
-var _reactDom = __webpack_require__(11);
+var _reactDom = __webpack_require__(12);
 
 var _Routes = __webpack_require__(18);
 
@@ -830,7 +852,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(4);
+var _reactRouterDom = __webpack_require__(5);
 
 var _queryString = __webpack_require__(19);
 
@@ -1034,17 +1056,17 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _semanticUiReact = __webpack_require__(1);
 
-var _reactRouterDom = __webpack_require__(4);
+var _reactRouterDom = __webpack_require__(5);
 
 __webpack_require__(8);
 
-var _config = __webpack_require__(5);
+var _config = __webpack_require__(6);
 
-var _RightProtected = __webpack_require__(12);
+var _RightProtected = __webpack_require__(13);
 
 var _RightProtected2 = _interopRequireDefault(_RightProtected);
 
-var _constants = __webpack_require__(6);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -1127,7 +1149,7 @@ var _LoginForm2 = _interopRequireDefault(_LoginForm);
 
 var _reactRouter = __webpack_require__(28);
 
-var _AuthStore = __webpack_require__(13);
+var _AuthStore = __webpack_require__(10);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -1235,7 +1257,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(11);
+var _reactDom = __webpack_require__(12);
 
 var _formik = __webpack_require__(27);
 
@@ -1436,7 +1458,7 @@ var _ModelCrud2 = _interopRequireDefault(_ModelCrud);
 
 var _models = __webpack_require__(3);
 
-var _RightProtected = __webpack_require__(12);
+var _RightProtected = __webpack_require__(13);
 
 var _RightProtected2 = _interopRequireDefault(_RightProtected);
 
@@ -1498,7 +1520,7 @@ var _validation = __webpack_require__(32);
 
 var _models = __webpack_require__(3);
 
-var _config = __webpack_require__(5);
+var _config = __webpack_require__(6);
 
 __webpack_require__(8);
 
@@ -1506,7 +1528,7 @@ var _renderers = __webpack_require__(33);
 
 var _renderers2 = _interopRequireDefault(_renderers);
 
-var _constants = __webpack_require__(6);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -1866,7 +1888,7 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Select = __webpack_require__(10);
+var _Select = __webpack_require__(11);
 
 var _Select2 = _interopRequireDefault(_Select);
 
@@ -1914,7 +1936,7 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Select = __webpack_require__(10);
+var _Select = __webpack_require__(11);
 
 var _Select2 = _interopRequireDefault(_Select);
 
@@ -2023,7 +2045,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _semanticUiReact = __webpack_require__(1);
 
-var _Select = __webpack_require__(10);
+var _Select = __webpack_require__(11);
 
 var _Select2 = _interopRequireDefault(_Select);
 
@@ -2319,13 +2341,17 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactRouterDom = __webpack_require__(4);
+var _reactRouterDom = __webpack_require__(5);
 
 var _semanticUiReact = __webpack_require__(1);
 
-var _constants = __webpack_require__(6);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
+
+var _AuthStore = __webpack_require__(10);
+
+var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2354,7 +2380,7 @@ var Header = function Header() {
         to: '/model',
         content: _constants2.default.LABELS.HOME
       }),
-      _react2.default.createElement(_semanticUiReact.Menu.Item, {
+      _AuthStore2.default.canAccessPermissionsArea() && _react2.default.createElement(_semanticUiReact.Menu.Item, {
         as: _reactRouterDom.Link,
         header: true,
         to: '/permissions',
@@ -2451,17 +2477,17 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(4);
+var _reactRouterDom = __webpack_require__(5);
 
 var _semanticUiReact = __webpack_require__(1);
 
-var _constants = __webpack_require__(6);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
 __webpack_require__(8);
 
-var _config = __webpack_require__(5);
+var _config = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

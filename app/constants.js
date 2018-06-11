@@ -1,5 +1,13 @@
 import { getLabel, getButtonText } from './helpers/config';
 
+const CRUD_MODELS = [
+  'crudaction',
+  'crudresource',
+  'crudright',
+  'crudgroup',
+  'cruduser',
+];
+
 const Constants = {
   BUTTONS: {
     CREATE: getButtonText('create', 'Create'),
@@ -18,6 +26,7 @@ const Constants = {
     UPDATE_FORM_MESSAGE: getLabel('updateFormMessage', 'Update an existing item'),
     REMOVE_FORM_MESSAGE: getLabel('removeFormMessage', 'Are you sure you want to remove the item?'),
   },
+  CRUD_MODELS,
 };
 
 export default Constants;

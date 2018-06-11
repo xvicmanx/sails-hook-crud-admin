@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Container, Menu } from 'semantic-ui-react';
 import Constants from '../../constants';
+import AuthStore from '../../AuthStore';
 
 const styles = {
   wrapper: {
@@ -25,12 +26,14 @@ const Header = () => (
         to="/model"
         content={Constants.LABELS.HOME}
       />
-      <Menu.Item
-        as={Link}
-        header
-        to="/permissions"
-        content={Constants.LABELS.PERMISSIONS}
-      />
+      {AuthStore.canAccessPermissionsArea() && (
+        <Menu.Item
+          as={Link}
+          header
+          to="/permissions"
+          content={Constants.LABELS.PERMISSIONS}
+        />
+      )}
     </Container>
   </Menu>
 );

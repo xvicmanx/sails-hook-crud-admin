@@ -1,7 +1,7 @@
 import React from 'react'
-import { Grid, Header } from 'semantic-ui-react';
-import LoginForm from '../components/forms/LoginForm';
+import { Grid } from 'semantic-ui-react';
 import { Redirect } from 'react-router';
+import LoginForm from '../components/forms/LoginForm';
 import AuthStore from '../AuthStore';
 
 const styles = {
@@ -30,6 +30,16 @@ class LoginScreen extends React.Component {
     this.state = {
       loggedIn: false,
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(res) {
+    AuthStore.storeTokenInfo(
+      res.token,
+      res.exp
+    );
+    AuthStore.storeUserData(res.userData);
+    this.setState({ loggedIn: true });
   }
   
   render() {
@@ -44,21 +54,8 @@ class LoginScreen extends React.Component {
           verticalAlign='middle'
         >
           <Grid.Column style={styles.loginWrapper}>
-            <Header
-              as='h2'
-              color='teal'
-              textAlign='center'
-            >
-              Login
-            </Header>
-            <LoginForm onSubmitSuccess={(res) => {
-                AuthStore.storeTokenInfo(
-                  res.token,
-                  res.exp
-                );
-                AuthStore.storeUserData(res.userData);
-                this.setState({ loggedIn: true });
-              }}
+            <LoginForm
+              onSubmitSuccess={this.handleSubmit}
             />
           </Grid.Column>
         </Grid>

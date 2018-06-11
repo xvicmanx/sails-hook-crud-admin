@@ -7,6 +7,7 @@ import {
   Segment,
   Label,
   Input,
+  Header,
 } from 'semantic-ui-react';
 import Service from '../../services/Service';
 
@@ -48,6 +49,12 @@ const LoginForm = props => {
       size='large'
     >
       <Segment>
+      <Header
+        as='h2'
+        color='teal'
+        textAlign='center'
+        content="Login"
+      />
       <Form.Field
         style={styles.field}
         className={userFieldClass}

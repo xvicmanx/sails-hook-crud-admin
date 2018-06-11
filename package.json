@@ -43,6 +43,7 @@
     "lodash": "^4.17.10",
     "lodash-id": "^0.14.0",
     "lodash.template": "^4.4.0",
+    "query-string": "^6.1.0",
     "react": "^16.4.0",
     "react-crud-table": "file:../react-crud-table",
     "react-dom": "^16.4.0",

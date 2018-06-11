@@ -4,25 +4,19 @@ import {
   Route,
   Link,
 } from 'react-router-dom';
-import { Statistic, Segment } from 'semantic-ui-react';
-import Header from './layout/Header';
-import AllModelsNavigator from './layout/AllModelsNavigator';
+import queryString from 'query-string';
+import {
+  getModels,
+  NON_CRUD_MODELS_FILTER,
+  CRUD_MODELS_FILTER,
+} from '../helpers/models';
+import Service from '../services/Service';
+import ModelsNavigator from './layout/ModelsNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import ModelDetailsScreen from '../screens/ModelDetailsScreen';
-import { getModels } from '../helpers/models';
-import Service from '../services/Service';
+import Main from './layout/Main';
+import MainBreadcrumb from './layout/MainBreadcrumb';
 
-
-const styles = {
-  segment: {
-    width: '95%',
-    margin: '0 auto',
-    paddingBottom: '4rem',
-    border: 0,
-    boxShadow: 'none',
-    paddingTop: 0,
-  },
-};
 
 class Routes extends React.Component {
   constructor(props) {
@@ -50,28 +44,55 @@ class Routes extends React.Component {
 
   render() {
     const parent = this;
+    const models = Object.keys(getModels());
+    const nonCrudModels = models.filter(NON_CRUD_MODELS_FILTER);
+    const crudModels = models.filter(CRUD_MODELS_FILTER);
     return (
       <Router>
         <div>
           <Route
+            exact
+            path="/model/:modelName"
+            component={({ match, location }) => {
+              const values = queryString.parse(location.search);
+              return (
+                <Main>
+                  <MainBreadcrumb
+                    area={values.area || 'home'}
+                    modelName={match.params.modelName}
+                  />
+                  <ModelDetailsScreen
+                    onChange={parent.handleChange}
+                    modelName={match.params.modelName}
+                  />
+                </Main>
+              );
+            }}
+          />
+          <Route
+            exact
             path="/model"
             component={() => (
-              <div>
-                <Header />
-                <Segment style={styles.segment}>
-                  <AllModelsNavigator counts={parent.state.counts} />
-                  <hr className="separator" />
-                  <Route
-                    path="/model/:modelName"
-                    component={({ match }) => (
-                      <ModelDetailsScreen
-                        onChange={parent.handleChange}
-                        modelName={match.params.modelName}
-                      />
-                    )}
-                  />
-                </Segment>
-              </div>
+              <Main>
+                <ModelsNavigator
+                  models={nonCrudModels}
+                  counts={parent.state.counts}
+                />
+              </Main>
+            )}
+          />
+
+          <Route
+            exact
+            path="/permissions"
+            component={() => (
+              <Main>
+                <ModelsNavigator
+                  models={crudModels}
+                  counts={parent.state.counts}
+                  area="permissions"
+                />
+              </Main>
             )}
           />
           <Route

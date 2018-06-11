@@ -9,6 +9,7 @@ const Constants = {
   },
   LABELS: {
     HOME: getLabel('home', 'Home'),
+    PERMISSIONS: getLabel('permissions', 'Permissions'),
     ACTIONS: getLabel('actions', 'Actions'),
     CREATE_FORM_TITLE: getLabel('createFormTitle', 'Create Item'),
     UPDATE_FORM_TITLE: getLabel('updateFormTitle', 'Update Item'),

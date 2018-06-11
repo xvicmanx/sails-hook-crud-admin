@@ -9,6 +9,7 @@ const styles = {
     height: '100vh',
     position: 'relative',
     width: '100%',
+    backgroundColor: '#f4f4f4',
   },
   grid: {
     height: '100vh',

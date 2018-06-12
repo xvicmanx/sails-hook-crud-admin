@@ -621,6 +621,7 @@ td.rdtYear:hover {
   padding: '.3rem';
   border: 1px solid #eee;
   border-radius: 3px;
+  margin: 1rem 0;
 }
 
 .rights-selector__cell,

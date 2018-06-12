@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Service from '../../services/Service';
 import RightsSelector from 'rights-selector';
+import { modelTitle } from '../../helpers/models';
+import Constants from '../../constants';
 
 class RightsItems extends Component {
   constructor(props) {
@@ -62,14 +64,14 @@ export default ({ field }) => {
         return (
           <RightsSelector
             rights={rightsToInject}
-            actionsLabel="Actions"
-            resourcesLabel="Resources"
+            actionsLabel={Constants.LABELS.ACTIONS}
+            resourcesLabel={Constants.LABELS.RESOURCES}
             actions={Object.keys(actions).map(a => ({
               label: a,
               value: a,
             }))}
             resources={Object.keys(resources).map(a => ({
-              label: a,
+              label: modelTitle(a),
               value: a,
             }))}
             onChange={(values) => {

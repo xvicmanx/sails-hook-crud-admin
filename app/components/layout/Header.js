@@ -19,6 +19,10 @@ const Header = () => (
     inverted
     style={styles.wrapper}
   >
+    <Menu.Item
+      header
+      content={`${Constants.LABELS.WELCOME} ${AuthStore.getUserName()}!`}
+    />
     <Container>
       <Menu.Item
         as={Link}

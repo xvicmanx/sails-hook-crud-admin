@@ -87,7 +87,7 @@ const seed = async (sails) => {
   };
   const rootUserPayload = {
     username: 'admin',
-    password: '1234',
+    password: 'access@crud-2018',
     groups: [
       rootGroup.id,
     ],

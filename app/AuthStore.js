@@ -53,6 +53,10 @@ const AuthStore = {
     }
     return tokenInfo.exp < Math.floor(new Date().getTime()/1000);
   },
+  getUserName() {
+    const userData = readValue(KEYS.USER_DATA);
+    return userData && userData.name || '';
+  },
   getToken() {
     const tokenInfo = readValue(KEYS.TOKEN_INFO);
     return tokenInfo && tokenInfo.value;

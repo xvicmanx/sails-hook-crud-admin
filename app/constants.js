@@ -20,6 +20,8 @@ const Constants = {
     LOGOUT: getLabel('logout', 'Logout'),
     PERMISSIONS: getLabel('permissions', 'Permissions'),
     ACTIONS: getLabel('actions', 'Actions'),
+    RESOURCES: getLabel('resources', 'Resources'),
+    WELCOME: getLabel('welcome', 'Welcome'),
     CREATE_FORM_TITLE: getLabel('createFormTitle', 'Create Item'),
     UPDATE_FORM_TITLE: getLabel('updateFormTitle', 'Update Item'),
     REMOVE_FORM_TITLE: getLabel('removeFormTitle', 'Remove existing Item'),

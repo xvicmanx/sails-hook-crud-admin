@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const SECRET = 'secret';
+const SECRET = '1h3s3cr3t@k3y';
 const ONE_DAY = 24 * 60 * 60;
 
 const AuthService = {

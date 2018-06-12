@@ -5,11 +5,13 @@ import CheckboxRenderer from './CheckboxRenderer';
 import EnumSelectRenderer from './EnumSelectRenderer';
 import ModelsSelectRenderer from './ModelsSelectRenderer';
 import MultipleModelsSelectRenderer from './MultipleModelsSelectRenderer';
+import RightsRenderer from './RightsRenderer';
 
 const RENDERERS = {
   textarea: model => DescriptionRenderer,
   input: model => InputRenderer,
   checkbox: model => CheckboxRenderer,
+  rights: model => RightsRenderer,
   enum: (model, field) => EnumSelectRenderer(model[field].validations.isIn),
   modelSelect: (model, field) => ModelsSelectRenderer(model[field].model),
   modelMultipleSelect: (model, field) => MultipleModelsSelectRenderer(model[field].collection),
@@ -19,6 +21,13 @@ const renderer = (model, field, modelName) => {
   const rendererType = getFieldRenderer(modelName, field);
   if (rendererType && RENDERERS[rendererType]) {
     return RENDERERS[rendererType](model, field);
+  }
+
+  if (
+    modelName === 'crudgroup' &&
+    field === 'rights'
+  ) {
+    return RENDERERS.rights(model);
   }
 
   if (model[field].type === 'boolean') {

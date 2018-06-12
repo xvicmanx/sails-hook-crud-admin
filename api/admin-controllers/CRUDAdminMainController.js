@@ -2,52 +2,12 @@ const fs = require('fs');
 const app = require('../../dist/app.js');
 const { buildQuery } = require('../../app/helpers/query');
 const crudConfig = require('../admin-config/crud');
-const AuthService = require('../admin-services/AuthService');
-
-
-const MODELS_FILTER = (m) => {
-  return m.indexOf('crudgroup_') < 0
-};
-
-const getDefinitions = (models) => {
-  return Object.keys(models)
-    .filter(MODELS_FILTER)
-    .reduce(function (result, k) {
-      result[k] = models[k].attributes;
-      return result;
-    }, {});
-};
-
-const populate = async (resultPromise, modelName, sails) => {
-  const definition = getDefinitions(sails.models)[modelName];
-  const fieldsToPopulate = Object.keys(definition).filter(k => {
-      return definition[k].model || definition[k].collection;
-    }).map(k => k);
-  let result = resultPromise;
-  fieldsToPopulate.forEach(field => {
-    result = result.populate(field);
-  })
-  return result;
-};
-
-const tokenAuthError = () => ({
-  error: {
-    message: `Error in jwt token`,
-    fields: {
-      'jwt-token': `Error in jwt token`,
-    },
-  },
-});
-
-const verifyToken = async (req, res) => {
-  const tokenVerification = await AuthService.verifyToken(req.headers['jwt-token']);
-  if (!tokenVerification.success) {
-    res.status(403)
-      .send(tokenAuthError());
-  }
-  return tokenVerification.success;
-};
-
+const {
+  verifyAccess,
+  verifyToken,
+  populate,
+  getDefinitions,
+} = require('../helpers');
 
 class Controller {
   constructor(sails) {
@@ -82,25 +42,36 @@ class Controller {
     );
   }
 
+  async hasAccess(action, req, res) {
+    const { modelName } = req.body || req.query;
+    return await verifyAccess({
+      action,
+      resource: modelName,
+    })(req, res);
+  }
+
   async modelCount (req, res) {
-    if (await verifyToken(req, res)) {
-      const total = await this.sails.models[req.body.modelName].count({
-        where: buildQuery(req.body.queryRules || [])
+    const { modelName, queryRules } = req.body;
+    if (await this.hasAccess('read', req, res)) {
+      const total = await this.sails.models[modelName].count({
+        where: buildQuery(queryRules || [])
       });
       return res.json(total);
     } 
   }
 
   async modelCreate (req, res) {
-    if (await verifyToken(req, res)) {
-      const result = await this.sails.models[req.body.modelName]
+    const { modelName } = req.body;
+    if (await this.hasAccess('create', req, res)) {
+      const result = await this.sails.models[modelName]
         .create(req.body).fetch();
       return res.json(result);
     }
   }
 
   async modelUpdate (req, res) {
-    if (await verifyToken(req, res)) {
+    const { modelName } = req.body;
+    if (await this.hasAccess('update', req, res)) {
       const result = await this.sails.models[req.body.modelName]
         .update({ id: req.body.id }, req.body).fetch();
       return res.json(result);
@@ -108,24 +79,32 @@ class Controller {
   }
 
   async modelDelete (req, res) {
-    if (await verifyToken(req, res)) {
-      const result = await this.sails.models[req.body.modelName]
+    const { modelName } = req.body;
+    if (await this.hasAccess('delete', req, res)) {
+      const result = await this.sails.models[modelName]
         .destroy({ id: req.params.id }).fetch();
       return res.json(result);
     }
   }
 
   async modelSearch(req, res) {
-    if (await verifyToken(req, res)) {
-      const resultPromise = this.sails.models[req.body.modelName].find({
-        where: buildQuery(req.body.queryRules || []),
-        skip: req.body.skip,
-        limit: req.body.limit,
-        sort: req.body.sort,
+    const  {
+      queryRules,
+      skip,
+      modelName,
+      limit,
+      sort,
+    } = req.body;
+    if (await this.hasAccess('read', req, res)) {
+      const resultPromise = this.sails.models[modelName].find({
+        where: buildQuery(queryRules || []),
+        skip,
+        limit,
+        sort,
       });
       const result = await populate(
         resultPromise,
-        req.body.modelName,
+        modelName,
         this.sails,
       );
       return res.json(result);
@@ -133,12 +112,13 @@ class Controller {
   }
 
   async modelSearchAll(req, res) {
-    if (await verifyToken(req, res)) {
-      const resultPromise = this.sails.models[req.query.modelName]
+    const { modelName } = req.query;
+    if (await this.hasAccess('read', req, res)) {
+      const resultPromise = this.sails.models[modelName]
         .find({});
       const result = await populate(
         resultPromise,
-        req.query.modelName,
+        modelName,
         this.sails
       );
       return res.json(result);
@@ -146,7 +126,7 @@ class Controller {
   }
 
   async countAll(req, res) {
-    if (await verifyToken(req, res)) {
+    if ((await verifyToken(req, res)).success) {
       const promises = Object.keys(this.sails.models).map(name => {
         return new Promise((resolve) => {
           this.sails.models[name].count({})

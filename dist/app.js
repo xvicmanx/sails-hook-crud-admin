@@ -1424,7 +1424,7 @@ var LoginForm = function LoginForm(props) {
       null,
       _react2.default.createElement(_semanticUiReact.Header, {
         as: 'h2',
-        color: 'teal',
+        color: 'black',
         textAlign: 'center',
         content: 'Login'
       }),

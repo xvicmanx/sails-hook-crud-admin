@@ -6,24 +6,40 @@ const AuthService = {
   verifyToken(token) {
     return new Promise((resolve, reject) => {
       try {
-        const decoded = jwt.verify(token, SECRET);
-        resolve({ success: true });
+        const data = jwt.verify(token, SECRET);
+        resolve({ success: !!data, data });
       } catch(err) {
-        resolve({ err, success: false});
+        resolve({ err, success: false, data: null });
       }
     });
   },
-  generateTokenInfo(userData) {
+  generateTokenInfo(user) {
     const exp = Math.floor(Date.now() / 1000) + ONE_DAY;
     const token = jwt.sign(
-      { userData, exp },
+      { user, exp },
       SECRET,
     );
     return {
       exp,
       token,
     };
-  }
+  },
+  hasAccess({
+    action,
+    resource,
+    rights,
+  }) {
+    const expectedRights = [
+      '*::*',
+      `*::${resource}`,
+      `${action}::*`,
+      `${action}::${resource}`,
+    ];
+    return rights.reduce((allowed, right) => {
+      return allowed ||
+        expectedRights.indexOf(right) >= 0;
+    }, false);
+  },
 };
 
 module.exports = AuthService;

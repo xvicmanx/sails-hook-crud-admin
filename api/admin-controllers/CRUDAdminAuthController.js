@@ -1,13 +1,6 @@
 const AuthService = require('../admin-services/AuthService');
+const Errors = require('../errors');
 
-const missingParamError = (param) => ({
-  error: {
-    message: `'${param}' missing!`,
-    fields: {
-      [param]: `'${param}' missing!`,
-    },
-  },
-});
 
 class AuthController {
   constructor(sails) {
@@ -15,67 +8,71 @@ class AuthController {
     this.authenticate = this.authenticate.bind(this);
   }
 
+  async getRights(user) {
+    let rights = [];
+    const groupIds = user.groups.map(g => g.id);
+    const groups = await this.sails.models.crudgroup
+      .find({ id: { in: groupIds, } })
+      .populate('rights');
+    groups.forEach((group) => {
+      rights = rights.concat(
+        group.rights.map(r => r.name)
+      );
+    });
+    return rights;
+  }
+
+  async getUser(username, password) {
+    return await this.sails.models.cruduser
+      .findOne({ username, password })
+      .populate('groups');
+  }
+
   async authenticate(req, res) {
-    if (!req.body.username) {
+    const {
+      username,
+      password
+    } = req.body || {};
+
+    if (!username) {
       res.status(400)
-        .send(missingParamError('username'));
+        .send(Errors.missingParamError('username'));
+      return false;
     }
 
-    if (!req.body.password) {
+    if (!password) {
       res.status(400)
-        .send(missingParamError('password'));
+        .send(Errors.missingParamError('password'));
+      return false;
     }
 
-    const user = await this.sails.models.cruduser
-      .findOne({
-        username: req.body.username,
-        password: req.body.password,
-      }).populate('groups');
+    const user = await this.getUser(username, password);
 
     if (!user) {
       res.status(400)
-        .send({
-          error: {
-            message: 'Invalid "username or password"',
-            fields: {
-              username: 'Invalid "username or password"',
-              password: 'Invalid "username or password"',
-            }
-          }
-        });
-    } else {
-      try {
-        const groups = await this.sails.models.crudgroup
-          .find({ id: { in: user.groups.map(g => g.id), } })
-          .populate('rights');
-        let rights = [];
-        groups.forEach((group) => {
-          rights = rights.concat(
-            group.rights.map(r => r.name)
-          );
-        });
+        .send(Errors.userOrPassError());
+      return false;
+    }
 
-        const userData = {
-          id: user.id,
-          name: user.username,
-          rights,
-        };
-        const { token, exp } = AuthService.generateTokenInfo(userData);
-        res.send({
-          userData,
-          token,
-          exp,
-          success: true,
-        });
-      } catch(err) {
-        sails.log(err);
-        res.status(500)
-        .send({
-          error: {
-            message: 'Something happened while authenticating :(',
-          }
-        });
-      } 
+    try {
+      const userData = {
+        id: user.id,
+        name: user.username,
+        rights: await this.getRights(user),
+      };
+      const { token, exp } = AuthService.generateTokenInfo(userData);
+      res.send({
+        userData,
+        token,
+        exp,
+        success: true,
+      });
+      return true;
+    } catch (err) {
+      sails.log(err);
+      res.status(500)
+        .send(Errors.systemError());
+      return false;
     }
   }
 };

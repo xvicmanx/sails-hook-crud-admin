@@ -51,7 +51,7 @@ const LoginForm = props => {
       <Segment>
       <Header
         as='h2'
-        color='teal'
+        color='black'
         textAlign='center'
         content="Login"
       />

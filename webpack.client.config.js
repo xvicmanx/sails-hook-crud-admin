@@ -12,7 +12,6 @@ module.exports = {
   target: 'web',
   devtool: 'source-map',
   plugins: [
-    new UglifyJsPlugin(),
     new webpack.DefinePlugin({
       __DEV__: false,
       __PROD__: true,
@@ -20,6 +19,7 @@ module.exports = {
         'NODE_ENV': JSON.stringify('production')
       },
     }),
+    new UglifyJsPlugin(),
   ],
   module: {
     loaders: [

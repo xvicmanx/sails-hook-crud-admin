@@ -61,7 +61,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 17);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -431,7 +431,7 @@ var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var requester = __webpack_require__(22);
+var requester = __webpack_require__(21);
 
 
 var URL = function URL(model, id) {
@@ -656,7 +656,7 @@ __webpack_require__(9);
 
 var _config = __webpack_require__(8);
 
-var _RightProtected = __webpack_require__(16);
+var _RightProtected = __webpack_require__(15);
 
 var _RightProtected2 = _interopRequireDefault(_RightProtected);
 
@@ -921,12 +921,6 @@ exports.default = function (TargetComponent) {
 
 /***/ }),
 /* 15 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-dom");
-
-/***/ }),
-/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -972,7 +966,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -982,13 +976,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _server = __webpack_require__(18);
+var _server = __webpack_require__(17);
 
-var _Page = __webpack_require__(19);
+var _Page = __webpack_require__(18);
 
 var _Page2 = _interopRequireDefault(_Page);
 
-var _App = __webpack_require__(20);
+var _App = __webpack_require__(19);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -1007,13 +1001,13 @@ module.exports.renderPage = function (injection) {
 };
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom/server");
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1032,7 +1026,7 @@ var Page = function Page(_ref) {
 exports.default = Page;
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1048,9 +1042,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _reactDom = __webpack_require__(15);
-
-var _Routes = __webpack_require__(21);
+var _Routes = __webpack_require__(20);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
@@ -1070,14 +1062,10 @@ var App = function App() {
   );
 };
 
-if (typeof window !== 'undefined' && typeof window.document !== 'undefined' && window.document.getElementById('app')) {
-  (0, _reactDom.render)(_react2.default.createElement(App, null), window.document.getElementById('app'));
-}
-
 exports.default = App;
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1103,7 +1091,7 @@ var _ModelsNavigator = __webpack_require__(11);
 
 var _ModelsNavigator2 = _interopRequireDefault(_ModelsNavigator);
 
-var _LoginScreen = __webpack_require__(23);
+var _LoginScreen = __webpack_require__(22);
 
 var _LoginScreen2 = _interopRequireDefault(_LoginScreen);
 
@@ -1227,13 +1215,13 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = require("simple-json-requester");
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1251,9 +1239,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _reactRouter = __webpack_require__(24);
+var _reactRouter = __webpack_require__(23);
 
-var _LoginForm = __webpack_require__(25);
+var _LoginForm = __webpack_require__(24);
 
 var _LoginForm2 = _interopRequireDefault(_LoginForm);
 
@@ -1345,13 +1333,13 @@ var LoginScreen = function (_React$Component) {
 exports.default = LoginScreen;
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-router");
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1365,7 +1353,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(15);
+var _reactDom = __webpack_require__(25);
 
 var _formik = __webpack_require__(26);
 
@@ -1534,6 +1522,12 @@ exports.default = (0, _formik.withFormik)({
 })(LoginForm);
 
 /***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-dom");
+
+/***/ }),
 /* 26 */
 /***/ (function(module, exports) {
 
@@ -1650,7 +1644,7 @@ var _MainBreadcrumb = __webpack_require__(45);
 
 var _MainBreadcrumb2 = _interopRequireDefault(_MainBreadcrumb);
 
-var _RightProtected = __webpack_require__(16);
+var _RightProtected = __webpack_require__(15);
 
 var _RightProtected2 = _interopRequireDefault(_RightProtected);
 

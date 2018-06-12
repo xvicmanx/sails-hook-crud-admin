@@ -45,7 +45,7 @@
     "lodash.template": "^4.4.0",
     "query-string": "^6.1.0",
     "react": "^16.4.0",
-    "react-crud-table": "file:../react-crud-table",
+    "react-crud-table": "0.0.6",
     "react-dom": "^16.4.0",
     "react-router-dom": "^4.2.2",
     "sails-util-mvcsloader": "^0.4.0",

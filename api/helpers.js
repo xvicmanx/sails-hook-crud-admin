@@ -27,12 +27,17 @@ const populate = async (resultPromise, modelName, sails) => {
   return result;
 };
 
+const queryValue = (source, query = '', defaultValue = null) => {
+  const value = query.split('.').reduce((result, key) => (result && result[key] ? result[key] : null), source);
+  return value || defaultValue;
+};
+
 const verifyToken = async (req, res) => {
   const token = req.headers['jwt-token'];
   const result = await AuthService.verifyToken(token);
   if (!result.success) {
     res.status(403)
-      .send(tokenAuthError());
+      .send(Errors.tokenAuthError());
   }
   return result;
 };
@@ -54,4 +59,5 @@ module.exports = {
   verifyToken,
   populate,
   getDefinitions,
+  queryValue,
 };

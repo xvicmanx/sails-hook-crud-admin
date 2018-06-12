@@ -7,7 +7,9 @@ const {
   verifyToken,
   populate,
   getDefinitions,
+  queryValue,
 } = require('../helpers');
+
 
 class Controller {
   constructor(sails) {
@@ -24,11 +26,26 @@ class Controller {
   }
 
   index(req, res) {
-    const config = Object.assign(
-      {},
-      this.sails.config.crudAdmin || {},
-      crudConfig, 
-    );
+    const crudAdminConf = this.sails.config.crudAdmin || {};
+    const config = {
+      general: {
+        labels: queryValue(
+          crudAdminConf,
+          'general.labels',
+          {}
+        ),
+        buttons: queryValue(
+          crudAdminConf,
+          'general.buttons',
+          {},
+        ),
+      },
+      models: Object.assign(
+        {},
+        crudConfig.models,
+        queryValue(crudAdminConf, 'models', {}),
+      ),
+    };
     const injection = `
       window.sailsModels = ${JSON.stringify(getDefinitions(this.sails.models))};
       window.crudAdminConfig = ${JSON.stringify(config)};

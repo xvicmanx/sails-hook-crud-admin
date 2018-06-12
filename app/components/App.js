@@ -3,7 +3,7 @@ import { Segment } from 'semantic-ui-react';
 import { render } from 'react-dom';
 import Routes from './Routes';
 
-import './index.css';
+import '../scss/index.css';
 
 const isBrowser = () => {
   return typeof window !== 'undefined' && window.document;

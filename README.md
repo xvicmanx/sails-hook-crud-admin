@@ -3,6 +3,9 @@ Hook Administrator for Sails Js.
 This is an installable hook that allows you to manage your models data from an admin web interface.
 From this interface you can perform the CRUD (Create, Read, Update, and Delete) operations on your models. It also includes an interface for managing admin users and their corresponding rights.
 
+# requirements
+  Sails >= 1
+
 # Getting Started
 
 ```bash

@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: './app/client.js',
@@ -19,7 +19,7 @@ module.exports = {
         'NODE_ENV': JSON.stringify('production')
       },
     }),
-    new UglifyJsPlugin(),
+    // new UglifyJsPlugin(),
   ],
   module: {
     loaders: [

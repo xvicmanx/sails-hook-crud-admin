@@ -1,6 +1,14 @@
 const AuthService = require('./admin-services/AuthService');
 const Errors  = require('./errors');
 
+const omitProps = (obj, props) => {
+  return Object.keys(obj).reduce(function (res, k) {
+    if (props.indexOf(k) < 0) {
+      res[k] = obj[k];
+    }
+    return res;
+  }, {});
+};
 
 const MODELS_FILTER = (m) => {
   return m.indexOf('crudgroup_') < 0
@@ -60,4 +68,5 @@ module.exports = {
   populate,
   getDefinitions,
   queryValue,
+  omitProps,
 };

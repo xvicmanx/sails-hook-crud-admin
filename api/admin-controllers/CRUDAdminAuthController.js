@@ -23,9 +23,18 @@ class AuthController {
   }
 
   async getUser(username, password) {
-    return await this.sails.models.cruduser
-      .findOne({ username, password })
+    const UserModel = this.sails.models.cruduser;
+    const user =  await UserModel
+      .findOne({ username })
       .populate('groups');
+    const verified = await UserModel.verifyPassword(
+      password,
+      user.password
+    );
+    
+    if (!verified) return null;
+    
+    return user;
   }
 
   async authenticate(req, res) {

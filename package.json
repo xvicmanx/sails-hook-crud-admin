@@ -1,6 +1,6 @@
 {
   "name": "sails-hook-crud-admin",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "An admin for SailsJS",
   "main": "index.js",
   "scripts": {

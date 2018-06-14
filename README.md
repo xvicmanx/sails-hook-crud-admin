@@ -10,7 +10,7 @@ From this interface you can perform the CRUD (Create, Read, Update, and Delete) 
 The purpose of this project is to provide a simple admin interface to administrate your models data.
 
 # Requirements
-  Sails >= 1
+  Sails 0.12
 
 # Getting Started
 

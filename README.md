@@ -23,7 +23,7 @@ Navigate to [http://localhost:1337/administrator/](http://localhost:1337/adminis
 Login with the credentials
 username: ```admin``` and password ```access@crud-2018```.
 
-![alt text](screenshots/login-screenshot.png)
+![alt text](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/login-screenshot.png)
 
 Note: It is adviced to change this password as soon as you can.
 
@@ -32,40 +32,40 @@ Note: It is adviced to change this password as soon as you can.
 ## Login/Signin Section
 You get access to the administrator navigating to [http://localhost:1337/administrator/](http://localhost:1337/administrator/) which will take you to the login screen if not logged in.
 
-![Login Screen](screenshots/login-screenshot.png)
+![Login Screen](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/login-screenshot.png)
 
 ## Models Dashboard
 After signing in you are taken to the models dashboard where all your app models names are showed, along with their respective counts.
 
-![Models Dashboard](screenshots/models-dashboard.png)
+![Models Dashboard](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/models-dashboard.png)
 
 
 ## Permissions Dashboard
  The permission models dashboard is where all the models related to user, group, access and permissions can be edited. From this dashboard you get access to the create, update and delete users and groups to control the access of your app.
 
-![Permissions Dashboard](screenshots/permissions-dashboard.png)
+![Permissions Dashboard](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/permissions-dashboard.png)
 
 ## Model Details
 After clicking on one of the model box items in one of the dashboards (models or permissions) you get access to the details of the clicked model. From this screen you can see all the created instances of your model but also you can create, update and remove them.
 
-![Model Details Screen](screenshots/model-details.png)
+![Model Details Screen](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/model-details.png)
 
 # Items manipulation
 
 ## Creating a new item
 From your details of a model it is possible creating new instances of your model. This is pretty straightforward, you only need to click the `Create` button which is going to open a modal with a form to fill in.
 
-![Creating a new item](screenshots/creating-item.png)
+![Creating a new item](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/creating-item.png)
 ## Updating an existing item
 From your details of a model you can also update your existing model instances. This is pretty straightforward, you only need to click the `Update` button in the row of the desired item which is going to open a modal with a form in it.
 
-![Updating an existing item](screenshots/updating-item.png)
+![Updating an existing item](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/updating-item.png)
 
 ## Removing an existing item
 
 From your details of a model you can also remove your existing model instances. You click the `Remove` button in the row of the desired item which is going to open a modal to confirm the elimination.
 
-![Removing an existing item](screenshots/removing-item.png)
+![Removing an existing item](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/removing-item.png)
 
 # Users and Permissions
 
@@ -78,7 +78,7 @@ Assigning permissions is a pretty simple process. You check the actions options 
 The last one (`*`) means any of the previous actions.
 The resources are defined based on the existing models of your app plus the `CRUD models` of the administrator.
 
-![Creating Group](screenshots/creating-group.png)
+![Creating Group](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/creating-group.png)
 
 
 ## Adding a new user
@@ -87,7 +87,7 @@ The process of creating a new user is simple. You just go to the [Permissions Da
 
 To create a new user, you give it a name and select the groups it is going belong to.
 
-![Creating User](screenshots/creating-user.png)
+![Creating User](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/creating-user.png)
 
 
 # Configuring the Admin

@@ -848,11 +848,11 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _Header = __webpack_require__(45);
+var _Header = __webpack_require__(46);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Footer = __webpack_require__(46);
+var _Footer = __webpack_require__(47);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -1052,7 +1052,7 @@ var _Routes = __webpack_require__(20);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
-__webpack_require__(50);
+__webpack_require__(51);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1109,11 +1109,11 @@ var _ModelDetailsScreen = __webpack_require__(28);
 
 var _ModelDetailsScreen2 = _interopRequireDefault(_ModelDetailsScreen);
 
-var _PermissionsScreen = __webpack_require__(48);
+var _PermissionsScreen = __webpack_require__(49);
 
 var _PermissionsScreen2 = _interopRequireDefault(_PermissionsScreen);
 
-var _ModelsScreen = __webpack_require__(49);
+var _ModelsScreen = __webpack_require__(50);
 
 var _ModelsScreen2 = _interopRequireDefault(_ModelsScreen);
 
@@ -1646,7 +1646,7 @@ var _Main = __webpack_require__(13);
 
 var _Main2 = _interopRequireDefault(_Main);
 
-var _MainBreadcrumb = __webpack_require__(47);
+var _MainBreadcrumb = __webpack_require__(48);
 
 var _MainBreadcrumb2 = _interopRequireDefault(_MainBreadcrumb);
 
@@ -2058,6 +2058,10 @@ var _RightsRenderer = __webpack_require__(43);
 
 var _RightsRenderer2 = _interopRequireDefault(_RightsRenderer);
 
+var _PasswordRenderer = __webpack_require__(45);
+
+var _PasswordRenderer2 = _interopRequireDefault(_PasswordRenderer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var RENDERERS = {
@@ -2066,6 +2070,9 @@ var RENDERERS = {
   },
   input: function input(model) {
     return _InputRenderer2.default;
+  },
+  password: function password(model) {
+    return _PasswordRenderer2.default;
   },
   checkbox: function checkbox(model) {
     return _CheckboxRenderer2.default;
@@ -2786,6 +2793,38 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var PasswordRenderer = function PasswordRenderer(_ref) {
+  var field = _ref.field;
+  return _react2.default.createElement('input', _extends({ type: 'password' }, field));
+};
+
+PasswordRenderer.propTypes = {};
+
+exports.default = PasswordRenderer;
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -2858,7 +2897,7 @@ Header.propTypes = {};
 exports.default = Header;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2926,7 +2965,7 @@ Footer.propTypes = {};
 exports.default = Footer;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3001,7 +3040,7 @@ MainBreadcrumb.defaultProps = {
 exports.default = MainBreadcrumb;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3057,7 +3096,7 @@ PermissionsScreen.propTypes = {
 exports.default = PermissionsScreen;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3112,7 +3151,7 @@ ModelsScreen.propTypes = {
 exports.default = ModelsScreen;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports) {
 
 

@@ -14,6 +14,9 @@ module.exports = {
             </ul>
           `
         },
+        password: {
+          renderer: 'password',
+        }
       }
     },
     crudgroup: {

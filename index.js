@@ -33,6 +33,18 @@ const crudForbiddenRoutes = () => {
   return routes;
 };
 
+const disableLog = (sails) => {
+  const log = sails.log;
+  const error = sails.log.error;
+  const verbose = sails.log.verbose;
+  sails.log = function () {};
+  sails.log.info = () => {};
+  sails.log.silly = () => {};
+  sails.log.error = error;
+  sails.log.verbose = verbose;
+  return log;
+};
+
 module.exports = function (sails) {
   sails.util = sails.util || {};
   sails.util.merge = sails.util.merge || _.merge;
@@ -40,6 +52,9 @@ module.exports = function (sails) {
   const loader = MVCSLoader(sails);
   const mainController = new MainController(sails);
   const authController = new AuthController(sails, data);
+
+  // Disabling info logging temporarily
+  const log = disableLog(sails);
 
   loader.configure();
 
@@ -49,7 +64,11 @@ module.exports = function (sails) {
       if(sails.hooks.orm) eventsToWaitFor.push('hook:orm:loaded');
       if(sails.hooks.pubsub) eventsToWaitFor.push('hook:pubsub:loaded');
 
+      disableLog(sails);
+
       loader.inject(err => {
+        // Enabling info logging again
+        sails.log = log;
         sails
         .after(eventsToWaitFor, () => {
           seedData(sails).then(() => {

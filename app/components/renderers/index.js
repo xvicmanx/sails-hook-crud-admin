@@ -6,10 +6,12 @@ import EnumSelectRenderer from './EnumSelectRenderer';
 import ModelsSelectRenderer from './ModelsSelectRenderer';
 import MultipleModelsSelectRenderer from './MultipleModelsSelectRenderer';
 import RightsRenderer from './RightsRenderer';
+import PasswordRenderer from './PasswordRenderer';
 
 const RENDERERS = {
   textarea: model => DescriptionRenderer,
   input: model => InputRenderer,
+  password: model => PasswordRenderer,
   checkbox: model => CheckboxRenderer,
   rights: model => RightsRenderer,
   enum: (model, field) => EnumSelectRenderer(model[field].validations.isIn),

@@ -10,10 +10,13 @@ class AuthController {
 
   async getRights(user) {
     let rights = [];
+   
     const groupIds = user.groups.map(g => g.id);
-    const groups = await this.sails.models.crudgroup
-      .find({ id: { in: groupIds, } })
+    let groups = await this.sails.models.crudgroup
+      .find({})
       .populate('rights');
+    groups = groups.filter(g => groupIds.indexOf(g.id) > -1);
+
     groups.forEach((group) => {
       rights = rights.concat(
         group.rights.map(r => r.name)

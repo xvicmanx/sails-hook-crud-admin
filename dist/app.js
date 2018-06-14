@@ -202,9 +202,9 @@ var valueResolver = exports.valueResolver = function valueResolver(model, field,
       return isHTML(compiled) ? asHTML(compiled) : compiled;
     }
 
-    if (isADateDefaultField(field)) {
-      return new Date(+item[field]).toLocaleString();
-    }
+    // if (isADateDefaultField(field)) {
+    //   return new Date(+item[field]).toLocaleString();
+    // }
 
     if (model[field].type === 'boolean') {
       return item[field] ? 'true' : 'false';
@@ -1458,7 +1458,8 @@ var LoginForm = function LoginForm(props) {
           type: 'password',
           value: values.password,
           onChange: handleChange,
-          onBlur: handleBlur
+          onBlur: handleBlur,
+          maxLength: 45
         }),
         _react2.default.createElement(Error, {
           field: 'password',

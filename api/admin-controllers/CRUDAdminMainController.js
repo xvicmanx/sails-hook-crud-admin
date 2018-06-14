@@ -81,7 +81,7 @@ class Controller {
     const { modelName } = req.body;
     if (await this.hasAccess('create', req, res)) {
       const result = await this.sails.models[modelName]
-        .create(req.body).fetch();
+        .create(req.body);
       return res.json(result);
     }
   }
@@ -90,7 +90,7 @@ class Controller {
     const { modelName } = req.body;
     if (await this.hasAccess('update', req, res)) {
       const result = await this.sails.models[req.body.modelName]
-        .update({ id: req.body.id }, req.body).fetch();
+        .update({ id: req.body.id }, req.body);
       return res.json(result);
     }
   }
@@ -99,7 +99,7 @@ class Controller {
     const { modelName } = req.body;
     if (await this.hasAccess('delete', req, res)) {
       const result = await this.sails.models[modelName]
-        .destroy({ id: req.params.id }).fetch();
+        .destroy({ id: req.params.id });
       return res.json(result);
     }
   }

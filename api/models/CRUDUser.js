@@ -39,6 +39,7 @@ module.exports = {
     return omitProps(this, ['password'])
   },
   beforeCreate: function(data, cb) {
+    if (!data.password) return cb();
     bcrypt.hash(
       data.password,
       SALT_ROUNDS,
@@ -50,14 +51,18 @@ module.exports = {
   },
   beforeUpdate: function(data, cb) {
     if (!data.password) return cb();
-
-    bcrypt.hash(
-      data.password,
-      SALT_ROUNDS,
-      function(err, hash) {
-        data.password = hash;
-        cb();
-      },
-    );
+    if (data.password.length < 50) {
+      bcrypt.hash(
+        data.password,
+        SALT_ROUNDS,
+        function(err, hash) {
+          data.password = hash;
+          cb();
+        },
+      );
+    } else {
+      return cb();
+    }
+    
   }
 };

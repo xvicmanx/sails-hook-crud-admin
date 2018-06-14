@@ -16,6 +16,7 @@ module.exports = {
         },
         password: {
           renderer: 'password',
+          valueTemplate: '*******',
         }
       }
     },

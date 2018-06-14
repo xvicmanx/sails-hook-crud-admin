@@ -96,9 +96,9 @@ export const valueResolver = (model, field, modelName) => (item) => {
     return isHTML(compiled) ? asHTML(compiled) : compiled;
   }
   
-  if (isADateDefaultField(field)) {
-    return new Date(+item[field]).toLocaleString();
-  }
+  // if (isADateDefaultField(field)) {
+  //   return new Date(+item[field]).toLocaleString();
+  // }
 
   if (model[field].type === 'boolean') {
     return item[field] ? 'true' : 'false';

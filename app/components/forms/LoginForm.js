@@ -89,6 +89,7 @@ const LoginForm = props => {
           value={values.password}
           onChange={handleChange}
           onBlur={handleBlur}
+          maxLength={45}
         />
         <Error
           field="password"

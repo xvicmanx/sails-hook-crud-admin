@@ -27,7 +27,7 @@ const crudForbiddenRoutes = () => {
   CRUD_MODELS.forEach(modelName => {
     HTTP_METHODS.forEach(method => {
       const key = `${method} /${modelName}`;
-      routes[key] = {response: 'notFound' };
+      routes[key] = { response: 'notFound' };
     });
   });
   return routes;
@@ -66,7 +66,12 @@ module.exports = function (sails) {
 
       disableLog(sails);
 
-      loader.inject(err => {
+      
+      loader.inject(
+        {
+          models: __dirname + '/api/models',
+        },
+        err => {
         // Enabling info logging again
         sails.log = log;
         sails

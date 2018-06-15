@@ -41,6 +41,12 @@ const Header = () => (
       <Menu.Item
         as={Link}
         header
+        to="/assets"
+        content={Constants.LABELS.ASSETS}
+      />
+      <Menu.Item
+        as={Link}
+        header
         to="/logout"
         content={Constants.LABELS.LOGOUT}
       />

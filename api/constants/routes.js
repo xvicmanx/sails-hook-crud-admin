@@ -9,4 +9,6 @@ module.exports = {
   MODEL_SEARCH_ALL: 'GET /administrator/model-search-all',
   MODELS_COUNT: 'GET /administrator/all-models-count',
   LOGIN: 'POST /administrator/login',
+  UPLOAD: 'POST /administrator/model-upload-asset',
+  ASSET: 'GET /administrator/crud-asset/:id'
 };

@@ -12,6 +12,7 @@ import LogoutScreen from '../screens/LogoutScreen';
 import ModelDetailsScreen from '../screens/ModelDetailsScreen';
 import PermissionsScreen from '../screens/PermissionsScreen';
 import ModelsScreen from '../screens/ModelsScreen';
+import AssetsScreen from '../screens/AssetsScreen';
 
 
 const NAVIGATOR_PATHS = [
@@ -69,6 +70,11 @@ class Routes extends React.Component {
               counts={this.state.counts}
             />
           )}
+        />
+        <Route
+          exact
+          path="/assets"
+          component={AssetsScreen}
         />
         <Route
           exact

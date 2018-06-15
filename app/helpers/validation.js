@@ -18,7 +18,19 @@ export const validateModelDeletion = (values) => {
   return errors;
 };
 
+export const transformAPIErrors = (error) => {
+  const errors = {};
+  if (error.fields) {
+    Object.keys(error.fields)
+      .forEach(k => {
+        errors[k] = error.fields[k];
+      });
+  }
+  return errors;
+};
+
 export default {
   validateModelRequiredValues,
   validateModelDeletion,
+  transformAPIErrors,
 };

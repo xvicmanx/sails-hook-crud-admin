@@ -97,6 +97,8 @@ module.exports = function (sails) {
           [routes.MODEL_SEARCH_ALL]: mainController.modelSearchAll,
           [routes.MODELS_COUNT]: mainController.countAll,
           [routes.LOGIN]: authController.authenticate,
+          [routes.UPLOAD]: mainController.uploadAsset,
+          [routes.ASSET]: mainController.crudAsset,
         },
         crudForbiddenRoutes()
       ),

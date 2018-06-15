@@ -2,6 +2,8 @@ const requester = require('simple-json-requester');
 import AuthStore from '../AuthStore';
 
 const URL = (model, id) => id ? `/${model}/${id}` : `/${model}`;
+const UPLOAD_URL = '/administrator/model-upload-asset';
+const ASSET_URL = id => `/administrator/crud-asset/${id}`;
 const COUNT_URL = '/administrator/model-count';
 const SEARCH_URL = '/administrator/model-search';
 const DELETE_URL = '/administrator/model-delete';
@@ -70,6 +72,21 @@ const Service = (model) => ({
       LOGIN_URL,
       data
     );
+  },
+  upload: (data) => {
+    const formData = new FormData();
+    formData.append('file', data.file);
+    formData.append('name', data.name);
+    formData.append('model', data.model);
+    formData.append('type', data.type);
+    return fetch(UPLOAD_URL, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: formData,
+    }).then(response => response.json());
   },
   create: (item) => {
     item.modelName = model;

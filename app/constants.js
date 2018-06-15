@@ -6,6 +6,7 @@ const CRUD_MODELS = [
   'crudright',
   'crudgroup',
   'cruduser',
+  'crudasset',
 ];
 
 const Constants = {
@@ -19,6 +20,7 @@ const Constants = {
     HOME: getLabel('home', 'Home'),
     LOGOUT: getLabel('logout', 'Logout'),
     PERMISSIONS: getLabel('permissions', 'Permissions'),
+    ASSETS: getLabel('assets', 'Assets'),
     ACTIONS: getLabel('actions', 'Actions'),
     RESOURCES: getLabel('resources', 'Resources'),
     WELCOME: getLabel('welcome', 'Welcome'),

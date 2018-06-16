@@ -19,6 +19,8 @@ const styles = {
   picture: {
     width: '100%',
     maxWidth: '200px',
+    maxHeight: '200px',
+    objectFit: 'contain',
   }
 };
 
@@ -34,12 +36,17 @@ const AssetItem = ({ type, url, name }) => (
         />
       </Card.Content>
     )}
+
     {!isPicture(type) && (
       <Card.Content>
-        <Icon size="huge" name="file outline" />
+        <Icon
+          size="huge"
+          name="file outline"
+        />
       </Card.Content>
     )}
-    <Card.Header>
+
+    <Card.Header textAlign="center">
       {name}
       {!isPicture(type) && (
       <a href={url}>

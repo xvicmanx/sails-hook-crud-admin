@@ -3247,6 +3247,10 @@ var _LoggedInProtected = __webpack_require__(11);
 
 var _LoggedInProtected2 = _interopRequireDefault(_LoggedInProtected);
 
+var _constants = __webpack_require__(4);
+
+var _constants2 = _interopRequireDefault(_constants);
+
 var _Main = __webpack_require__(10);
 
 var _Main2 = _interopRequireDefault(_Main);
@@ -3258,10 +3262,6 @@ var _UploadAssetModal2 = _interopRequireDefault(_UploadAssetModal);
 var _AssetsList = __webpack_require__(57);
 
 var _AssetsList2 = _interopRequireDefault(_AssetsList);
-
-var _constants = __webpack_require__(4);
-
-var _constants2 = _interopRequireDefault(_constants);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3360,6 +3360,7 @@ var AssetsScreen = function AssetsScreen(props) {
   return _react2.default.createElement(
     Main,
     null,
+    _react2.default.createElement(_semanticUiReact.Header, { as: 'h1', content: 'Assets' }),
     _react2.default.createElement(_semanticUiReact.Tab, {
       menu: { pointing: true },
       panes: panes
@@ -3865,7 +3866,9 @@ var styles = {
   },
   picture: {
     width: '100%',
-    maxWidth: '200px'
+    maxWidth: '200px',
+    maxHeight: '200px',
+    objectFit: 'contain'
   }
 };
 
@@ -3895,7 +3898,7 @@ var AssetItem = function AssetItem(_ref) {
     ),
     _react2.default.createElement(
       _semanticUiReact.Card.Header,
-      null,
+      { textAlign: 'center' },
       name,
       !isPicture(type) && _react2.default.createElement(
         'a',

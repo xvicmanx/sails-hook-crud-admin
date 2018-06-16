@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tab, Divider, Loader } from 'semantic-ui-react';
+import { Tab, Divider, Loader, Header } from 'semantic-ui-react';
 import Service from '../services/Service';
 import loggedInProtected from '../components/high-order/LoggedInProtected';
+import Constants from '../constants';
 import LayoutMain from '../components/layout/Main';
 import UploadAssetModal from '../components/modals/UploadAssetModal';
 import AssetsList from '../components/general/AssetsList';
-import Constants from '../constants';
 
 const Main = loggedInProtected(LayoutMain);
 
@@ -27,9 +27,10 @@ class Assets extends React.Component {
   }
 
   loadItems() {
-    service.fetchAllItems().then((items) => {
-      this.setState({ items, loading: false });
-    });
+    service.fetchAllItems()
+      .then((items) => {
+        this.setState({ items, loading: false });
+      });
   }
   
   componentDidMount() {
@@ -81,6 +82,7 @@ const panes = [
 const AssetsScreen = props => {
   return (
     <Main>
+      <Header as="h1" content="Assets" />
       <Tab
         menu={{ pointing: true }}
         panes={panes}

@@ -1,6 +1,10 @@
 import React from 'react'
 import { Form } from 'semantic-ui-react';
-import { getModels, modelTitle, NON_CRUD_MODELS_FILTER } from '../../helpers/models';
+import {
+  getModels,
+  modelTitle,
+  NON_CRUD_MODELS_FILTER,
+} from '../../helpers/models';
 
 const ModelsSelect = (props) => {
   const models = Object.keys(getModels())

@@ -57,6 +57,8 @@ Every asset is categorized by the model it will belong to.
 
 ![Assets Section](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/assets-section.png)
 
+If you want one of your fields to be a picture for example, in the config file you select its `renderer` property for that field to be `picture`.
+
 # Items manipulation
 
 ## Creating a new item

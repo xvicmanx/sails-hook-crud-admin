@@ -10,9 +10,7 @@ import {
 } from 'semantic-ui-react';
 import FileInput from '../inputs/FileInput';
 import ModelsSelect from '../inputs/ModelsSelect';
-// import AssetsTypeSelect from '../inputs/AssetsTypeSelect';
 import Service from '../../services/Service';
-// import { transformAPIErrors } from '../../helpers/validation';
 import ErrorMessage from '../general/ErrorMessage';
 
 const styles = {
@@ -51,21 +49,6 @@ const UploadAssetForm = props => {
           errors={errors}
         />
       </Form.Field>
-      {/* <Form.Field style={styles.field}>
-        <AssetsTypeSelect
-          fluid
-          name="type"
-          value={values.type}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          placeholder='Select type'
-        />
-        <ErrorMessage
-          field="type"
-          touched={touched}
-          errors={errors}
-        />
-      </Form.Field> */}
       <Form.Field style={styles.field}>
         <FileInput
           fluid

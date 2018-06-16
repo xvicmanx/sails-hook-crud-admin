@@ -42,6 +42,7 @@ class UploadAssetModal extends React.Component {
               type={this.props.type}
               onSubmitSuccess={() => {
                 this.hideModal();
+                this.props.onSuccess();
               }}
             />
           </Modal.Content>

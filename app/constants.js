@@ -32,6 +32,10 @@ const Constants = {
     REMOVE_FORM_MESSAGE: getLabel('removeFormMessage', 'Are you sure you want to remove the item?'),
   },
   CRUD_MODELS,
+  ASSETS_TYPES: {
+    FILE: 'file',
+    PICTURE: 'picture',
+  },
 };
 
 export default Constants;

@@ -112,7 +112,7 @@ var _object = __webpack_require__(12);
 
 var _config = __webpack_require__(8);
 
-var _constants = __webpack_require__(7);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -307,7 +307,53 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _AuthStore = __webpack_require__(6);
+var _config = __webpack_require__(8);
+
+var CRUD_MODELS = ['crudaction', 'crudresource', 'crudright', 'crudgroup', 'cruduser', 'crudasset'];
+
+var Constants = {
+  BUTTONS: {
+    CREATE: (0, _config.getButtonText)('create', 'Create'),
+    UPDATE: (0, _config.getButtonText)('update', 'Update'),
+    REMOVE: (0, _config.getButtonText)('remove', 'Remove'),
+    SEE_DETAILS: (0, _config.getButtonText)('seeDetails', 'See details')
+  },
+  LABELS: {
+    HOME: (0, _config.getLabel)('home', 'Home'),
+    LOGOUT: (0, _config.getLabel)('logout', 'Logout'),
+    PERMISSIONS: (0, _config.getLabel)('permissions', 'Permissions'),
+    ASSETS: (0, _config.getLabel)('assets', 'Assets'),
+    ACTIONS: (0, _config.getLabel)('actions', 'Actions'),
+    RESOURCES: (0, _config.getLabel)('resources', 'Resources'),
+    WELCOME: (0, _config.getLabel)('welcome', 'Welcome'),
+    CREATE_FORM_TITLE: (0, _config.getLabel)('createFormTitle', 'Create Item'),
+    UPDATE_FORM_TITLE: (0, _config.getLabel)('updateFormTitle', 'Update Item'),
+    REMOVE_FORM_TITLE: (0, _config.getLabel)('removeFormTitle', 'Remove existing Item'),
+    CREATE_FORM_MESSAGE: (0, _config.getLabel)('createFormMessage', 'Create a new item'),
+    UPDATE_FORM_MESSAGE: (0, _config.getLabel)('updateFormMessage', 'Update an existing item'),
+    REMOVE_FORM_MESSAGE: (0, _config.getLabel)('removeFormMessage', 'Are you sure you want to remove the item?')
+  },
+  CRUD_MODELS: CRUD_MODELS,
+  ASSETS_TYPES: {
+    FILE: 'file',
+    PICTURE: 'picture'
+  }
+};
+
+exports.default = Constants;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _AuthStore = __webpack_require__(7);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -416,13 +462,13 @@ var Service = function Service(model) {
 exports.default = Service;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-router-dom");
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -432,7 +478,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(7);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -511,48 +557,6 @@ var AuthStore = {
 };
 
 exports.default = AuthStore;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _config = __webpack_require__(8);
-
-var CRUD_MODELS = ['crudaction', 'crudresource', 'crudright', 'crudgroup', 'cruduser', 'crudasset'];
-
-var Constants = {
-  BUTTONS: {
-    CREATE: (0, _config.getButtonText)('create', 'Create'),
-    UPDATE: (0, _config.getButtonText)('update', 'Update'),
-    REMOVE: (0, _config.getButtonText)('remove', 'Remove'),
-    SEE_DETAILS: (0, _config.getButtonText)('seeDetails', 'See details')
-  },
-  LABELS: {
-    HOME: (0, _config.getLabel)('home', 'Home'),
-    LOGOUT: (0, _config.getLabel)('logout', 'Logout'),
-    PERMISSIONS: (0, _config.getLabel)('permissions', 'Permissions'),
-    ASSETS: (0, _config.getLabel)('assets', 'Assets'),
-    ACTIONS: (0, _config.getLabel)('actions', 'Actions'),
-    RESOURCES: (0, _config.getLabel)('resources', 'Resources'),
-    WELCOME: (0, _config.getLabel)('welcome', 'Welcome'),
-    CREATE_FORM_TITLE: (0, _config.getLabel)('createFormTitle', 'Create Item'),
-    UPDATE_FORM_TITLE: (0, _config.getLabel)('updateFormTitle', 'Update Item'),
-    REMOVE_FORM_TITLE: (0, _config.getLabel)('removeFormTitle', 'Remove existing Item'),
-    CREATE_FORM_MESSAGE: (0, _config.getLabel)('createFormMessage', 'Create a new item'),
-    UPDATE_FORM_MESSAGE: (0, _config.getLabel)('updateFormMessage', 'Update an existing item'),
-    REMOVE_FORM_MESSAGE: (0, _config.getLabel)('removeFormMessage', 'Are you sure you want to remove the item?')
-  },
-  CRUD_MODELS: CRUD_MODELS
-};
-
-exports.default = Constants;
 
 /***/ }),
 /* 8 */
@@ -694,9 +698,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(5);
+var _reactRouterDom = __webpack_require__(6);
 
-var _AuthStore = __webpack_require__(6);
+var _AuthStore = __webpack_require__(7);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -790,7 +794,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _reactRouterDom = __webpack_require__(5);
+var _reactRouterDom = __webpack_require__(6);
 
 __webpack_require__(9);
 
@@ -800,7 +804,7 @@ var _RightProtected = __webpack_require__(15);
 
 var _RightProtected2 = _interopRequireDefault(_RightProtected);
 
-var _constants = __webpack_require__(7);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -976,9 +980,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(5);
+var _reactRouterDom = __webpack_require__(6);
 
-var _AuthStore = __webpack_require__(6);
+var _AuthStore = __webpack_require__(7);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -1105,7 +1109,7 @@ var _Routes = __webpack_require__(23);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
-__webpack_require__(59);
+__webpack_require__(58);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1140,9 +1144,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(5);
+var _reactRouterDom = __webpack_require__(6);
 
-var _Service = __webpack_require__(4);
+var _Service = __webpack_require__(5);
 
 var _Service2 = _interopRequireDefault(_Service);
 
@@ -1313,7 +1317,7 @@ var _LoginForm = __webpack_require__(27);
 
 var _LoginForm2 = _interopRequireDefault(_LoginForm);
 
-var _AuthStore = __webpack_require__(6);
+var _AuthStore = __webpack_require__(7);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -1427,7 +1431,7 @@ var _formik = __webpack_require__(17);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _Service = __webpack_require__(4);
+var _Service = __webpack_require__(5);
 
 var _Service2 = _interopRequireDefault(_Service);
 
@@ -1613,9 +1617,9 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _reactRouterDom = __webpack_require__(5);
+var _reactRouterDom = __webpack_require__(6);
 
-var _AuthStore = __webpack_require__(6);
+var _AuthStore = __webpack_require__(7);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -1683,7 +1687,7 @@ var _queryString = __webpack_require__(30);
 
 var _queryString2 = _interopRequireDefault(_queryString);
 
-var _Service = __webpack_require__(4);
+var _Service = __webpack_require__(5);
 
 var _Service2 = _interopRequireDefault(_Service);
 
@@ -1795,11 +1799,11 @@ var _renderers = __webpack_require__(36);
 
 var _renderers2 = _interopRequireDefault(_renderers);
 
-var _constants = __webpack_require__(7);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _AuthStore = __webpack_require__(6);
+var _AuthStore = __webpack_require__(7);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -2346,7 +2350,7 @@ var _Select = __webpack_require__(14);
 
 var _Select2 = _interopRequireDefault(_Select);
 
-var _Service = __webpack_require__(4);
+var _Service = __webpack_require__(5);
 
 var _Service2 = _interopRequireDefault(_Service);
 
@@ -2455,7 +2459,7 @@ var _Select = __webpack_require__(14);
 
 var _Select2 = _interopRequireDefault(_Select);
 
-var _Service = __webpack_require__(4);
+var _Service = __webpack_require__(5);
 
 var _Service2 = _interopRequireDefault(_Service);
 
@@ -2684,7 +2688,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Service = __webpack_require__(4);
+var _Service = __webpack_require__(5);
 
 var _Service2 = _interopRequireDefault(_Service);
 
@@ -2694,7 +2698,7 @@ var _rightsSelector2 = _interopRequireDefault(_rightsSelector);
 
 var _models = __webpack_require__(3);
 
-var _constants = __webpack_require__(7);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -2889,15 +2893,15 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactRouterDom = __webpack_require__(5);
+var _reactRouterDom = __webpack_require__(6);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _constants = __webpack_require__(7);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _AuthStore = __webpack_require__(6);
+var _AuthStore = __webpack_require__(7);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -3041,11 +3045,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(5);
+var _reactRouterDom = __webpack_require__(6);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _constants = __webpack_require__(7);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -3223,6 +3227,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -3232,6 +3238,10 @@ var _propTypes = __webpack_require__(1);
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _semanticUiReact = __webpack_require__(2);
+
+var _Service = __webpack_require__(5);
+
+var _Service2 = _interopRequireDefault(_Service);
 
 var _LoggedInProtected = __webpack_require__(11);
 
@@ -3249,15 +3259,82 @@ var _AssetsList = __webpack_require__(57);
 
 var _AssetsList2 = _interopRequireDefault(_AssetsList);
 
+var _constants = __webpack_require__(4);
+
+var _constants2 = _interopRequireDefault(_constants);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Main = (0, _LoggedInProtected2.default)(_Main2.default);
 
 var styles = {
-  pane: {
-    border: 0
-  }
+  pane: { border: 0 }
 };
+
+var service = (0, _Service2.default)('crudasset');
+
+var Assets = function (_React$Component) {
+  _inherits(Assets, _React$Component);
+
+  function Assets(props) {
+    _classCallCheck(this, Assets);
+
+    var _this = _possibleConstructorReturn(this, (Assets.__proto__ || Object.getPrototypeOf(Assets)).call(this, props));
+
+    _this.state = {
+      items: [],
+      loading: true
+    };
+    _this.loadItems = _this.loadItems.bind(_this);
+    return _this;
+  }
+
+  _createClass(Assets, [{
+    key: 'loadItems',
+    value: function loadItems() {
+      var _this2 = this;
+
+      service.fetchAllItems().then(function (items) {
+        _this2.setState({ items: items, loading: false });
+      });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.loadItems();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var type = this.props.type;
+
+
+      if (this.state.loading) return _react2.default.createElement(_semanticUiReact.Loader, { active: true });
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_UploadAssetModal2.default, {
+          type: type,
+          onSuccess: this.loadItems
+        }),
+        _react2.default.createElement(_semanticUiReact.Divider, { hidden: true }),
+        _react2.default.createElement(_AssetsList2.default, {
+          type: type,
+          items: this.state.items
+        })
+      );
+    }
+  }]);
+
+  return Assets;
+}(_react2.default.Component);
 
 var panes = [{
   menuItem: 'Pictures',
@@ -3265,9 +3342,7 @@ var panes = [{
     return _react2.default.createElement(
       _semanticUiReact.Tab.Pane,
       { style: styles.pane },
-      _react2.default.createElement(_UploadAssetModal2.default, { type: 'picture' }),
-      _react2.default.createElement(_semanticUiReact.Divider, { hidden: true }),
-      _react2.default.createElement(_AssetsList2.default, { type: 'picture' })
+      _react2.default.createElement(Assets, { type: _constants2.default.ASSETS_TYPES.PICTURE })
     );
   }
 }, {
@@ -3276,9 +3351,7 @@ var panes = [{
     return _react2.default.createElement(
       _semanticUiReact.Tab.Pane,
       { style: styles.pane },
-      _react2.default.createElement(_UploadAssetModal2.default, { type: 'file' }),
-      _react2.default.createElement(_semanticUiReact.Divider, { hidden: true }),
-      _react2.default.createElement(_AssetsList2.default, { type: 'file' })
+      _react2.default.createElement(Assets, { type: _constants2.default.ASSETS_TYPES.FILE })
     );
   }
 }];
@@ -3287,7 +3360,10 @@ var AssetsScreen = function AssetsScreen(props) {
   return _react2.default.createElement(
     Main,
     null,
-    _react2.default.createElement(_semanticUiReact.Tab, { menu: { pointing: true }, panes: panes })
+    _react2.default.createElement(_semanticUiReact.Tab, {
+      menu: { pointing: true },
+      panes: panes
+    })
   );
 };
 
@@ -3387,6 +3463,7 @@ var UploadAssetModal = function (_React$Component) {
               type: this.props.type,
               onSubmitSuccess: function onSubmitSuccess() {
                 _this2.hideModal();
+                _this2.props.onSuccess();
               }
             })
           )
@@ -3429,7 +3506,7 @@ var _ModelsSelect = __webpack_require__(55);
 
 var _ModelsSelect2 = _interopRequireDefault(_ModelsSelect);
 
-var _Service = __webpack_require__(4);
+var _Service = __webpack_require__(5);
 
 var _Service2 = _interopRequireDefault(_Service);
 
@@ -3439,14 +3516,11 @@ var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import AssetsTypeSelect from '../inputs/AssetsTypeSelect';
 var styles = {
   field: {
     textAlign: 'left'
   }
 };
-// import { transformAPIErrors } from '../../helpers/validation';
-
 
 var UploadAssetForm = function UploadAssetForm(props) {
   var values = props.values,
@@ -3678,7 +3752,7 @@ var _models = __webpack_require__(3);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ModelsSelect = function ModelsSelect(props) {
-  var models = Object.keys((0, _models.getModels)());
+  var models = Object.keys((0, _models.getModels)()).filter(_models.NON_CRUD_MODELS_FILTER);
   var options = models.map(function (m) {
     return {
       key: m,
@@ -3754,6 +3828,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -3762,19 +3838,17 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _semanticUiReact = __webpack_require__(2);
-
 var _lodash = __webpack_require__(18);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _ResourceItem = __webpack_require__(58);
+var _semanticUiReact = __webpack_require__(2);
 
-var _ResourceItem2 = _interopRequireDefault(_ResourceItem);
+var _constants = __webpack_require__(4);
 
-var _Service = __webpack_require__(4);
+var _constants2 = _interopRequireDefault(_constants);
 
-var _Service2 = _interopRequireDefault(_Service);
+var _models = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3788,143 +3862,107 @@ var styles = {
     borderRadius: '5px',
     overflow: 'hidden',
     padding: '1rem'
+  },
+  picture: {
+    width: '100%',
+    maxWidth: '200px'
   }
 };
 
-var AssetsList = function AssetsList(props) {
+var isPicture = function isPicture(type) {
+  return _constants2.default.ASSETS_TYPES.PICTURE === type;
+};
+
+var AssetItem = function AssetItem(_ref) {
+  var type = _ref.type,
+      url = _ref.url,
+      name = _ref.name;
   return _react2.default.createElement(
-    _ResourceItem2.default,
-    {
-      defaultValue: [],
-      data: (0, _Service2.default)('crudasset').fetchAllItems()
-    },
-    function (items) {
-      var filteredItems = items.filter(function (x) {
-        return x.type === props.type;
-      });
-      var groupedItems = _lodash2.default.groupBy(filteredItems, 'model');
-      return _react2.default.createElement(
-        'div',
-        null,
-        Object.keys(groupedItems).map(function (name) {
-          return _react2.default.createElement(
-            _semanticUiReact.Card,
-            { fluid: true },
-            _react2.default.createElement(
-              _semanticUiReact.Card.Content,
-              null,
-              _react2.default.createElement(
-                _semanticUiReact.Card.Header,
-                null,
-                name
-              )
-            ),
-            _react2.default.createElement(
-              _semanticUiReact.Card.Content,
-              null,
-              _react2.default.createElement(
-                _semanticUiReact.Item.Group,
-                null,
-                groupedItems[name].map(function (item) {
-                  return _react2.default.createElement(
-                    _semanticUiReact.Item,
-                    { style: styles.item },
-                    props.type === 'picture' && _react2.default.createElement(_semanticUiReact.Item.Image, { src: item.url }),
-                    props.type !== 'picture' && _react2.default.createElement(
-                      _semanticUiReact.Item.Content,
-                      null,
-                      JSON.stringify(item.name)
-                    )
-                  );
-                })
-              )
-            )
-          );
-        })
-      );
-    }
+    _semanticUiReact.Card,
+    { style: styles.item },
+    isPicture(type) && _react2.default.createElement(
+      _semanticUiReact.Card.Content,
+      null,
+      _react2.default.createElement(_semanticUiReact.Image, {
+        src: url,
+        style: styles.picture
+      })
+    ),
+    !isPicture(type) && _react2.default.createElement(
+      _semanticUiReact.Card.Content,
+      null,
+      _react2.default.createElement(_semanticUiReact.Icon, { size: 'huge', name: 'file outline' })
+    ),
+    _react2.default.createElement(
+      _semanticUiReact.Card.Header,
+      null,
+      name,
+      !isPicture(type) && _react2.default.createElement(
+        'a',
+        { href: url },
+        '\xA0\xA0',
+        _react2.default.createElement(_semanticUiReact.Icon, { size: 'large', name: 'download' })
+      )
+    )
   );
 };
 
-AssetsList.propTypes = {};
+var AssetsList = function AssetsList(props) {
+  var items = props.items,
+      type = props.type;
+
+  var filteredItems = items.filter(function (x) {
+    return x.type === props.type;
+  });
+  var groupedItems = _lodash2.default.groupBy(filteredItems, 'model');
+  var keys = Object.keys(groupedItems);
+
+  return _react2.default.createElement(
+    'div',
+    null,
+    keys.map(function (name) {
+      return _react2.default.createElement(
+        _semanticUiReact.Card,
+        { fluid: true },
+        _react2.default.createElement(
+          _semanticUiReact.Card.Content,
+          null,
+          _react2.default.createElement(
+            _semanticUiReact.Card.Header,
+            null,
+            (0, _models.modelTitle)(name),
+            ' ',
+            props.type,
+            's'
+          )
+        ),
+        _react2.default.createElement(
+          _semanticUiReact.Card.Content,
+          null,
+          _react2.default.createElement(
+            _semanticUiReact.Card.Group,
+            null,
+            groupedItems[name].map(function (item) {
+              return _react2.default.createElement(AssetItem, _extends({}, item, {
+                type: props.type
+              }));
+            })
+          )
+        )
+      );
+    })
+  );
+};
+
+AssetsList.propTypes = {
+  items: _propTypes2.default.instanceOf(Array).isRequired,
+  type: _propTypes2.default.string.isRequired
+};
 
 exports.default = AssetsList;
 
 /***/ }),
 /* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ResourceItem = function (_React$Component) {
-  _inherits(ResourceItem, _React$Component);
-
-  function ResourceItem(props) {
-    _classCallCheck(this, ResourceItem);
-
-    var _this = _possibleConstructorReturn(this, (ResourceItem.__proto__ || Object.getPrototypeOf(ResourceItem)).call(this, props));
-
-    _this.state = {
-      result: null
-    };
-    return _this;
-  }
-
-  _createClass(ResourceItem, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      this.props.data.then(function (result) {
-        _this2.setState({ result: result });
-      });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        null,
-        this.props.children(this.state.result || this.props.defaultValue)
-      );
-    }
-  }]);
-
-  return ResourceItem;
-}(_react2.default.Component);
-
-ResourceItem.propTypes = {
-  data: _propTypes2.default.instanceOf(Promise).isRequired,
-  children: _propTypes2.default.func.isRequired
-};
-
-exports.default = ResourceItem;
-
-/***/ }),
-/* 59 */
 /***/ (function(module, exports) {
 
 

@@ -82,6 +82,7 @@ class Controller {
 
   async modelCreate(req, res) {
     const { modelName } = req.body;
+    delete req.body.modelName;
     if (await this.hasAccess('create', req, res)) {
       const result = await this.sails.models[modelName]
         .create(req.body);
@@ -91,9 +92,10 @@ class Controller {
 
   async modelUpdate(req, res) {
     const { modelName } = req.body;
+    delete req.body.modelName;
     if (await this.hasAccess('update', req, res)) {
-      const result = await this.sails.models[req.body.modelName]
-        .update({ id: req.body.id }, req.body);
+      const Model = this.sails.models[modelName];
+      const result = await Model.update({ id: req.body.id }, req.body);
       return res.json(result);
     }
   }

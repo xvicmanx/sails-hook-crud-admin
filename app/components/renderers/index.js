@@ -7,6 +7,7 @@ import ModelsSelectRenderer from './ModelsSelectRenderer';
 import MultipleModelsSelectRenderer from './MultipleModelsSelectRenderer';
 import RightsRenderer from './RightsRenderer';
 import PasswordRenderer from './PasswordRenderer';
+import PictureRenderer from './PictureRenderer';
 
 const RENDERERS = {
   textarea: model => DescriptionRenderer,
@@ -14,6 +15,7 @@ const RENDERERS = {
   password: model => PasswordRenderer,
   checkbox: model => CheckboxRenderer,
   rights: model => RightsRenderer,
+  picture: (model, field, modelName) => PictureRenderer(modelName),
   enum: (model, field) => EnumSelectRenderer(model[field].validations.isIn),
   modelSelect: (model, field) => ModelsSelectRenderer(model[field].model),
   modelMultipleSelect: (model, field) => MultipleModelsSelectRenderer(model[field].collection),
@@ -22,7 +24,7 @@ const RENDERERS = {
 const renderer = (model, field, modelName) => {
   const rendererType = getFieldRenderer(modelName, field);
   if (rendererType && RENDERERS[rendererType]) {
-    return RENDERERS[rendererType](model, field);
+    return RENDERERS[rendererType](model, field, modelName);
   }
 
   if (

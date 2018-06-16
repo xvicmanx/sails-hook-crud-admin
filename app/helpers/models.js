@@ -95,20 +95,6 @@ export const valueResolver = (model, field, modelName) => (item) => {
     const compiled = compiler({ [field]: data, _ });
     return isHTML(compiled) ? asHTML(compiled) : compiled;
   }
-
-  // if () {
-  //   return (
-  //     <img
-  //       alt={item[field]}
-  //       src={pictureURL(item[field])}
-  //       width="80"
-  //     />
-  //   )
-  //   // tableValueResolver={item => (
-      
-  //   // )}
-  //   // render={({ field }) => <FileInput {...field} />}
-  // }
   
   // if (isADateDefaultField(field)) {
   //   return new Date(+item[field]).toLocaleString();

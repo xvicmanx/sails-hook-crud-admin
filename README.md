@@ -50,6 +50,13 @@ After clicking on one of the model box items in one of the dashboards (models or
 
 ![Model Details Screen](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/model-details.png)
 
+## Assets Section
+You can get to this section by clicking the Assets options from the header.
+In this section you can upload your pictures and files, to be later consumed or used in your models.
+Every asset is categorized by the model it will belong to.
+
+![Assets Section](https://raw.githubusercontent.com/xvicmanx/sails-hook-crud-admin/master/screenshots/assets-section.png)
+
 # Items manipulation
 
 ## Creating a new item
@@ -94,6 +101,7 @@ To create a new user, you give it a name and select the groups it is going belon
 
 ## Customization
 To customize things like labels and texts from buttons, and your models you need to create `crudAdmin.js` file like following and make your desired changes.
+This file goes under the `config` directory.
 
 ## 
 ```js
@@ -154,8 +162,24 @@ module.exports.crudAdmin = {
           label: 'Titulo',
         },
         description: {
-          label: 'Descripcion',
           renderer: 'textarea',
+        },
+        picture: {
+          valueTemplate: `
+            <% if (typeof(picture) !== "undefined") { %>
+              <div>
+                <img
+                  src='<%= picture %>'
+                  alt='Book Picture'
+                  style="
+                    width: 100%;
+                    max-width: 100px;
+                  "
+                />                
+              </div>
+            <% } %>
+          `,
+          renderer: 'picture',
         },
         status: {
           label: 'Estado',

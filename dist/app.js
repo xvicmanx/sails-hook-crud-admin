@@ -2974,12 +2974,12 @@ var styles = {
   },
   image: {
     width: '100%',
-    maxWidth: '60px'
+    maxWidth: '120px'
   }
 };
 
-var selectionColor = function selectionColor(selected) {
-  return selected && 'green';
+var selectionClass = function selectionClass(selected) {
+  return selected && 'selected-picture';
 };
 
 var ImagesSelect = function (_React$Component) {
@@ -3006,9 +3006,25 @@ var ImagesSelect = function (_React$Component) {
       this.props.onChange(event);
     }
   }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.setState({ selectedImage: nextProps.value });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
+
+      var images = this.props.images;
+
+
+      if (images.lenth <= 0) {
+        return _react2.default.createElement(_semanticUiReact.Message, {
+          info: true,
+          icon: 'info',
+          content: 'There are no items to show'
+        });
+      }
 
       return _react2.default.createElement(
         'div',
@@ -3016,18 +3032,19 @@ var ImagesSelect = function (_React$Component) {
         _react2.default.createElement(
           _semanticUiReact.Card.Group,
           { itemsPerRow: 3 },
-          this.props.images.map(function (image) {
+          images.map(function (image) {
             return _react2.default.createElement(_semanticUiReact.Card, {
               onClick: function onClick(evt) {
                 _this2.handleImageSelection(image, evt);
               },
               raised: true,
               image: image,
-              color: selectionColor(_this2.state.selectedImage === image),
+              className: selectionClass(_this2.state.selectedImage === image),
               style: styles.image
             });
           })
-        )
+        ),
+        _react2.default.createElement(_semanticUiReact.Divider, null)
       );
     }
   }]);

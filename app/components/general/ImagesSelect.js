@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card } from 'semantic-ui-react';
+import { Card, Divider, Message } from 'semantic-ui-react';
 
 const styles = {
   container: {
@@ -8,11 +8,11 @@ const styles = {
   },
   image: {
     width: '100%',
-    maxWidth: '60px',
+    maxWidth: '120px',
   },
 };
 
-const selectionColor = selected => selected && 'green';
+const selectionClass = selected => selected && 'selected-picture';
 
 class ImagesSelect extends React.Component {
   constructor(props) {
@@ -30,22 +30,39 @@ class ImagesSelect extends React.Component {
     this.props.onChange(event);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ selectedImage: nextProps.value });
+  }
+
   render() {
+    const { images } = this.props; 
+    
+    if (images.lenth <= 0) {
+      return (
+        <Message
+          info
+          icon="info"
+          content="There are no items to show"
+        />
+      );
+    }
+
     return (
       <div style={styles.container}>
         <Card.Group itemsPerRow={3}>
-          {this.props.images.map(image => (
+          {images.map(image => (
             <Card
               onClick={(evt) => {
                 this.handleImageSelection(image, evt);
               }}
               raised
               image={image}
-              color={selectionColor(this.state.selectedImage === image)}
+              className={selectionClass(this.state.selectedImage === image)}
               style={styles.image}
             />
           ))}
         </Card.Group>
+        <Divider />
       </div>
     );
   }

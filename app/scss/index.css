@@ -650,3 +650,36 @@ td.rdtYear:hover {
 .rights-selector__body .rights-selector__row:last-child .rights-selector__header-cell {
   border-bottom: 0;
 }
+
+.ui.card.selected-picture::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  height: 100%;
+  width: 100%;
+  visibility: visible;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #27ada7;
+  opacity: 0.7;
+}
+
+.ui.card.selected-picture::after {
+  content: "\2713 ";
+  position: absolute;
+  color: white;
+  z-index: 30;
+  height: 35px;
+  font-size: 22px;
+  visibility: visible;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #fff;
+  border-radius: 50%;
+  width: 35px;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 5px;
+}

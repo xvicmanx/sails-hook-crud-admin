@@ -99,6 +99,7 @@ module.exports = function (sails) {
           [routes.LOGIN]: authController.authenticate,
           [routes.UPLOAD]: mainController.uploadAsset,
           [routes.ASSET]: mainController.crudAsset,
+          [routes.MODELS_ASSETS]: mainController.modelsAssets,
         },
         crudForbiddenRoutes()
       ),

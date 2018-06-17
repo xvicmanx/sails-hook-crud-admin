@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { Item, Card, Icon, Image } from 'semantic-ui-react';
 import Constants from '../../constants';
 import { modelTitle } from '../../helpers/models';
+import AuthStore from '../../AuthStore';
 
 const styles = {
   item: {
@@ -65,25 +66,32 @@ const AssetsList = props => {
 
   return (
     <div>
-      {keys.map(name => (
-        <Card fluid>
-          <Card.Content>
-            <Card.Header>
-              {modelTitle(name)} {props.type}s
-            </Card.Header>
-          </Card.Content>
-          <Card.Content>
-            <Card.Group>
-              {groupedItems[name].map(item => (
-                <AssetItem
-                  {...item}
-                  type={props.type}
-                />
-              ))}
-            </Card.Group>
-          </Card.Content>
-        </Card>
-      ))}
+      {keys.map((name) => {
+        
+        if (!AuthStore.canViewAssetsForModel(name)) {
+          return null;
+        }
+
+        return (
+          <Card fluid>
+            <Card.Content>
+              <Card.Header>
+                {modelTitle(name)} {props.type}s
+              </Card.Header>
+            </Card.Content>
+            <Card.Content>
+              <Card.Group>
+                {groupedItems[name].map(item => (
+                  <AssetItem
+                    {...item}
+                    type={props.type}
+                  />
+                ))}
+              </Card.Group>
+            </Card.Content>
+          </Card>
+        )
+      })}
     </div>
   );
 };

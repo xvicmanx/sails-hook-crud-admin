@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tab, Divider, Loader, Header } from 'semantic-ui-react';
+import { Tab, Divider, Loader, Header, Message } from 'semantic-ui-react';
 import Service from '../services/Service';
 import loggedInProtected from '../components/high-order/LoggedInProtected';
 import Constants from '../constants';
 import LayoutMain from '../components/layout/Main';
 import UploadAssetModal from '../components/modals/UploadAssetModal';
 import AssetsList from '../components/general/AssetsList';
+import AuthStore from '../AuthStore';
 
 const Main = loggedInProtected(LayoutMain);
 
@@ -27,32 +28,52 @@ class Assets extends React.Component {
   }
 
   loadItems() {
-    service.fetchAllItems()
+    service.fetchAssets({
+      type: this.props.type,
+    })
       .then((items) => {
         this.setState({ items, loading: false });
       });
   }
   
   componentDidMount() {
-    this.loadItems();
+    const canView = AuthStore.canViewAssets();
+    if (canView) {
+      this.loadItems();
+    } else {
+      this.setState({ loading: false });
+    }
   }
 
   render() {
     const { type } = this.props;
     
-    if (this.state.loading) return <Loader active />
-
+    if (this.state.loading) return <Loader active />;
+    
+    const canUpload = AuthStore.canUploadAssets();
+    const canView = AuthStore.canViewAssets();
     return (
       <div>
-        <UploadAssetModal
-          type={type}
-          onSuccess={this.loadItems}
-        />
+        {canUpload && (
+          <UploadAssetModal
+            type={type}
+            onSuccess={this.loadItems}
+          />
+        )}
         <Divider hidden />
-        <AssetsList
-          type={type}
-          items={this.state.items}
-        />
+        {canView && (
+          <AssetsList
+            type={type}
+            items={this.state.items}
+          />
+        )}
+        {!canView && (
+          <Message
+            warning
+            icon="warning"
+            content="You do not have permission for viewing assets!"
+          />
+        )}
       </div>
     );
   }

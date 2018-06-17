@@ -1,5 +1,6 @@
 const fs = require('fs');
 const SkipperDisk = require('skipper-disk');
+const { generateHash } = require('random-hash');
 const app = require('../../dist/app.js');
 const { buildQuery } = require('../../app/helpers/query');
 const crudConfig = require('../admin-config/crud');
@@ -26,6 +27,7 @@ class Controller {
     this.countAll = this.countAll.bind(this);
     this.uploadAsset = this.uploadAsset.bind(this);
     this.crudAsset = this.crudAsset.bind(this);
+    this.modelsAssets = this.modelsAssets.bind(this);
   }
 
   index(req, res) {
@@ -63,10 +65,10 @@ class Controller {
   }
 
   async hasAccess(action, req, res) {
-    const { modelName } = req.body || req.query;
+    const { modelName, model } = req.body || req.query;
     return await verifyAccess({
       action,
-      resource: modelName,
+      resource: modelName || model,
     })(req, res);
   }
 
@@ -170,51 +172,70 @@ class Controller {
   }
 
   async uploadAsset(req, res) {
-    const type = req.body.type || 'file';
-    const model = req.body.model;
-    const name = req.body.name;
+    const type = req.param('type') || 'file';
+    const model = req.param('model');
+    const name = req.param('name');
     const Asset = this.sails.models.crudasset;
 
-    req.file('file').upload({
-    },
-      (err, uploadedFiles) => {
-        if (err) {
-          return res.serverError(err);
-        }
+    if (await this.hasAccess('upload-assets', req, res)) {
+      req.file('file').upload({},
+        (err, uploadedFiles) => {
+          if (err) {
+            return res.serverError(err);
+          }
 
-        // If no files were uploaded, respond with an error.
-        if (uploadedFiles.length === 0) {
-          return res.badRequest('No file was uploaded');
-        }
+          // If no files were uploaded, respond with an error.
+          if (uploadedFiles.length === 0) {
+            return res.badRequest('No file was uploaded');
+          }
 
-        Asset.create({
-          fileDirectory: uploadedFiles[0].fd,
-          name,
-          model,
-          type,
-        }).exec((err, asset) => {
-          if (err) return res.serverError(err);
-          // sails.config.custom.baseUrl
-          var baseUrl = '';
-          Asset.update(
-            { id: asset.id },
-            {
-              url: require('util')
-                .format('%s/administrator/crud-asset/%s', baseUrl, asset.id),
-            })
-            .exec((error) => {
-              if (error) return res.serverError(error);
-              return res.send({ success: true });
-            });
+          Asset.create({
+            fileDirectory: uploadedFiles[0].fd,
+            name: name,
+            model: model,
+            type,
+            hash: generateHash({ length: 12 }),
+          }).exec((err, asset) => {
+            if (err) return res.serverError(err);
+            // sails.config.custom.baseUrl
+            var baseUrl = '';
+            Asset.update(
+              { id: asset.id },
+              {
+                url: require('util')
+                  .format('%s/administrator/crud-asset/%s', baseUrl, asset.hash),
+              })
+              .exec((error) => {
+                if (error) return res.serverError(error);
+                return res.send({ success: true });
+              });
+          });
+
         });
+      }
+  }
 
+  async modelsAssets(req, res) {
+    const { type } = req.body;
+    if ((await verifyToken(req, res)).success) {
+      const Asset = this.sails.models.crudasset;
+      const resultPromise = Asset.find({
+        where: { type },
+        sort: 'createdAt DESC',
       });
+      const result = await populate(
+        resultPromise,
+        'crudasset',
+        this.sails,
+      );
+      return res.json(result);
+    }
   }
 
   async crudAsset(req, res) {
-    const id = req.param('id');
+    const hash = req.param('hash');
     const Asset = this.sails.models.crudasset;
-    Asset.findOne(id).exec(function (err, asset) {
+    Asset.findOne({ hash }).exec(function (err, asset) {
       if (err) return res.serverError(err);
       if (!asset) return res.notFound();
 

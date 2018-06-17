@@ -3,6 +3,8 @@ const CRUD_ACTIONS = [
   'read',
   'update',
   'delete',
+  'upload-assets',
+  'view-assets',
   '*'
 ];
 

@@ -10,5 +10,6 @@ module.exports = {
   MODELS_COUNT: 'GET /administrator/all-models-count',
   LOGIN: 'POST /administrator/login',
   UPLOAD: 'POST /administrator/model-upload-asset',
-  ASSET: 'GET /administrator/crud-asset/:id'
+  MODELS_ASSETS: 'POST /administrator/models-assets',
+  ASSET: 'GET /administrator/crud-asset/:hash'
 };

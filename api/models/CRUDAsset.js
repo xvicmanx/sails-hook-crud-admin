@@ -4,6 +4,11 @@ module.exports = {
       type: 'string',
       required: true,
     },
+    hash: {
+      type: 'string',
+      required: true,
+      unique: true,
+    },
     fileDirectory: {
       type: 'string',
       required: true,

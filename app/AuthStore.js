@@ -1,4 +1,5 @@
 import Constants from './constants';
+import { getModels, NON_CRUD_MODELS_FILTER } from './helpers/models';
 
 const storeValue = (key, value) => {
   if (typeof(Storage) !== 'undefined') {
@@ -76,6 +77,50 @@ const AuthStore = {
   },
   canAccessPermissionsArea() {
     return AuthStore.hasAnyOfRights(permissionAreaRights);
+  },
+  canUploadAssets() {
+    const expectedRights = [
+      '*::*',
+      'upload-assets::*',
+    ];
+    const models = Object.keys(getModels());
+    models.filter(NON_CRUD_MODELS_FILTER)
+      .forEach(m => {
+        expectedRights.push(`*::${m}`);
+        expectedRights.push(`upload-assets::${m}`);
+      });
+    return AuthStore.hasAnyOfRights(expectedRights);
+  },
+  canUploadAssetsForModel(model) {
+    const expectedRights = [
+      '*::*',
+      'upload-assets::*',
+      `*::${model}`,
+      `upload-assets::${model}`
+    ];
+    return AuthStore.hasAnyOfRights(expectedRights);
+  },
+  canViewAssets() {
+    const expectedRights = [
+      '*::*',
+      'view-assets::*',
+    ];
+    const models = Object.keys(getModels());
+    models.filter(NON_CRUD_MODELS_FILTER)
+      .forEach(m => {
+        expectedRights.push(`*::${m}`);
+        expectedRights.push(`view-assets::${m}`);
+      });
+    return AuthStore.hasAnyOfRights(expectedRights);
+  },
+  canViewAssetsForModel(model) {
+    const expectedRights = [
+      '*::*',
+      'view-assets::*',
+      `*::${model}`,
+      `view-assets::${model}`
+    ];
+    return AuthStore.hasAnyOfRights(expectedRights);
   },
   clear() {
     storeValue(KEYS.USER_DATA, null);

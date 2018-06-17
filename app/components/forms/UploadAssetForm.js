@@ -12,6 +12,7 @@ import FileInput from '../inputs/FileInput';
 import ModelsSelect from '../inputs/ModelsSelect';
 import Service from '../../services/Service';
 import ErrorMessage from '../general/ErrorMessage';
+import AuthStore from '../../AuthStore';
 
 const styles = {
   field: {
@@ -42,6 +43,9 @@ const UploadAssetForm = props => {
           onChange={handleChange}
           onBlur={handleBlur}
           placeholder='Select model'
+          filter={item => {
+            return AuthStore.canUploadAssetsForModel(item.value);
+          }}
         />
         <ErrorMessage
           field="model"

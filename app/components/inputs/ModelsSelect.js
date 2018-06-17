@@ -17,7 +17,7 @@ const ModelsSelect = (props) => {
   return (
     <Form.Select
       {...props}
-      options={options}
+      options={options.filter(props.filter)}
       search
       onChange={(e, data) => {
         props.onChange({
@@ -30,6 +30,10 @@ const ModelsSelect = (props) => {
       }}
     />
   );
+};
+
+ModelsSelect.defaultProps = {
+  filter: () => true,
 };
 
 export default ModelsSelect;

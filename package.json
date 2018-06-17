@@ -1,6 +1,6 @@
 {
   "name": "sails-hook-crud-admin",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "An admin for SailsJS",
   "main": "index.js",
   "scripts": {
@@ -45,6 +45,7 @@
     "lodash-id": "^0.14.0",
     "lodash.template": "^4.4.0",
     "query-string": "^6.1.0",
+    "random-hash": "^4.0.1",
     "react": "^16.4.0",
     "react-crud-table": "0.0.7",
     "react-dom": "^16.4.0",

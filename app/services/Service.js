@@ -4,6 +4,7 @@ import AuthStore from '../AuthStore';
 const URL = (model, id) => id ? `/${model}/${id}` : `/${model}`;
 const UPLOAD_URL = '/administrator/model-upload-asset';
 const ASSET_URL = id => `/administrator/crud-asset/${id}`;
+const ASSETS_URL = `/administrator/models-assets/`;
 const COUNT_URL = '/administrator/model-count';
 const SEARCH_URL = '/administrator/model-search';
 const DELETE_URL = '/administrator/model-delete';
@@ -50,6 +51,16 @@ const Service = (model) => ({
         result : [];
     });
   },
+  fetchAssets: (payload) => {
+    return requester.post(
+      ASSETS_URL,
+      payload,
+      getConfig(),
+    ).then(result => {
+      return Array.isArray(result) ? 
+        result : [];
+    });
+  },
   countAllModels: () => {
     return requester.get(
       COUNT_ALL_MODELS_URL,
@@ -74,17 +85,23 @@ const Service = (model) => ({
     );
   },
   upload: (data) => {
+    const { extraHeaders } = getConfig();
     const formData = new FormData();
-    formData.append('file', data.file);
+    
     formData.append('name', data.name);
     formData.append('model', data.model);
     formData.append('type', data.type);
+    formData.append('file', data.file);
+
     return fetch(UPLOAD_URL, {
       method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
+      headers: Object.assign(
+        {
+          Accept: 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        extraHeaders,
+      ),
       body: formData,
     }).then(response => response.json());
   },

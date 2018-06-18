@@ -12,6 +12,8 @@ const styles = {
     border: 0,
     boxShadow: 'none',
     paddingTop: 0,
+    overflowX: 'auto',
+    paddingTop: '1rem',
   },
 };
 

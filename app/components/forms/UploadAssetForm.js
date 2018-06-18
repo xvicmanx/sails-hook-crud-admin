@@ -7,6 +7,7 @@ import {
   Label,
   Input,
   Header,
+  Icon,
 } from 'semantic-ui-react';
 import FileInput from '../inputs/FileInput';
 import ModelsSelect from '../inputs/ModelsSelect';
@@ -35,58 +36,66 @@ const UploadAssetForm = props => {
       onSubmit={handleSubmit}
       size='large'
     >
-      <Form.Field style={styles.field}>
-        <ModelsSelect
-          fluid
-          name="model"
-          value={values.model}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          placeholder='Select model'
-          filter={item => {
-            return AuthStore.canUploadAssetsForModel(item.value);
-          }}
-        />
-        <ErrorMessage
-          field="model"
-          touched={touched}
-          errors={errors}
-        />
-      </Form.Field>
-      <Form.Field style={styles.field}>
-        <FileInput
-          fluid
-          name="file"
-          icon='file'
-          iconPosition='left'
-          placeholder='Select file'
-          value={values.file}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        <ErrorMessage
-          field="file"
-          touched={touched}
-          errors={errors}
-        />
-      </Form.Field>
-      <Form.Field style={styles.field}>
-        <Input
-          fluid
-          name="name"
-          icon='file text'
-          iconPosition='left'
-          placeholder='Name'
-          value={values.name}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        <ErrorMessage
-          field="name"
-          touched={touched}
-          errors={errors}
-        />
-      </Form.Field>
+      <div className="crud-modal-form__fields">
+        <Form.Field style={styles.field}>
+          <ModelsSelect
+            fluid
+            name="model"
+            label="Model"
+            value={values.model}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            placeholder='Select model'
+            filter={item => {
+              return AuthStore.canUploadAssetsForModel(item.value);
+            }}
+          />
+          <ErrorMessage
+            field="model"
+            touched={touched}
+            errors={errors}
+          />
+        </Form.Field>
+        <Form.Field style={styles.field}>
+          <FileInput
+            fluid
+            name="file"
+            icon='file'
+            label="File"
+            iconPosition='left'
+            placeholder='Select file'
+            value={values.file}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <ErrorMessage
+            field="file"
+            touched={touched}
+            errors={errors}
+          />
+        </Form.Field>
+        <Form.Field style={styles.field}>
+          <label>
+            Name
+            <Input
+              fluid
+              name="name"
+              icon='file text'
+              iconPosition='left'
+              placeholder='Name'
+              value={values.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </label>
+          <ErrorMessage
+            field="name"
+            touched={touched}
+            errors={errors}
+          />
+        </Form.Field>
+      </div>
+      <div className="crud-modal-form__footer">
         <Button
           color='teal'
           icon="send"
@@ -94,8 +103,9 @@ const UploadAssetForm = props => {
           size='large'
           disabled={isSubmitting}
         >
-          Send
+          <Icon name="send" /> Send
         </Button>
+      </div>
     </Form>
   );
 };

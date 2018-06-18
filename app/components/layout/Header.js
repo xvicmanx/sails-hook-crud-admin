@@ -26,6 +26,7 @@ const Header = () => (
     <Container>
       <Menu.Item
         as={Link}
+        icon="home"
         header
         to="/model"
         content={Constants.LABELS.HOME}
@@ -33,6 +34,7 @@ const Header = () => (
       {AuthStore.canAccessPermissionsArea() && (
         <Menu.Item
           as={Link}
+          icon="key"
           header
           to="/permissions"
           content={Constants.LABELS.PERMISSIONS}
@@ -41,12 +43,14 @@ const Header = () => (
       <Menu.Item
         as={Link}
         header
+        icon="image"
         to="/assets"
         content={Constants.LABELS.ASSETS}
       />
       <Menu.Item
         as={Link}
         header
+        icon="arrow right"
         to="/logout"
         content={Constants.LABELS.LOGOUT}
       />

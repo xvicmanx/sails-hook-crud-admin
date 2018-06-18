@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Breadcrumb } from 'semantic-ui-react';
+import { Breadcrumb, Icon } from 'semantic-ui-react';
 import Constants from '../../constants';
 import '../../helpers/string';
+import { iconForArea } from '../../helpers/config';
 import {
   getConfig,
   getModelRelatedValue,
 } from '../../helpers/config';
+import { modelTitle } from '../../helpers/models';
 
 const styles = {
   container: { marginBottom: '2rem' },
@@ -14,12 +16,6 @@ const styles = {
 
 const backLink = (area) => {
   return area === 'home' ? '/model' : '/permissions';
-};
-
-const modelTitle = (modelName) => {
-  return getModelRelatedValue(
-    `${modelName}.label`,
-  ) || modelName.asTitle();
 };
 
 const MainBreadcrumb = ({ modelName, area }) => {
@@ -33,6 +29,7 @@ const MainBreadcrumb = ({ modelName, area }) => {
         as={Link}
         to={backLink(area)}
       >
+        <Icon color="teal" name={iconForArea(area)} />&nbsp;
         {Constants.LABELS[area.toUpperCase()]}
       </Breadcrumb.Section>
       <Breadcrumb.Divider icon='right angle' />

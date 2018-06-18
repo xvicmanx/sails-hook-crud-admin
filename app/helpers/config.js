@@ -32,9 +32,14 @@ export const getButtonText = (button, defaultValue) => {
   );
 };
 
+export const iconForArea = (area) => {
+  return area === 'home' ? 'home' : 'key';
+};
+
 export default {
   getConfig,
   getLabel,
   getButtonText,
   getModelRelatedValue,
+  iconForArea,
 };

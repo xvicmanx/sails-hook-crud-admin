@@ -1,6 +1,12 @@
 import React from 'react'
-import { Button, Modal } from 'semantic-ui-react';
+import { Button, Modal, Icon } from 'semantic-ui-react';
 import UploadAssetForm from '../forms/UploadAssetForm';
+
+const styles = {
+  content: {
+    padding: '1.5rem 0',
+  },
+};
 
 class UploadAssetModal extends React.Component {
   constructor(props) {
@@ -25,7 +31,8 @@ class UploadAssetModal extends React.Component {
       <div>
         <Button
           color="blue"
-          content="Upload Asset"
+          content={`Upload ${this.props.type}`}
+          icon="upload"
           onClick={() => {
             this.showModal();
           }}
@@ -35,9 +42,14 @@ class UploadAssetModal extends React.Component {
           onClose={() => {
             this.hideModal();
           }}
+          size="tiny"
+          closeIcon
         >
-          <Modal.Header>Uploading Asset</Modal.Header>
-          <Modal.Content>
+          <Modal.Header>
+            <Icon name="upload" color="teal" />
+            Uploading Asset
+          </Modal.Header>
+          <Modal.Content style={styles.content}>
             <UploadAssetForm
               type={this.props.type}
               onSubmitSuccess={() => {

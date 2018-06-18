@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon } from 'semantic-ui-react';
 import CRUDTable,
 {
   Fields,
@@ -92,11 +93,23 @@ class ModelCrud extends React.Component {
 
     return (
       <CreateForm
-        title={Constants.LABELS.CREATE_FORM_TITLE}
+        title={
+          <div>
+            <Icon name="plus" color="teal" /> {Constants.LABELS.CREATE_FORM_TITLE}
+          </div>
+        }
         message={Constants.LABELS.CREATE_FORM_MESSAGE}
-        trigger={Constants.BUTTONS.CREATE}
+        trigger={
+          <div>
+            <Icon name="plus" /> {Constants.BUTTONS.CREATE}
+          </div>
+        }
         onSubmit={this.handleCreateSubmit}
-        submitText={Constants.BUTTONS.CREATE}
+        submitText={
+          <div>
+            <Icon name="plus" /> {Constants.BUTTONS.CREATE}
+          </div>
+        }
         validate={validateModelRequiredValues(model)}
       />
     );
@@ -112,11 +125,23 @@ class ModelCrud extends React.Component {
 
     return (
       <UpdateForm
-        title={Constants.LABELS.UPDATE_FORM_TITLE}
+        title={
+          <div>
+            <Icon name="pencil" color="teal" /> {Constants.LABELS.UPDATE_FORM_TITLE}
+          </div>
+        }
         message={Constants.LABELS.UPDATE_FORM_MESSAGE}
-        trigger={Constants.BUTTONS.UPDATE}
+        trigger={
+          <div>
+            <Icon name="pencil" /> {Constants.BUTTONS.UPDATE}
+          </div>
+        }
         onSubmit={this.handleUpdateSubmit}
-        submitText={Constants.BUTTONS.UPDATE}
+        submitText={
+          <div>
+            <Icon name="pencil" /> {Constants.BUTTONS.UPDATE}
+          </div>
+        }
         validate={validateModelRequiredValues(model)}
       />
     )
@@ -137,11 +162,23 @@ class ModelCrud extends React.Component {
 
     return (
       <DeleteForm
-        title={Constants.LABELS.REMOVE_FORM_TITLE}
+        title={
+          <div>
+            <Icon name="close" color="red" /> {Constants.LABELS.REMOVE_FORM_TITLE}
+          </div>
+        }
         message={Constants.LABELS.REMOVE_FORM_MESSAGE}
-        trigger={Constants.BUTTONS.REMOVE}
+        trigger={
+          <div>
+            <Icon name="close" /> {Constants.BUTTONS.REMOVE}
+          </div>
+        }
         onSubmit={this.handleDeleteSubmit}
-        submitText={Constants.BUTTONS.REMOVE}
+        submitText={
+          <div>
+            <Icon name="close" /> {Constants.BUTTONS.REMOVE}
+          </div>
+        }
         validate={validateModelDeletion}
       />
     );
@@ -162,6 +199,11 @@ class ModelCrud extends React.Component {
           fetchItems={(payload) => service.fetchItems(payload)}
           showQueryBuilder
           actionsLabel={Constants.LABELS.ACTIONS}
+          actionsLabel={
+            <div>
+              <Icon name="wrench" color="teal" /> {Constants.LABELS.ACTIONS}
+            </div>
+          }
         >
           <Fields>
             {model &&

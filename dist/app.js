@@ -232,7 +232,15 @@ var valueResolver = exports.valueResolver = function valueResolver(model, field,
 };
 
 var getFieldLabel = exports.getFieldLabel = function getFieldLabel(modelName, field) {
-  return (0, _config.getModelRelatedValue)(modelName + '.fields.' + field + '.label', field.separateCamel().asTitle());
+  var text = (0, _config.getModelRelatedValue)(modelName + '.fields.' + field + '.label', field.separateCamel().asTitle());
+  var icon = (0, _config.getModelRelatedValue)(modelName + '.fields.' + field + '.icon', '');
+  return _react2.default.createElement(
+    'span',
+    null,
+    icon && _react2.default.createElement(_semanticUiReact.Icon, { name: icon, color: 'teal' }),
+    ' ',
+    text
+  );
 };
 
 var getFieldRenderer = exports.getFieldRenderer = function getFieldRenderer(modelName, field) {
@@ -248,7 +256,18 @@ var CRUD_MODELS_FILTER = exports.CRUD_MODELS_FILTER = function CRUD_MODELS_FILTE
 };
 
 var modelTitle = exports.modelTitle = function modelTitle(modelName) {
-  return (0, _config.getModelRelatedValue)(modelName + '.label') || modelName.asTitle();
+  var text = (0, _config.getModelRelatedValue)(modelName + '.label') || modelName.asTitle();
+  var icon = (0, _config.getModelRelatedValue)(modelName + '.icon');
+  return _react2.default.createElement(
+    'span',
+    null,
+    icon && _react2.default.createElement(_semanticUiReact.Icon, {
+      name: icon,
+      color: 'teal'
+    }),
+    ' ',
+    text
+  );
 };
 
 var createRights = exports.createRights = function createRights(modelName) {
@@ -543,10 +562,12 @@ var Service = function Service(model) {
           extraHeaders = _getConfig.extraHeaders;
 
       var formData = new FormData();
+
       formData.append('name', data.name);
       formData.append('model', data.model);
       formData.append('type', data.type);
       formData.append('file', data.file);
+
       return fetch(UPLOAD_URL, {
         method: 'POST',
         headers: Object.assign({
@@ -591,7 +612,7 @@ module.exports = require("react-router-dom");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getButtonText = exports.getModelRelatedValue = exports.getLabel = exports.getConfig = undefined;
+exports.iconForArea = exports.getButtonText = exports.getModelRelatedValue = exports.getLabel = exports.getConfig = undefined;
 
 var _object = __webpack_require__(12);
 
@@ -614,11 +635,16 @@ var getButtonText = exports.getButtonText = function getButtonText(button, defau
   return (0, _object.queryValue)(config, 'general.buttons.' + button, defaultValue);
 };
 
+var iconForArea = exports.iconForArea = function iconForArea(area) {
+  return area === 'home' ? 'home' : 'key';
+};
+
 exports.default = {
   getConfig: getConfig,
   getLabel: getLabel,
   getButtonText: getButtonText,
-  getModelRelatedValue: getModelRelatedValue
+  getModelRelatedValue: getModelRelatedValue,
+  iconForArea: iconForArea
 };
 
 /***/ }),
@@ -672,15 +698,18 @@ var _Footer2 = _interopRequireDefault(_Footer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var styles = {
-  segment: {
+  segment: _defineProperty({
     width: '95%',
     margin: '0 auto',
     paddingBottom: '4rem',
     border: 0,
     boxShadow: 'none',
-    paddingTop: 0
-  }
+    paddingTop: 0,
+    overflowX: 'auto'
+  }, 'paddingTop', '1rem')
 };
 
 var Main = function Main(_ref) {
@@ -831,6 +860,8 @@ var _constants = __webpack_require__(5);
 
 var _constants2 = _interopRequireDefault(_constants);
 
+var _models = __webpack_require__(3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ProtectedStat = (0, _RightProtected2.default)(null, null)(_semanticUiReact.Statistic);
@@ -843,6 +874,7 @@ var ModelsNavigator = function ModelsNavigator(props) {
     _react2.default.createElement(
       _semanticUiReact.Header,
       { size: 'huge' },
+      _react2.default.createElement(_semanticUiReact.Icon, { color: 'teal', name: (0, _config.iconForArea)(props.area) }),
       _constants2.default.LABELS[props.area.toUpperCase()]
     ),
     _react2.default.createElement(
@@ -868,7 +900,7 @@ var ModelsNavigator = function ModelsNavigator(props) {
           _react2.default.createElement(
             _semanticUiReact.Statistic.Label,
             null,
-            (0, _config.getModelRelatedValue)(modelName + '.label') || modelName.asTitle()
+            (0, _models.modelTitle)(modelName)
           )
         );
       })
@@ -1818,6 +1850,8 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _semanticUiReact = __webpack_require__(2);
+
 var _reactCrudTable = __webpack_require__(34);
 
 var _reactCrudTable2 = _interopRequireDefault(_reactCrudTable);
@@ -1843,6 +1877,8 @@ var _AuthStore = __webpack_require__(4);
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1929,11 +1965,29 @@ var ModelCrud = function (_React$Component) {
       if (!allowed) return null;
 
       return _react2.default.createElement(_reactCrudTable.CreateForm, {
-        title: _constants2.default.LABELS.CREATE_FORM_TITLE,
+        title: _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_semanticUiReact.Icon, { name: 'plus', color: 'teal' }),
+          ' ',
+          _constants2.default.LABELS.CREATE_FORM_TITLE
+        ),
         message: _constants2.default.LABELS.CREATE_FORM_MESSAGE,
-        trigger: _constants2.default.BUTTONS.CREATE,
+        trigger: _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_semanticUiReact.Icon, { name: 'plus' }),
+          ' ',
+          _constants2.default.BUTTONS.CREATE
+        ),
         onSubmit: this.handleCreateSubmit,
-        submitText: _constants2.default.BUTTONS.CREATE,
+        submitText: _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_semanticUiReact.Icon, { name: 'plus' }),
+          ' ',
+          _constants2.default.BUTTONS.CREATE
+        ),
         validate: (0, _validation.validateModelRequiredValues)(model)
       });
     }
@@ -1949,11 +2003,29 @@ var ModelCrud = function (_React$Component) {
       if (!allowed) return null;
 
       return _react2.default.createElement(_reactCrudTable.UpdateForm, {
-        title: _constants2.default.LABELS.UPDATE_FORM_TITLE,
+        title: _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_semanticUiReact.Icon, { name: 'pencil', color: 'teal' }),
+          ' ',
+          _constants2.default.LABELS.UPDATE_FORM_TITLE
+        ),
         message: _constants2.default.LABELS.UPDATE_FORM_MESSAGE,
-        trigger: _constants2.default.BUTTONS.UPDATE,
+        trigger: _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_semanticUiReact.Icon, { name: 'pencil' }),
+          ' ',
+          _constants2.default.BUTTONS.UPDATE
+        ),
         onSubmit: this.handleUpdateSubmit,
-        submitText: _constants2.default.BUTTONS.UPDATE,
+        submitText: _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_semanticUiReact.Icon, { name: 'pencil' }),
+          ' ',
+          _constants2.default.BUTTONS.UPDATE
+        ),
         validate: (0, _validation.validateModelRequiredValues)(model)
       });
     }
@@ -1971,11 +2043,29 @@ var ModelCrud = function (_React$Component) {
       if (!allowed) return null;
 
       return _react2.default.createElement(_reactCrudTable.DeleteForm, {
-        title: _constants2.default.LABELS.REMOVE_FORM_TITLE,
+        title: _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_semanticUiReact.Icon, { name: 'close', color: 'red' }),
+          ' ',
+          _constants2.default.LABELS.REMOVE_FORM_TITLE
+        ),
         message: _constants2.default.LABELS.REMOVE_FORM_MESSAGE,
-        trigger: _constants2.default.BUTTONS.REMOVE,
+        trigger: _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_semanticUiReact.Icon, { name: 'close' }),
+          ' ',
+          _constants2.default.BUTTONS.REMOVE
+        ),
         onSubmit: this.handleDeleteSubmit,
-        submitText: _constants2.default.BUTTONS.REMOVE,
+        submitText: _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_semanticUiReact.Icon, { name: 'close' }),
+          ' ',
+          _constants2.default.BUTTONS.REMOVE
+        ),
         validate: _validation.validateModelDeletion
       });
     }
@@ -1994,14 +2084,20 @@ var ModelCrud = function (_React$Component) {
         { style: styles.container },
         _react2.default.createElement(
           _reactCrudTable2.default,
-          {
+          _defineProperty({
             caption: (0, _models.modelTitle)(modelName),
             fetchItems: function fetchItems(payload) {
               return service.fetchItems(payload);
             },
             showQueryBuilder: true,
             actionsLabel: _constants2.default.LABELS.ACTIONS
-          },
+          }, 'actionsLabel', _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(_semanticUiReact.Icon, { name: 'wrench', color: 'teal' }),
+            ' ',
+            _constants2.default.LABELS.ACTIONS
+          )),
           _react2.default.createElement(
             _reactCrudTable.Fields,
             null,
@@ -3228,12 +3324,14 @@ var Header = function Header() {
       null,
       _react2.default.createElement(_semanticUiReact.Menu.Item, {
         as: _reactRouterDom.Link,
+        icon: 'home',
         header: true,
         to: '/model',
         content: _constants2.default.LABELS.HOME
       }),
       _AuthStore2.default.canAccessPermissionsArea() && _react2.default.createElement(_semanticUiReact.Menu.Item, {
         as: _reactRouterDom.Link,
+        icon: 'key',
         header: true,
         to: '/permissions',
         content: _constants2.default.LABELS.PERMISSIONS
@@ -3241,12 +3339,14 @@ var Header = function Header() {
       _react2.default.createElement(_semanticUiReact.Menu.Item, {
         as: _reactRouterDom.Link,
         header: true,
+        icon: 'image',
         to: '/assets',
         content: _constants2.default.LABELS.ASSETS
       }),
       _react2.default.createElement(_semanticUiReact.Menu.Item, {
         as: _reactRouterDom.Link,
         header: true,
+        icon: 'arrow right',
         to: '/logout',
         content: _constants2.default.LABELS.LOGOUT
       })
@@ -3353,6 +3453,8 @@ __webpack_require__(9);
 
 var _config = __webpack_require__(8);
 
+var _models = __webpack_require__(3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var styles = {
@@ -3361,10 +3463,6 @@ var styles = {
 
 var backLink = function backLink(area) {
   return area === 'home' ? '/model' : '/permissions';
-};
-
-var modelTitle = function modelTitle(modelName) {
-  return (0, _config.getModelRelatedValue)(modelName + '.label') || modelName.asTitle();
 };
 
 var MainBreadcrumb = function MainBreadcrumb(_ref) {
@@ -3384,13 +3482,15 @@ var MainBreadcrumb = function MainBreadcrumb(_ref) {
         as: _reactRouterDom.Link,
         to: backLink(area)
       },
+      _react2.default.createElement(_semanticUiReact.Icon, { color: 'teal', name: (0, _config.iconForArea)(area) }),
+      '\xA0',
       _constants2.default.LABELS[area.toUpperCase()]
     ),
     _react2.default.createElement(_semanticUiReact.Breadcrumb.Divider, { icon: 'right angle' }),
     _react2.default.createElement(
       _semanticUiReact.Breadcrumb.Section,
       { active: true },
-      modelTitle(modelName)
+      (0, _models.modelTitle)(modelName)
     )
   );
 };
@@ -3651,7 +3751,7 @@ var Assets = function (_React$Component) {
 }(_react2.default.Component);
 
 var panes = [{
-  menuItem: 'Pictures',
+  menuItem: { key: 'pictures', icon: 'image', content: 'Pictures' },
   render: function render() {
     return _react2.default.createElement(
       _semanticUiReact.Tab.Pane,
@@ -3660,7 +3760,7 @@ var panes = [{
     );
   }
 }, {
-  menuItem: 'Files',
+  menuItem: { key: 'files', icon: 'file', content: 'Files' },
   render: function render() {
     return _react2.default.createElement(
       _semanticUiReact.Tab.Pane,
@@ -3674,7 +3774,15 @@ var AssetsScreen = function AssetsScreen(props) {
   return _react2.default.createElement(
     Main,
     null,
-    _react2.default.createElement(_semanticUiReact.Header, { as: 'h1', content: 'Assets' }),
+    _react2.default.createElement(
+      _semanticUiReact.Header,
+      { as: 'h1' },
+      _react2.default.createElement(_semanticUiReact.Icon, {
+        name: 'image',
+        color: 'teal'
+      }),
+      ' Assets'
+    ),
     _react2.default.createElement(_semanticUiReact.Tab, {
       menu: { pointing: true },
       panes: panes
@@ -3717,6 +3825,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var styles = {
+  content: {
+    padding: '1.5rem 0'
+  }
+};
+
 var UploadAssetModal = function (_React$Component) {
   _inherits(UploadAssetModal, _React$Component);
 
@@ -3753,7 +3867,8 @@ var UploadAssetModal = function (_React$Component) {
         null,
         _react2.default.createElement(_semanticUiReact.Button, {
           color: 'blue',
-          content: 'Upload Asset',
+          content: 'Upload ' + this.props.type,
+          icon: 'upload',
           onClick: function onClick() {
             _this2.showModal();
           }
@@ -3764,16 +3879,19 @@ var UploadAssetModal = function (_React$Component) {
             open: this.state.open,
             onClose: function onClose() {
               _this2.hideModal();
-            }
+            },
+            size: 'tiny',
+            closeIcon: true
           },
           _react2.default.createElement(
             _semanticUiReact.Modal.Header,
             null,
+            _react2.default.createElement(_semanticUiReact.Icon, { name: 'upload', color: 'teal' }),
             'Uploading Asset'
           ),
           _react2.default.createElement(
             _semanticUiReact.Modal.Content,
-            null,
+            { style: styles.content },
             _react2.default.createElement(_UploadAssetForm2.default, {
               type: this.props.type,
               onSubmitSuccess: function onSubmitSuccess() {
@@ -3857,73 +3975,89 @@ var UploadAssetForm = function UploadAssetForm(props) {
       size: 'large'
     },
     _react2.default.createElement(
-      _semanticUiReact.Form.Field,
-      { style: styles.field },
-      _react2.default.createElement(_ModelsSelect2.default, {
-        fluid: true,
-        name: 'model',
-        value: values.model,
-        onChange: handleChange,
-        onBlur: handleBlur,
-        placeholder: 'Select model',
-        filter: function filter(item) {
-          return _AuthStore2.default.canUploadAssetsForModel(item.value);
-        }
-      }),
-      _react2.default.createElement(_ErrorMessage2.default, {
-        field: 'model',
-        touched: touched,
-        errors: errors
-      })
+      'div',
+      { className: 'crud-modal-form__fields' },
+      _react2.default.createElement(
+        _semanticUiReact.Form.Field,
+        { style: styles.field },
+        _react2.default.createElement(_ModelsSelect2.default, {
+          fluid: true,
+          name: 'model',
+          label: 'Model',
+          value: values.model,
+          onChange: handleChange,
+          onBlur: handleBlur,
+          placeholder: 'Select model',
+          filter: function filter(item) {
+            return _AuthStore2.default.canUploadAssetsForModel(item.value);
+          }
+        }),
+        _react2.default.createElement(_ErrorMessage2.default, {
+          field: 'model',
+          touched: touched,
+          errors: errors
+        })
+      ),
+      _react2.default.createElement(
+        _semanticUiReact.Form.Field,
+        { style: styles.field },
+        _react2.default.createElement(_FileInput2.default, {
+          fluid: true,
+          name: 'file',
+          icon: 'file',
+          label: 'File',
+          iconPosition: 'left',
+          placeholder: 'Select file',
+          value: values.file,
+          onChange: handleChange,
+          onBlur: handleBlur
+        }),
+        _react2.default.createElement(_ErrorMessage2.default, {
+          field: 'file',
+          touched: touched,
+          errors: errors
+        })
+      ),
+      _react2.default.createElement(
+        _semanticUiReact.Form.Field,
+        { style: styles.field },
+        _react2.default.createElement(
+          'label',
+          null,
+          'Name',
+          _react2.default.createElement(_semanticUiReact.Input, {
+            fluid: true,
+            name: 'name',
+            icon: 'file text',
+            iconPosition: 'left',
+            placeholder: 'Name',
+            value: values.name,
+            onChange: handleChange,
+            onBlur: handleBlur
+          })
+        ),
+        _react2.default.createElement(_ErrorMessage2.default, {
+          field: 'name',
+          touched: touched,
+          errors: errors
+        })
+      )
     ),
     _react2.default.createElement(
-      _semanticUiReact.Form.Field,
-      { style: styles.field },
-      _react2.default.createElement(_FileInput2.default, {
-        fluid: true,
-        name: 'file',
-        icon: 'file',
-        iconPosition: 'left',
-        placeholder: 'Select file',
-        value: values.file,
-        onChange: handleChange,
-        onBlur: handleBlur
-      }),
-      _react2.default.createElement(_ErrorMessage2.default, {
-        field: 'file',
-        touched: touched,
-        errors: errors
-      })
-    ),
-    _react2.default.createElement(
-      _semanticUiReact.Form.Field,
-      { style: styles.field },
-      _react2.default.createElement(_semanticUiReact.Input, {
-        fluid: true,
-        name: 'name',
-        icon: 'file text',
-        iconPosition: 'left',
-        placeholder: 'Name',
-        value: values.name,
-        onChange: handleChange,
-        onBlur: handleBlur
-      }),
-      _react2.default.createElement(_ErrorMessage2.default, {
-        field: 'name',
-        touched: touched,
-        errors: errors
-      })
-    ),
-    _react2.default.createElement(
-      _semanticUiReact.Button,
-      {
-        color: 'teal',
-        icon: 'send',
-        fluid: true,
-        size: 'large',
-        disabled: isSubmitting
-      },
-      'Send'
+      'div',
+      { className: 'crud-modal-form__footer' },
+      _react2.default.createElement(
+        _semanticUiReact.Button,
+        {
+          color: 'teal',
+          icon: 'send',
+          fluid: true,
+          size: 'large',
+          disabled: isSubmitting
+        },
+        _react2.default.createElement(_semanticUiReact.Icon, { name: 'send' }),
+        ' Send'
+      )
     )
   );
 };
@@ -4022,22 +4156,27 @@ var FileInput = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      return _react2.default.createElement('input', _extends({}, this.props, {
-        type: 'file',
-        value: this.state.value,
-        multiple: 'multiple',
-        onChange: function onChange(event) {
-          _this2.setState({ value: event.target.value });
-          _this2.props.onChange({
-            persist: function persist() {},
-            target: {
-              name: event.target.name,
-              type: event.target.type,
-              value: event.target.files[0]
-            }
-          });
-        }
-      }));
+      return _react2.default.createElement(
+        'label',
+        null,
+        this.props.label,
+        _react2.default.createElement('input', _extends({}, this.props, {
+          type: 'file',
+          value: this.state.value,
+          multiple: 'multiple',
+          onChange: function onChange(event) {
+            _this2.setState({ value: event.target.value });
+            _this2.props.onChange({
+              persist: function persist() {},
+              target: {
+                name: event.target.name,
+                type: event.target.type,
+                value: event.target.files[0]
+              }
+            });
+          }
+        }))
+      );
     }
   }]);
 

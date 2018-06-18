@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tab, Divider, Loader, Header, Message } from 'semantic-ui-react';
+import { Tab, Divider, Loader, Header, Message, Icon } from 'semantic-ui-react';
 import Service from '../services/Service';
 import loggedInProtected from '../components/high-order/LoggedInProtected';
 import Constants from '../constants';
@@ -83,7 +83,7 @@ class Assets extends React.Component {
 
 const panes = [
   {
-    menuItem: 'Pictures',
+    menuItem: { key: 'pictures', icon: 'image', content: 'Pictures' },
     render: () => (
       <Tab.Pane style={styles.pane}>
         <Assets type={Constants.ASSETS_TYPES.PICTURE} />
@@ -91,7 +91,7 @@ const panes = [
     ),
   },
   {
-    menuItem: 'Files',
+    menuItem: { key: 'files', icon: 'file', content: 'Files' },
     render: () => (
       <Tab.Pane style={styles.pane}>
         <Assets type={Constants.ASSETS_TYPES.FILE} />
@@ -103,7 +103,12 @@ const panes = [
 const AssetsScreen = props => {
   return (
     <Main>
-      <Header as="h1" content="Assets" />
+      <Header as="h1">
+        <Icon
+          name="image"
+          color="teal"
+        /> Assets
+      </Header>
       <Tab
         menu={{ pointing: true }}
         panes={panes}

@@ -1,6 +1,6 @@
 import React from 'react';
 const template = require('lodash.template');
-import { Popup, Button } from 'semantic-ui-react';
+import { Popup, Button, Icon } from 'semantic-ui-react';
 import JSONTable from 'simple-json-table';
 import _ from 'lodash';
 import { omit, queryValue } from './object';
@@ -121,9 +121,20 @@ export const valueResolver = (model, field, modelName) => (item) => {
 };
 
 export const getFieldLabel = (modelName, field) => {
-  return getModelRelatedValue(
+  const text = getModelRelatedValue(
     `${modelName}.fields.${field}.label`,
     field.separateCamel().asTitle()
+  );
+  const icon = getModelRelatedValue(
+    `${modelName}.fields.${field}.icon`,
+    ''
+  );
+  return (
+    <span>
+      {icon && (
+        <Icon name={icon} color="teal" />
+      )} {text}
+    </span>
   );
 };
 
@@ -143,9 +154,22 @@ export const CRUD_MODELS_FILTER = (model) => {
 };
 
 export const modelTitle = (modelName) => {
-  return getModelRelatedValue(
+  const text = getModelRelatedValue(
     `${modelName}.label`,
-  ) || modelName.asTitle()
+  ) || modelName.asTitle();
+  const icon = getModelRelatedValue(
+    `${modelName}.icon`,
+  );
+  return (
+    <span>
+      {icon && (
+        <Icon
+          name={icon}
+          color="teal"
+        />
+      )} {text}
+    </span>
+  )
 };
 
 export const createRights = (modelName) => [

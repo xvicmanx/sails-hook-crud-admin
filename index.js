@@ -4,46 +4,10 @@ const routes = require('./api/constants/routes');
 const seedData = require('./api/seed');
 const MainController = require('./api/admin-controllers/CRUDAdminMainController');
 const AuthController = require('./api/admin-controllers/CRUDAdminAuthController');
-
-const CRUD_MODELS = [
-  'crudaction',
-  'crudresource',
-  'crudright',
-  'crudgroup',
-  'cruduser',
-];
-
-const HTTP_METHODS = [
-  'GET',
-  'POST',
-  'PUT',
-  'PATCH',
-  'DELETE',
-  'OPTIONS',
-];
-
-const crudForbiddenRoutes = () => {
-  const routes = {};
-  CRUD_MODELS.forEach(modelName => {
-    HTTP_METHODS.forEach(method => {
-      const key = `${method} /${modelName}`;
-      routes[key] = { response: 'notFound' };
-    });
-  });
-  return routes;
-};
-
-const disableLog = (sails) => {
-  const log = sails.log;
-  const error = sails.log.error;
-  const verbose = sails.log.verbose;
-  sails.log = function () {};
-  sails.log.info = () => {};
-  sails.log.silly = () => {};
-  sails.log.error = error;
-  sails.log.verbose = verbose;
-  return log;
-};
+const {
+  disableLog,
+  crudForbiddenRoutes,
+} = require('./api/helpers');
 
 module.exports = function (sails) {
   sails.util = sails.util || {};

@@ -1,5 +1,9 @@
 const AuthService = require('./admin-services/AuthService');
 const Errors  = require('./errors');
+const {
+  CRUD_MODELS,
+  HTTP_METHODS
+} = require('./constants/general');
 
 const omitProps = (obj, props) => {
   return Object.keys(obj).reduce(function (res, k) {
@@ -62,6 +66,33 @@ const verifyAccess = ({ action, resource }) => async (req, res) => {
   return verification.success && hasRightsAccess;
 };
 
+
+const crudForbiddenRoutes = () => {
+  const routes = {};
+  CRUD_MODELS.forEach(modelName => {
+    HTTP_METHODS.forEach(method => {
+      const key = `${method} /${modelName}`;
+      // routes[key] = { response: 'notFound' };
+      routes[key] = (req, res) => {
+        return res.send(404,'Not found');
+      };
+    });
+  });
+  return routes;
+};
+
+const disableLog = (sails) => {
+  const log = sails.log;
+  const error = sails.log.error;
+  const verbose = sails.log.verbose;
+  sails.log = function () {};
+  sails.log.info = () => {};
+  sails.log.silly = () => {};
+  sails.log.error = error;
+  sails.log.verbose = verbose;
+  return log;
+};
+
 module.exports = {
   verifyAccess,
   verifyToken,
@@ -69,4 +100,6 @@ module.exports = {
   getDefinitions,
   queryValue,
   omitProps,
+  crudForbiddenRoutes,
+  disableLog,
 };

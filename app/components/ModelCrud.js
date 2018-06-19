@@ -9,6 +9,7 @@ import CRUDTable,
   DeleteForm,
   Pagination
 } from 'react-crud-table';
+import _ from 'lodash';
 import {
   validateModelRequiredValues,
   validateModelDeletion,
@@ -196,7 +197,12 @@ class ModelCrud extends React.Component {
       <div style={styles.container}>
         <CRUDTable
           caption={modelTitle(modelName)}
-          fetchItems={(payload) => service.fetchItems(payload)}
+          fetchItems={(data) => {
+            const payload = Object.assign({}, data);
+            payload.queryRules = data.queryRules
+              .map((i) =>  _.omit(i, ['label']));
+            return service.fetchItems(payload)
+          }}
           showQueryBuilder
           actionsLabel={Constants.LABELS.ACTIONS}
           actionsLabel={

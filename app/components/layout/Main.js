@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Segment } from 'semantic-ui-react';
 import Header from './Header';
 import Footer from './Footer';
+import NavigationSidebar from './NavigationSidebar';
 
 const styles = {
   segment: {
@@ -17,17 +18,39 @@ const styles = {
   },
 };
 
-const Main = ({ children }) => (
-  <div>
-    <div className="content-top">
-      <Header />
-      <Segment style={styles.segment}>
-        {children}
-      </Segment>
-    </div>
-    <Footer />
-  </div>
-);
+class Main extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sidebarVisible: false,
+    };
+  }
+
+  render() {
+    return (
+      <div>
+        <NavigationSidebar
+          sidebarVisible={this.state.sidebarVisible}
+        >
+          <div className="content-top">
+            <Header
+              onShowMenuClicked={() => {
+                this.setState({
+                  sidebarVisible: !this.state.sidebarVisible,
+                });
+              }}
+            />
+            <Segment basic style={styles.segment}>
+              {this.props.children}
+            </Segment>
+          </div>
+          <Footer />
+        </NavigationSidebar>
+      </div>
+    )
+  }
+
+}
 
 Main.propTypes = {};
 

@@ -320,8 +320,24 @@ form.crud-modal-form > div.crud-modal-form__message {
   margin-bottom: .7rem;
 }
 
+.show-mobile {
+  display: none!important;
+}
+
+.menu-button {
+  position: absolute;
+  right: 1rem;
+}
 
 @media screen and (max-width: 600px) {
+  .hide-mobile {
+    display: none!important;
+  }
+
+  .show-mobile {
+    display: initial!important;
+  }
+
   .crud-table {
     display: block;
     min-width: 85vw;

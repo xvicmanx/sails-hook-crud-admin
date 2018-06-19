@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Container, Menu } from 'semantic-ui-react';
+import { Container, Menu, Button } from 'semantic-ui-react';
 import Constants from '../../constants';
 import AuthStore from '../../AuthStore';
+import NavigationMenu from './NavigationMenu';
 
 const styles = {
   wrapper: {
@@ -14,7 +15,7 @@ const styles = {
   },
 };
 
-const Header = () => (
+const Header = ({ onShowMenuClicked }) => (
   <Menu
     inverted
     style={styles.wrapper}
@@ -23,38 +24,13 @@ const Header = () => (
       header
       content={`${Constants.LABELS.WELCOME} ${AuthStore.getUserName()}!`}
     />
-    <Container>
-      <Menu.Item
-        as={Link}
-        icon="home"
-        header
-        to="/model"
-        content={Constants.LABELS.HOME}
-      />
-      {AuthStore.canAccessPermissionsArea() && (
-        <Menu.Item
-          as={Link}
-          icon="key"
-          header
-          to="/permissions"
-          content={Constants.LABELS.PERMISSIONS}
-        />
-      )}
-      <Menu.Item
-        as={Link}
-        header
-        icon="image"
-        to="/assets"
-        content={Constants.LABELS.ASSETS}
-      />
-      <Menu.Item
-        as={Link}
-        header
-        icon="arrow right"
-        to="/logout"
-        content={Constants.LABELS.LOGOUT}
-      />
-    </Container>
+    <NavigationMenu className="hide-mobile" />
+    <Button
+      onClick={onShowMenuClicked}
+      className="show-mobile menu-button"
+      icon="bars"
+      color="teal"
+    />
   </Menu>
 );
 

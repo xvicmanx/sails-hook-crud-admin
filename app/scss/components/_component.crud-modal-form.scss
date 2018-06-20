@@ -1,0 +1,123 @@
+.crud-modal-form {
+  padding: 1rem 0;
+  text-align: left;
+
+  &__field-error {
+    color: #fff;
+    background-color: #e81b1b;
+    border-radius: 3px;
+    padding: .3rem .8rem;
+    text-align: left;
+    margin-bottom: .5rem;
+    position: relative;
+    margin-top: -0.6rem;
+    width: fit-content;
+
+    &:before {
+      content: "";
+      background-color: transparent;
+      display: block;
+      position: absolute;
+      top: -.3rem;
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 6px solid #e81b1b;
+    }
+  }
+
+  &__message {
+    padding: 0 0 1.2rem 0;
+    font-size: 1.1rem;
+    text-align: left;
+  }
+
+  &__error-message {
+    background-color: #e81b1b;
+    color: #fff;
+    padding: .8rem;
+    border-radius: 3px;
+    margin-bottom: 1rem;
+  }
+
+  &__footer {
+    border-top: 1px solid rgba(34,36,38,.15);
+    padding: 1.5rem;
+    padding-bottom: 0;
+  }
+  
+  &__fields {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+  }
+
+  button {
+    min-width: 250px;
+    margin: 2rem auto 0 auto;
+  }
+  
+  .crud-button {
+    width: 95%;
+    height: 40px;
+    font-size: 1.1rem;
+    margin: 3rem auto 0 auto;
+    position: relative;
+    display: block;
+  
+    &::before {
+      content: '';
+      position: absolute;
+      top: -1.5rem;
+      width: 100%;
+      border-bottom: 1px solid #dddd;
+      left: 0;
+      padding: 0;
+    }
+  }
+
+
+
+  input,
+  select,
+  textarea {
+    border-radius: 5px;
+    height: 40px;
+    border: 1px solid #ccc;
+    min-width: 250px;
+    margin-bottom: 1rem;
+    margin-top: .5rem;
+    padding-left: .6rem;
+    width: 100%;
+  }
+
+  textarea {
+    min-height: 70px;
+    height: auto;
+  }
+
+  &__label {
+    color: #000;
+    display: block;
+    text-align: left;
+    font-weight: 600;
+  }
+}
+
+form.crud-modal-form > div {
+  padding: 0 1.5rem;
+}
+
+form.crud-modal-form > div.crud-modal-form__message {
+  padding-bottom: 1.2rem;
+}
+
+.crud-label {
+  display: inline-block;
+  border: 1px solid #e5e5e5;
+  padding: .48rem 1rem;
+  border-radius: .2rem;
+  background-color: #f9fafb;
+  font-size: 1.1rem;
+  margin-right: .5rem;
+  margin-bottom: .7rem;
+}

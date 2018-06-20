@@ -1,0 +1,44 @@
+.crud-button {
+  background-color: #000;
+  min-height: 1rem;
+  color: #fff;
+  border-radius: 3px;
+  padding: .6rem 1rem;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &--circular {
+    border-radius: 50%;
+    padding: 0;
+    width: 2rem;
+    line-height: 2rem;
+  }
+
+  &--primary {
+    background-color: #3a96da;
+
+    &:hover {
+      background-color: #1a6fb1;
+      transition: all 1s;
+    }
+  }
+
+  &--positive {
+    background-color: #25ada7;
+    
+    &:hover {
+      background-color: #0e928c;
+      transition: all 1s;
+    }
+  }
+
+  &--negative {
+    background-color: #e84e37;
+
+    &:hover {
+      background-color: #b93e2c;
+      transition: all 1s;
+    }
+  }
+}

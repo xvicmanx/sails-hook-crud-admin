@@ -1,0 +1,27 @@
+.rights-selector {
+  padding: '.3rem';
+  border: 1px solid #eee;
+  border-radius: 3px;
+  margin: 1rem 0;
+
+  &__cell,
+  &__header-cell {
+    padding: .5rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  &__header-cell {
+    :first-child {
+      border-right: 1px solid #eee;
+    }
+  }
+}
+
+.rights-selector__header .rights-selector__row:first-child .rights-selector__header-cell:first-child {
+  border-bottom: 0;
+}
+
+.rights-selector__body .rights-selector__row:last-child .rights-selector__cell,
+.rights-selector__body .rights-selector__row:last-child .rights-selector__header-cell {
+  border-bottom: 0;
+}

@@ -83,7 +83,7 @@ Creating a new group with rights is really easy you just need to go to the [Perm
 
 To create a new group, you give it a name and select the permissions it is going to have.
 
-Assigning permissions is a pretty simple process. You check the actions options for the desired resources. The defined actions are `create`, `update`, `read`, `delete`, `*`.
+Assigning permissions is a pretty simple process. You check the actions options for the desired resources. The defined actions are `create`, `update`, `read`, `delete`, `upload-assets`, `view-assets`, `*`.
 The last one (`*`) means any of the previous actions.
 The resources are defined based on the existing models of your app plus the `CRUD models` of the administrator.
 

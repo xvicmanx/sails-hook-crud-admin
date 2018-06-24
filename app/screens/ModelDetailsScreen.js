@@ -3,7 +3,7 @@ import { Message } from 'semantic-ui-react';
 import queryString from 'query-string';
 import Service from '../services/Service';
 import ModelCrud from '../components/ModelCrud';
-import { getModel, } from '../helpers/models';
+import { getModel } from '../helpers/models';
 import LayoutMain from '../components/layout/Main';
 import MainBreadcrumb from '../components/layout/MainBreadcrumb';
 import rightProtected from '../components/high-order/RightProtected';
@@ -18,7 +18,7 @@ const ProtectedModelCrud = rightProtected(
     visible
     error
     content="You do not have permission to view"
-  />
+  />,
 )(ModelCrud);
 
 const styles = {

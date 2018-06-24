@@ -16,13 +16,13 @@ module.exports = {
       collection: 'crudgroup',
     },
   },
-  verifyPassword: function(password, otherPass) {
-    return new Promise(function (resolve, reject) {
+  verifyPassword(password, otherPass) {
+    return new Promise(((resolve, reject) => {
       try {
         bcrypt.compare(
           password,
           otherPass,
-          function(err, res) {
+          (err, res) => {
             if (err) {
               reject(err);
             } else {
@@ -33,36 +33,41 @@ module.exports = {
       } catch (err) {
         reject(err);
       }
-    });
+    }));
   },
-  customToJSON: function() {
-    return omitProps(this, ['password'])
+  customToJSON() {
+    return omitProps(this, ['password']);
   },
-  beforeCreate: function(data, cb) {
+  beforeCreate(toCreateData, cb) {
+    const data = toCreateData;
     if (!data.password) return cb();
     bcrypt.hash(
       data.password,
       SALT_ROUNDS,
-      function(err, hash) {
+      (err, hash) => {
         data.password = hash;
         cb();
       },
     );
+    return true;
   },
-  beforeUpdate: function(data, cb) {
+  beforeUpdate(toUpdateData, cb) {
+    const data = toUpdateData;
+    let success = false;
     if (!data.password) return cb();
     if (data.password.length < 50) {
       bcrypt.hash(
         data.password,
         SALT_ROUNDS,
-        function(err, hash) {
+        (err, hash) => {
           data.password = hash;
           cb();
         },
       );
+      success = true;
     } else {
       return cb();
     }
-    
-  }
+    return success;
+  },
 };

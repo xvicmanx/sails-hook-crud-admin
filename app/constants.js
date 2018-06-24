@@ -14,7 +14,7 @@ const Constants = {
     CREATE: getButtonText('create', 'Create'),
     UPDATE: getButtonText('update', 'Update'),
     REMOVE: getButtonText('remove', 'Remove'),
-    SEE_DETAILS: getButtonText('seeDetails', 'See details')
+    SEE_DETAILS: getButtonText('seeDetails', 'See details'),
   },
   LABELS: {
     HOME: getLabel('home', 'Home'),

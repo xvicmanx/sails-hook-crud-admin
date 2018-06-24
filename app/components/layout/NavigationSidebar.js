@@ -9,29 +9,27 @@ const styles = {
   },
 };
 
-const NavigationSidebar = props => {
-  return (
-    <Sidebar.Pushable
-      as={Segment}
-      style={styles.pushable}
+const NavigationSidebar = props => (
+  <Sidebar.Pushable
+    as={Segment}
+    style={styles.pushable}
+  >
+    <Sidebar
+      as={Menu}
+      animation="push"
+      width="thin"
+      visible={props.sidebarVisible}
+      icon="labeled"
+      vertical
+      inverted
     >
-      <Sidebar
-        as={Menu}
-        animation='push'
-        width='thin'
-        visible={props.sidebarVisible}
-        icon='labeled'
-        vertical
-        inverted
-      >
-       <NavigationMenu />
-      </Sidebar>
-      <Sidebar.Pusher>
-        {props.children}
-      </Sidebar.Pusher>
-    </Sidebar.Pushable>
-  );
-};
+      <NavigationMenu />
+    </Sidebar>
+    <Sidebar.Pusher>
+      {props.children}
+    </Sidebar.Pusher>
+  </Sidebar.Pushable>
+);
 
 NavigationSidebar.propTypes = {
 

@@ -5,18 +5,15 @@ import AuthStore from '../../AuthStore';
 const isAllowed = (right) => {
   const rights = AuthStore.getRights();
   const hasGlobalRight = rights.indexOf('*::*') > -1;
-  return rights.reduce((result, r) => {
-    return result || r === right; 
-  }, hasGlobalRight);
+  return rights.reduce((result, r) => result || r === right, hasGlobalRight);
 };
 
 export default (
   right = '',
-  failValue = ''
-) => (TargetComponent) => (props) => {
-
+  failValue = '',
+) => TargetComponent => (props) => {
   const allowed = isAllowed(
-    props.right || right || ''
+    props.right || right || '',
   );
 
   if (!allowed) return failValue;

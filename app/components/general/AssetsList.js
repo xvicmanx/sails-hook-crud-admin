@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Item, Card, Icon, Image } from 'semantic-ui-react';
+import {
+  Item, Card, Icon, Image,
+} from 'semantic-ui-react';
 import Constants from '../../constants';
 import { modelTitle } from '../../helpers/models';
 import AuthStore from '../../AuthStore';
@@ -22,7 +24,7 @@ const styles = {
     maxWidth: '200px',
     maxHeight: '200px',
     objectFit: 'contain',
-  }
+  },
 };
 
 const isPicture = type => Constants.ASSETS_TYPES.PICTURE === type;
@@ -51,14 +53,15 @@ const AssetItem = ({ type, url, name }) => (
       {name}
       {!isPicture(type) && (
       <a href={url}>
-        &nbsp;&nbsp;<Icon size="large" name="download"/>
+        &nbsp;&nbsp;
+        <Icon size="large" name="download" />
       </a>
-    )}
+      )}
     </Card.Header>
   </Card>
 );
 
-const AssetsList = props => {
+const AssetsList = (props) => {
   const { items, type } = props;
   const filteredItems = items.filter(x => x.type === props.type);
   const groupedItems = _.groupBy(filteredItems, 'model');
@@ -67,7 +70,6 @@ const AssetsList = props => {
   return (
     <div>
       {keys.map((name) => {
-        
         if (!AuthStore.canViewAssetsForModel(name)) {
           return null;
         }
@@ -76,7 +78,10 @@ const AssetsList = props => {
           <Card fluid>
             <Card.Content>
               <Card.Header>
-                {modelTitle(name)} {props.type}s
+                {modelTitle(name)}
+                {' '}
+                {props.type}
+s
               </Card.Header>
             </Card.Content>
             <Card.Content>
@@ -90,7 +95,7 @@ const AssetsList = props => {
               </Card.Group>
             </Card.Content>
           </Card>
-        )
+        );
       })}
     </div>
   );
@@ -98,7 +103,7 @@ const AssetsList = props => {
 
 AssetsList.propTypes = {
   items: PropTypes.instanceOf(Array).isRequired,
-  type: PropTypes.string.isRequired
+  type: PropTypes.string.isRequired,
 };
 
 export default AssetsList;

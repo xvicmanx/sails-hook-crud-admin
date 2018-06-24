@@ -1,4 +1,4 @@
-const missingParamError = (param) => ({
+const missingParamError = param => ({
   error: {
     message: `'${param}' missing!`,
     fields: {
@@ -13,8 +13,8 @@ const userOrPassError = () => ({
     fields: {
       username: 'Invalid "username or password"',
       password: 'Invalid "username or password"',
-    }
-  }
+    },
+  },
 });
 
 const systemError = () => ({
@@ -25,9 +25,9 @@ const systemError = () => ({
 
 const tokenAuthError = () => ({
   error: {
-    message: `Error in jwt token`,
+    message: 'Error in jwt token',
     fields: {
-      'jwt-token': `Error in jwt token`,
+      'jwt-token': 'Error in jwt token',
     },
   },
 });

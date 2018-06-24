@@ -7,14 +7,14 @@ class Select extends Component {
     this.state = { value: props.value };
     this.handleChange = this.handleChange.bind(this);
   }
-  
+
 
   handleChange(evt) {
     this.props.onChange(
       evt,
       {
         value: evt.target.value,
-      }
+      },
     );
   }
 
@@ -31,20 +31,20 @@ class Select extends Component {
         onChange={this.handleChange}
         value={this.props.value || ''}
       >
-       <option
-        value=""
-        selected={!this.state.value}
-      >
-        {this.props.placeholder}
-      </option>
-      {this.props.options.map(option => (
         <option
-          key={option.key}
-          value={option.value}
+          value=""
+          selected={!this.state.value}
         >
-          {option.text}
-         </option>
-      ))}
+          {this.props.placeholder}
+        </option>
+        {this.props.options.map(option => (
+          <option
+            key={option.key}
+            value={option.value}
+          >
+            {option.text}
+          </option>
+        ))}
       </select>
     );
   }
@@ -57,7 +57,7 @@ Select.propTypes = {
       key: PropTypes.any,
       value: PropTypes.any,
       text: PropTypes.any,
-    })
+    }),
   ).isRequired,
   onChange: PropTypes.func.isRequired,
 };

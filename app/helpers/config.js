@@ -1,16 +1,14 @@
 import { queryValue } from './object';
 
-export const getConfig = () => {
-  return typeof window !== 'undefined' && window.crudAdminConfig ?
-  window.crudAdminConfig : {};
-};
+export const getConfig = () => (typeof window !== 'undefined' && window.crudAdminConfig
+  ? window.crudAdminConfig : {});
 
 export const getLabel = (prop, defaultValue) => {
   const config = getConfig();
   return queryValue(
     config,
     `general.labels.${prop}`,
-    defaultValue
+    defaultValue,
   );
 };
 
@@ -19,7 +17,7 @@ export const getModelRelatedValue = (query, defaultValue) => {
   return queryValue(
     config,
     `models.${query}`,
-    defaultValue
+    defaultValue,
   );
 };
 
@@ -28,13 +26,11 @@ export const getButtonText = (button, defaultValue) => {
   return queryValue(
     config,
     `general.buttons.${button}`,
-    defaultValue
+    defaultValue,
   );
 };
 
-export const iconForArea = (area) => {
-  return area === 'home' ? 'home' : 'key';
-};
+export const iconForArea = area => (area === 'home' ? 'home' : 'key');
 
 export default {
   getConfig,

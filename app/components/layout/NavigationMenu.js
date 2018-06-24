@@ -5,42 +5,40 @@ import { Container, Menu } from 'semantic-ui-react';
 import Constants from '../../constants';
 import AuthStore from '../../AuthStore';
 
-const NavigationMenu = props => {
-  return (
-    <Container className={props.className}>
-      <Menu.Item
-        as={Link}
-        icon="home"
-        header
-        to="/model"
-        content={Constants.LABELS.HOME}
-      />
-      {AuthStore.canAccessPermissionsArea() && (
-        <Menu.Item
-          as={Link}
-          icon="key"
-          header
-          to="/permissions"
-          content={Constants.LABELS.PERMISSIONS}
-        />
-      )}
-      <Menu.Item
-        as={Link}
-        header
-        icon="image"
-        to="/assets"
-        content={Constants.LABELS.ASSETS}
-      />
-      <Menu.Item
-        as={Link}
-        header
-        icon="arrow right"
-        to="/logout"
-        content={Constants.LABELS.LOGOUT}
-      />
-    </Container>
-  );
-};
+const NavigationMenu = props => (
+  <Container className={props.className}>
+    <Menu.Item
+      as={Link}
+      icon="home"
+      header
+      to="/model"
+      content={Constants.LABELS.HOME}
+    />
+    {AuthStore.canAccessPermissionsArea() && (
+    <Menu.Item
+      as={Link}
+      icon="key"
+      header
+      to="/permissions"
+      content={Constants.LABELS.PERMISSIONS}
+    />
+    )}
+    <Menu.Item
+      as={Link}
+      header
+      icon="image"
+      to="/assets"
+      content={Constants.LABELS.ASSETS}
+    />
+    <Menu.Item
+      as={Link}
+      header
+      icon="arrow right"
+      to="/logout"
+      content={Constants.LABELS.LOGOUT}
+    />
+  </Container>
+);
 
 NavigationMenu.propTypes = {
 

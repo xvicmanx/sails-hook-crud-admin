@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import { Redirect } from 'react-router';
 import LoginForm from '../components/forms/LoginForm';
@@ -36,12 +36,12 @@ class LoginScreen extends React.Component {
   handleSubmit(res) {
     AuthStore.storeTokenInfo(
       res.token,
-      res.exp
+      res.exp,
     );
     AuthStore.storeUserData(res.userData);
     this.setState({ loggedIn: true });
   }
-  
+
   render() {
     if (this.state.loggedIn) {
       return <Redirect to="/model" />;

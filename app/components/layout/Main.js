@@ -47,9 +47,8 @@ class Main extends React.Component {
           <Footer />
         </NavigationSidebar>
       </div>
-    )
+    );
   }
-
 }
 
 Main.propTypes = {};

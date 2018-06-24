@@ -28,8 +28,8 @@ const renderer = (model, field, modelName) => {
   }
 
   if (
-    modelName === 'crudgroup' &&
-    field === 'rights'
+    modelName === 'crudgroup'
+    && field === 'rights'
   ) {
     return RENDERERS.rights(model);
   }
@@ -39,8 +39,8 @@ const renderer = (model, field, modelName) => {
   }
 
   if (
-    model[field].validations &&
-    model[field].validations.isIn
+    model[field].validations
+    && model[field].validations.isIn
   ) {
     return RENDERERS.enum(model, field);
   }
@@ -53,7 +53,7 @@ const renderer = (model, field, modelName) => {
     return RENDERERS.modelMultipleSelect(model, field);
   }
 
-  return RENDERERS.input(model);;
+  return RENDERERS.input(model);
 };
 
 export default renderer;

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const SkipperDisk = require('skipper-disk');
 const { generateHash } = require('random-hash');
+const util = require('util');
 const app = require('../../dist/app.js');
 const { buildQuery } = require('../../app/helpers/query');
 const crudConfig = require('../admin-config/crud');
@@ -11,6 +12,14 @@ const {
   getDefinitions,
   queryValue,
 } = require('../helpers');
+
+const hasAccess = async (action, req, res) => {
+  const { modelName, model } = req.body || req.query;
+  return verifyAccess({
+    action,
+    resource: modelName || model,
+  })(req, res);
+};
 
 
 class Controller {
@@ -28,6 +37,7 @@ class Controller {
     this.uploadAsset = this.uploadAsset.bind(this);
     this.crudAsset = this.crudAsset.bind(this);
     this.modelsAssets = this.modelsAssets.bind(this);
+    this.CLIENT_JS_FILE = `${__dirname}/../../dist/client.js`;
   }
 
   index(req, res) {
@@ -37,7 +47,7 @@ class Controller {
         labels: queryValue(
           crudAdminConf,
           'general.labels',
-          {}
+          {},
         ),
         buttons: queryValue(
           crudAdminConf,
@@ -60,55 +70,51 @@ class Controller {
 
   clientJS(req, res) {
     res.send(
-      fs.readFileSync(__dirname + '/../../dist/client.js')
+      fs.readFileSync(this.CLIENT_JS_FILE),
     );
-  }
-
-  async hasAccess(action, req, res) {
-    const { modelName, model } = req.body || req.query;
-    return await verifyAccess({
-      action,
-      resource: modelName || model,
-    })(req, res);
   }
 
   async modelCount(req, res) {
     const { modelName, queryRules } = req.body;
-    if (await this.hasAccess('read', req, res)) {
+    if (await hasAccess('read', req, res)) {
       const total = await this.sails.models[modelName].count({
-        where: buildQuery(queryRules || [])
+        where: buildQuery(queryRules || []),
       });
       return res.json(total);
     }
+    return false;
   }
 
   async modelCreate(req, res) {
     const { modelName } = req.body;
     delete req.body.modelName;
-    if (await this.hasAccess('create', req, res)) {
+    if (await hasAccess('create', req, res)) {
       const result = await this.sails.models[modelName]
         .create(req.body);
       return res.json(result);
     }
+    return false;
   }
 
   async modelUpdate(req, res) {
     const { modelName } = req.body;
     delete req.body.modelName;
-    if (await this.hasAccess('update', req, res)) {
+    if (await hasAccess('update', req, res)) {
       const Model = this.sails.models[modelName];
       const result = await Model.update({ id: req.body.id }, req.body);
       return res.json(result);
     }
+    return false;
   }
 
   async modelDelete(req, res) {
     const { modelName } = req.body;
-    if (await this.hasAccess('delete', req, res)) {
+    if (await hasAccess('delete', req, res)) {
       const result = await this.sails.models[modelName]
         .destroy({ id: req.params.id });
       return res.json(result);
     }
+    return false;
   }
 
   async modelSearch(req, res) {
@@ -119,7 +125,7 @@ class Controller {
       limit,
       sort,
     } = req.body;
-    if (await this.hasAccess('read', req, res)) {
+    if (await hasAccess('read', req, res)) {
       const resultPromise = this.sails.models[modelName].find({
         where: buildQuery(queryRules || []),
         skip,
@@ -133,32 +139,32 @@ class Controller {
       );
       return res.json(result);
     }
+    return false;
   }
 
   async modelSearchAll(req, res) {
     const { modelName } = req.query;
-    if (await this.hasAccess('read', req, res)) {
+    if (await hasAccess('read', req, res)) {
       const resultPromise = this.sails.models[modelName]
         .find({});
       const result = await populate(
         resultPromise,
         modelName,
-        this.sails
+        this.sails,
       );
       return res.json(result);
     }
+    return false;
   }
 
   async countAll(req, res) {
     if ((await verifyToken(req, res)).success) {
-      const promises = Object.keys(this.sails.models).map(name => {
-        return new Promise((resolve) => {
-          this.sails.models[name].count({})
-            .then(count => {
-              resolve({ name, count });
-            });
-        });
-      });
+      const promises = Object.keys(this.sails.models).map(name => new Promise((resolve) => {
+        this.sails.models[name].count({})
+          .then((count) => {
+            resolve({ name, count });
+          });
+      }));
 
       const counts = await Promise.all(promises);
       const result = counts.reduce((acc, item) => {
@@ -169,6 +175,7 @@ class Controller {
 
       return res.json(result);
     }
+    return false;
   }
 
   async uploadAsset(req, res) {
@@ -177,7 +184,7 @@ class Controller {
     const name = req.param('name');
     const Asset = this.sails.models.crudasset;
 
-    if (await this.hasAccess('upload-assets', req, res)) {
+    if (await hasAccess('upload-assets', req, res)) {
       req.file('file').upload({},
         (err, uploadedFiles) => {
           if (err) {
@@ -191,28 +198,30 @@ class Controller {
 
           Asset.create({
             fileDirectory: uploadedFiles[0].fd,
-            name: name,
-            model: model,
+            name,
+            model,
             type,
             hash: generateHash({ length: 12 }),
-          }).exec((err, asset) => {
-            if (err) return res.serverError(err);
+          }).exec((error, asset) => {
+            if (error) return res.serverError(error);
             // sails.config.custom.baseUrl
-            var baseUrl = '';
+            const baseUrl = '';
             Asset.update(
               { id: asset.id },
               {
-                url: require('util')
+                url: util
                   .format('%s/administrator/crud-asset/%s', baseUrl, asset.hash),
-              })
-              .exec((error) => {
-                if (error) return res.serverError(error);
+              },
+            )
+              .exec((updateError) => {
+                if (updateError) return res.serverError(updateError);
                 return res.send({ success: true });
               });
+            return false;
           });
-
+          return false;
         });
-      }
+    }
   }
 
   async modelsAssets(req, res) {
@@ -230,12 +239,13 @@ class Controller {
       );
       return res.json(result);
     }
+    return false;
   }
 
   async crudAsset(req, res) {
     const hash = req.param('hash');
     const Asset = this.sails.models.crudasset;
-    Asset.findOne({ hash }).exec(function (err, asset) {
+    Asset.findOne({ hash }).exec((err, asset) => {
       if (err) return res.serverError(err);
       if (!asset) return res.notFound();
 
@@ -251,13 +261,12 @@ class Controller {
       );
 
       fileAdapter.read(asset.fileDirectory)
-        .on('error', function (err) {
-          return res.serverError(err);
-        })
+        .on('error', readError => res.serverError(readError))
         .pipe(res);
+      return false;
     });
   }
-};
+}
 
 
 module.exports = Controller;

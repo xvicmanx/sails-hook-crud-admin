@@ -2,7 +2,7 @@ import Constants from './constants';
 import { getModels, NON_CRUD_MODELS_FILTER } from './helpers/models';
 
 const storeValue = (key, value) => {
-  if (typeof(Storage) !== 'undefined') {
+  if (typeof (Storage) !== 'undefined') {
     window.localStorage.setItem(
       key,
       JSON.stringify(value),
@@ -11,7 +11,7 @@ const storeValue = (key, value) => {
 };
 
 const readValue = (key) => {
-  if (typeof(Storage) !== 'undefined') {
+  if (typeof (Storage) !== 'undefined') {
     const value = window.localStorage.getItem(key);
     if (!value) return null;
     return JSON.parse(value);
@@ -28,12 +28,12 @@ const permissionAreaRights = [
   'read::*',
 ];
 
-Constants.CRUD_MODELS.forEach(c => {
+Constants.CRUD_MODELS.forEach((c) => {
   permissionAreaRights.push(
-    `*::${c}`
+    `*::${c}`,
   );
   permissionAreaRights.push(
-    `read::${c}`
+    `read::${c}`,
   );
 });
 
@@ -49,10 +49,10 @@ const AuthStore = {
   },
   isTokenExpired() {
     const tokenInfo = readValue(KEYS.TOKEN_INFO);
-    if(!tokenInfo || !tokenInfo.exp || !tokenInfo.value) {
+    if (!tokenInfo || !tokenInfo.exp || !tokenInfo.value) {
       return true;
     }
-    return tokenInfo.exp < Math.floor(new Date().getTime()/1000);
+    return tokenInfo.exp < Math.floor(new Date().getTime() / 1000);
   },
   getUserName() {
     const userData = readValue(KEYS.USER_DATA);
@@ -64,16 +64,14 @@ const AuthStore = {
   },
   getRights() {
     const userData = readValue(KEYS.USER_DATA);
-    if(!userData || !userData.rights) {
+    if (!userData || !userData.rights) {
       return [];
     }
     return userData.rights;
   },
   hasAnyOfRights(expectedRights) {
     const rights = AuthStore.getRights();
-    return rights.reduce((result, right) => {
-      return result || expectedRights.indexOf(right) > -1;
-    }, false);
+    return rights.reduce((result, right) => result || expectedRights.indexOf(right) > -1, false);
   },
   canAccessPermissionsArea() {
     return AuthStore.hasAnyOfRights(permissionAreaRights);
@@ -85,7 +83,7 @@ const AuthStore = {
     ];
     const models = Object.keys(getModels());
     models.filter(NON_CRUD_MODELS_FILTER)
-      .forEach(m => {
+      .forEach((m) => {
         expectedRights.push(`*::${m}`);
         expectedRights.push(`upload-assets::${m}`);
       });
@@ -96,7 +94,7 @@ const AuthStore = {
       '*::*',
       'upload-assets::*',
       `*::${model}`,
-      `upload-assets::${model}`
+      `upload-assets::${model}`,
     ];
     return AuthStore.hasAnyOfRights(expectedRights);
   },
@@ -107,7 +105,7 @@ const AuthStore = {
     ];
     const models = Object.keys(getModels());
     models.filter(NON_CRUD_MODELS_FILTER)
-      .forEach(m => {
+      .forEach((m) => {
         expectedRights.push(`*::${m}`);
         expectedRights.push(`view-assets::${m}`);
       });
@@ -118,7 +116,7 @@ const AuthStore = {
       '*::*',
       'view-assets::*',
       `*::${model}`,
-      `view-assets::${model}`
+      `view-assets::${model}`,
     ];
     return AuthStore.hasAnyOfRights(expectedRights);
   },

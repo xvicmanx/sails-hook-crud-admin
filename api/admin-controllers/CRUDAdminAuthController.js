@@ -10,7 +10,7 @@ class AuthController {
 
   async getRights(user) {
     let rights = [];
-   
+
     const groupIds = user.groups.map(g => g.id);
     let groups = await this.sails.models.crudgroup
       .find({})
@@ -19,7 +19,7 @@ class AuthController {
 
     groups.forEach((group) => {
       rights = rights.concat(
-        group.rights.map(r => r.name)
+        group.rights.map(r => r.name),
       );
     });
     return rights;
@@ -27,23 +27,23 @@ class AuthController {
 
   async getUser(username, password) {
     const UserModel = this.sails.models.cruduser;
-    const user =  await UserModel
+    const user = await UserModel
       .findOne({ username })
       .populate('groups');
     const verified = await UserModel.verifyPassword(
       password,
-      user.password
+      user.password,
     );
-    
+
     if (!verified) return null;
-    
+
     return user;
   }
 
   async authenticate(req, res) {
     const {
       username,
-      password
+      password,
     } = req.body || {};
 
     if (!username) {
@@ -87,7 +87,7 @@ class AuthController {
       return false;
     }
   }
-};
+}
 
 
 module.exports = AuthController;

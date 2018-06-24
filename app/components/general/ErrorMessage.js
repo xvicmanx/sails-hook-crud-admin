@@ -5,7 +5,7 @@ import { Label } from 'semantic-ui-react';
 const ErrorMessage = ({ field, errors, touched }) => {
   if (!touched[field] || !errors[field]) return null;
   return (
-    <Label basic color='red' pointing>
+    <Label basic color="red" pointing>
       {errors[field]}
     </Label>
   );

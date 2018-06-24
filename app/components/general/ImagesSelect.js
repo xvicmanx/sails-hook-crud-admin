@@ -35,8 +35,8 @@ class ImagesSelect extends React.Component {
   }
 
   render() {
-    const { images } = this.props; 
-    
+    const { images } = this.props;
+
     if (images.lenth <= 0) {
       return (
         <Message

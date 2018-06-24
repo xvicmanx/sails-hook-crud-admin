@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tab, Divider, Loader, Header, Message, Icon } from 'semantic-ui-react';
+import {
+  Tab, Divider, Loader, Header, Message, Icon,
+} from 'semantic-ui-react';
 import Service from '../services/Service';
 import loggedInProtected from '../components/high-order/LoggedInProtected';
 import Constants from '../constants';
@@ -35,7 +37,7 @@ class Assets extends React.Component {
         this.setState({ items, loading: false });
       });
   }
-  
+
   componentDidMount() {
     const canView = AuthStore.canViewAssets();
     if (canView) {
@@ -47,9 +49,9 @@ class Assets extends React.Component {
 
   render() {
     const { type } = this.props;
-    
+
     if (this.state.loading) return <Loader active />;
-    
+
     const canUpload = AuthStore.canUploadAssets();
     const canView = AuthStore.canViewAssets();
     return (
@@ -80,7 +82,6 @@ class Assets extends React.Component {
 }
 
 
-
 const panes = [
   {
     menuItem: { key: 'pictures', icon: 'image', content: 'Pictures' },
@@ -100,22 +101,22 @@ const panes = [
   },
 ];
 
-const AssetsScreen = props => {
-  return (
-    <Main>
-      <Header as="h1">
-        <Icon
-          name="image"
-          color="teal"
-        /> Assets
-      </Header>
-      <Tab
-        menu={{ pointing: true }}
-        panes={panes}
+const AssetsScreen = props => (
+  <Main>
+    <Header as="h1">
+      <Icon
+        name="image"
+        color="teal"
       />
-    </Main>
-  );
-};
+      {' '}
+Assets
+    </Header>
+    <Tab
+      menu={{ pointing: true }}
+      panes={panes}
+    />
+  </Main>
+);
 
 AssetsScreen.propTypes = {};
 

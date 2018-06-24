@@ -1,7 +1,7 @@
-export const validateModelRequiredValues = (model) => (values) => {
+export const validateModelRequiredValues = model => (values) => {
   const errors = {};
   const requiredFields = Object.keys(model)
-    .filter((k) => model[k].required);
+    .filter(k => model[k].required);
   requiredFields.forEach((k) => {
     if (!values[k]) {
       errors[k] = `Please, provide ${k}.`;
@@ -22,7 +22,7 @@ export const transformAPIErrors = (error) => {
   const errors = {};
   if (error.fields) {
     Object.keys(error.fields)
-      .forEach(k => {
+      .forEach((k) => {
         errors[k] = error.fields[k];
       });
   }

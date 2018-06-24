@@ -5,8 +5,8 @@ import Select from './Select';
 import Service from '../../services/Service';
 import { getModelValue } from '../../helpers/models';
 
-const getText = (model, x) => x && getModelValue(model, x) ||
-`${model} (id: ${x.id})`;
+const getText = (model, x) => x && getModelValue(model, x)
+|| `${model} (id: ${x.id})`;
 
 const mapOption = model => x => ({
   value: x.id,
@@ -48,11 +48,11 @@ class ModelsSelect extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
   }
-  
+
   handleAdd(evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    const  { id, ids } = this.state;
+    const { id, ids } = this.state;
     if (id) {
       const newIds = [
         ...ids,
@@ -74,8 +74,8 @@ class ModelsSelect extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const ids = nextProps.field.value &&
-      nextProps.field.value.map(x => x && x.id || x) || [];
+    const ids = nextProps.field.value
+      && nextProps.field.value.map(x => x && x.id || x) || [];
     this.setState({ ids });
   }
 
@@ -98,7 +98,7 @@ class ModelsSelect extends Component {
       this.setState({ items });
     });
   }
-  
+
   render() {
     return (
       <div style={styles.container}>
@@ -110,8 +110,9 @@ class ModelsSelect extends Component {
               <List.Content style={styles.item}>
                 {getText(
                   this.props.model,
-                  this.state.items.find(x => x.id === id)
-                )}&nbsp;
+                  this.state.items.find(x => x.id === id),
+                )}
+&nbsp;
                 <Button
                   color="red"
                   onClick={(evt) => {
@@ -151,7 +152,7 @@ ModelsSelect.propTypes = {
   model: PropTypes.string.isRequired,
 };
 
-export default (model) => ({ field }) => (
+export default model => ({ field }) => (
   <ModelsSelect
     field={field}
     model={model}

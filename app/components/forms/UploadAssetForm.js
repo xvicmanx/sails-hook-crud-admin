@@ -21,7 +21,7 @@ const styles = {
   },
 };
 
-const UploadAssetForm = props => {
+const UploadAssetForm = (props) => {
   const {
     values,
     touched,
@@ -34,7 +34,7 @@ const UploadAssetForm = props => {
   return (
     <Form
       onSubmit={handleSubmit}
-      size='large'
+      size="large"
     >
       <div className="crud-modal-form__fields">
         <Form.Field style={styles.field}>
@@ -45,10 +45,8 @@ const UploadAssetForm = props => {
             value={values.model}
             onChange={handleChange}
             onBlur={handleBlur}
-            placeholder='Select model'
-            filter={item => {
-              return AuthStore.canUploadAssetsForModel(item.value);
-            }}
+            placeholder="Select model"
+            filter={item => AuthStore.canUploadAssetsForModel(item.value)}
           />
           <ErrorMessage
             field="model"
@@ -60,10 +58,10 @@ const UploadAssetForm = props => {
           <FileInput
             fluid
             name="file"
-            icon='file'
+            icon="file"
             label="File"
-            iconPosition='left'
-            placeholder='Select file'
+            iconPosition="left"
+            placeholder="Select file"
             value={values.file}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -80,9 +78,9 @@ const UploadAssetForm = props => {
             <Input
               fluid
               name="name"
-              icon='file text'
-              iconPosition='left'
-              placeholder='Name'
+              icon="file text"
+              iconPosition="left"
+              placeholder="Name"
               value={values.name}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -97,13 +95,15 @@ const UploadAssetForm = props => {
       </div>
       <div className="crud-modal-form__footer">
         <Button
-          color='teal'
+          color="teal"
           icon="send"
           fluid
-          size='large'
+          size="large"
           disabled={isSubmitting}
         >
-          <Icon name="send" /> Send
+          <Icon name="send" />
+          {' '}
+Send
         </Button>
       </div>
     </Form>
@@ -111,14 +111,14 @@ const UploadAssetForm = props => {
 };
 
 export default withFormik({
-  mapPropsToValues: (props) => ({
+  mapPropsToValues: props => ({
     file: null,
     model: '',
     name: '',
     type: props.type,
   }),
-  validate: values => {
-    let errors = {};
+  validate: (values) => {
+    const errors = {};
     if (!values.file) {
       errors.file = 'Please select the file!';
     }
@@ -136,17 +136,17 @@ export default withFormik({
 
     return errors;
   },
-  handleSubmit: (values, { setSubmitting, setErrors, setError, props }) => {
-    return Service(values.model)
-      .upload(values)
-      .then(res => {
-        props.onSubmitSuccess(res);
-        setSubmitting(false);
-        return res;
-      }).catch((err) => {
-        setError(err);
-        setSubmitting(false);
-      });
-  },
+  handleSubmit: (values, {
+    setSubmitting, setErrors, setError, props,
+  }) => Service(values.model)
+    .upload(values)
+    .then((res) => {
+      props.onSubmitSuccess(res);
+      setSubmitting(false);
+      return res;
+    }).catch((err) => {
+      setError(err);
+      setSubmitting(false);
+    }),
   displayName: 'UploadAssetForm',
 })(UploadAssetForm);

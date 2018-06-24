@@ -7,7 +7,7 @@ import CRUDTable,
   CreateForm,
   UpdateForm,
   DeleteForm,
-  Pagination
+  Pagination,
 } from 'react-crud-table';
 import _ from 'lodash';
 import {
@@ -52,7 +52,7 @@ class ModelCrud extends React.Component {
   handleCreateSubmit(item) {
     const { service, onChange } = this.props;
     return new Promise((resolve) => {
-      service.create(item).then(result => {
+      service.create(item).then((result) => {
         onChange();
         resolve(result);
       });
@@ -62,7 +62,7 @@ class ModelCrud extends React.Component {
   handleUpdateSubmit(data) {
     const { model, service } = this.props;
     const payload = data;
-    Object.keys(payload).forEach(k => {
+    Object.keys(payload).forEach((k) => {
       if (model[k] && model[k].collection) {
         payload[k] = payload[k].map(x => x.id || x);
       }
@@ -73,11 +73,11 @@ class ModelCrud extends React.Component {
     });
     return service.update(payload);
   }
-  
+
   handleDeleteSubmit(item) {
     const { onChange, service } = this.props;
     return new Promise((resolve) => {
-      service.delete(item).then(result => {
+      service.delete(item).then((result) => {
         onChange();
         resolve(result);
       });
@@ -94,23 +94,29 @@ class ModelCrud extends React.Component {
 
     return (
       <CreateForm
-        title={
+        title={(
           <div>
-            <Icon name="plus" color="teal" /> {Constants.LABELS.CREATE_FORM_TITLE}
+            <Icon name="plus" color="teal" />
+            {' '}
+            {Constants.LABELS.CREATE_FORM_TITLE}
           </div>
-        }
+)}
         message={Constants.LABELS.CREATE_FORM_MESSAGE}
-        trigger={
+        trigger={(
           <div>
-            <Icon name="plus" /> {Constants.BUTTONS.CREATE}
+            <Icon name="plus" />
+            {' '}
+            {Constants.BUTTONS.CREATE}
           </div>
-        }
+)}
         onSubmit={this.handleCreateSubmit}
-        submitText={
+        submitText={(
           <div>
-            <Icon name="plus" /> {Constants.BUTTONS.CREATE}
+            <Icon name="plus" />
+            {' '}
+            {Constants.BUTTONS.CREATE}
           </div>
-        }
+)}
         validate={validateModelRequiredValues(model)}
       />
     );
@@ -126,26 +132,32 @@ class ModelCrud extends React.Component {
 
     return (
       <UpdateForm
-        title={
+        title={(
           <div>
-            <Icon name="pencil" color="teal" /> {Constants.LABELS.UPDATE_FORM_TITLE}
+            <Icon name="pencil" color="teal" />
+            {' '}
+            {Constants.LABELS.UPDATE_FORM_TITLE}
           </div>
-        }
+)}
         message={Constants.LABELS.UPDATE_FORM_MESSAGE}
-        trigger={
+        trigger={(
           <div>
-            <Icon name="pencil" /> {Constants.BUTTONS.UPDATE}
+            <Icon name="pencil" />
+            {' '}
+            {Constants.BUTTONS.UPDATE}
           </div>
-        }
+)}
         onSubmit={this.handleUpdateSubmit}
-        submitText={
+        submitText={(
           <div>
-            <Icon name="pencil" /> {Constants.BUTTONS.UPDATE}
+            <Icon name="pencil" />
+            {' '}
+            {Constants.BUTTONS.UPDATE}
           </div>
-        }
+)}
         validate={validateModelRequiredValues(model)}
       />
-    )
+    );
   }
 
   getDeleteForm() {
@@ -153,7 +165,7 @@ class ModelCrud extends React.Component {
       model,
       modelName,
       service,
-      onChange
+      onChange,
     } = this.props;
     const allowed = AuthStore.hasAnyOfRights(
       removeRights(modelName),
@@ -163,23 +175,29 @@ class ModelCrud extends React.Component {
 
     return (
       <DeleteForm
-        title={
+        title={(
           <div>
-            <Icon name="close" color="red" /> {Constants.LABELS.REMOVE_FORM_TITLE}
+            <Icon name="close" color="red" />
+            {' '}
+            {Constants.LABELS.REMOVE_FORM_TITLE}
           </div>
-        }
+)}
         message={Constants.LABELS.REMOVE_FORM_MESSAGE}
-        trigger={
+        trigger={(
           <div>
-            <Icon name="close" /> {Constants.BUTTONS.REMOVE}
+            <Icon name="close" />
+            {' '}
+            {Constants.BUTTONS.REMOVE}
           </div>
-        }
+)}
         onSubmit={this.handleDeleteSubmit}
-        submitText={
+        submitText={(
           <div>
-            <Icon name="close" /> {Constants.BUTTONS.REMOVE}
+            <Icon name="close" />
+            {' '}
+            {Constants.BUTTONS.REMOVE}
           </div>
-        }
+)}
         validate={validateModelDeletion}
       />
     );
@@ -191,7 +209,7 @@ class ModelCrud extends React.Component {
       modelName,
       caption,
       service,
-      onChange
+      onChange,
     } = this.props;
     return (
       <div style={styles.container}>
@@ -200,20 +218,22 @@ class ModelCrud extends React.Component {
           fetchItems={(data) => {
             const payload = Object.assign({}, data);
             payload.queryRules = data.queryRules
-              .map((i) =>  _.omit(i, ['label']));
-            return service.fetchItems(payload)
+              .map(i => _.omit(i, ['label']));
+            return service.fetchItems(payload);
           }}
           showQueryBuilder
           actionsLabel={Constants.LABELS.ACTIONS}
-          actionsLabel={
+          actionsLabel={(
             <div>
-              <Icon name="wrench" color="teal" /> {Constants.LABELS.ACTIONS}
+              <Icon name="wrench" color="teal" />
+              {' '}
+              {Constants.LABELS.ACTIONS}
             </div>
-          }
+)}
         >
           <Fields>
-            {model &&
-              Object.keys(model).sort(keysSorter).map((k) => (
+            {model
+              && Object.keys(model).sort(keysSorter).map(k => (
                 <Field
                   name={k}
                   label={getFieldLabel(modelName, k)}

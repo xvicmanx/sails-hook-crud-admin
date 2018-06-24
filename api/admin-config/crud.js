@@ -20,7 +20,7 @@ module.exports = {
                 <li> <%= group.name %> </li>
               <% }); %>
             </ul>
-          `
+          `,
         },
         password: {
           icon: 'key',
@@ -33,7 +33,7 @@ module.exports = {
         updatedAt: {
           icon: 'calendar',
         },
-      }
+      },
     },
     crudgroup: {
       label: 'CRUD Group',
@@ -54,7 +54,7 @@ module.exports = {
                 <li> <%= right.name %> </li>
               <% }); %>
             </ul>
-          `
+          `,
         },
         createdAt: {
           icon: 'calendar',
@@ -62,7 +62,7 @@ module.exports = {
         updatedAt: {
           icon: 'calendar',
         },
-      }
+      },
     },
     crudright: {
       label: 'CRUD Right',
@@ -74,11 +74,11 @@ module.exports = {
         },
         resource: {
           icon: 'globe',
-          valueTemplate: `<%= resource.name %>`
+          valueTemplate: '<%= resource.name %>',
         },
         action: {
           icon: 'wrench',
-          valueTemplate: `<%= action.name %>`
+          valueTemplate: '<%= action.name %>',
         },
         id: {
           icon: 'hashtag',
@@ -89,7 +89,7 @@ module.exports = {
         updatedAt: {
           icon: 'calendar',
         },
-      }
+      },
     },
     crudaction: {
       label: 'CRUD Action',
@@ -107,7 +107,7 @@ module.exports = {
         updatedAt: {
           icon: 'calendar',
         },
-      }
+      },
     },
     crudresource: {
       label: 'CRUD Resource',
@@ -125,7 +125,7 @@ module.exports = {
         updatedAt: {
           icon: 'calendar',
         },
-      }
+      },
     },
     crudasset: {
       icon: 'image',
@@ -157,7 +157,7 @@ module.exports = {
         fileDirectory: {
           icon: 'folder',
         },
-      }
-    }
-  }
+      },
+    },
+  },
 };

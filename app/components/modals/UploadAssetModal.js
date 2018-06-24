@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Button, Modal, Icon } from 'semantic-ui-react';
 import UploadAssetForm from '../forms/UploadAssetForm';
 
@@ -25,7 +25,7 @@ class UploadAssetModal extends React.Component {
   hideModal() {
     this.setState({ open: false });
   }
-  
+
   render() {
     return (
       <div>

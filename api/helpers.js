@@ -1,41 +1,36 @@
 const AuthService = require('./admin-services/AuthService');
-const Errors  = require('./errors');
+const Errors = require('./errors');
 const {
   CRUD_MODELS,
-  HTTP_METHODS
+  HTTP_METHODS,
 } = require('./constants/general');
 
-const omitProps = (obj, props) => {
-  return Object.keys(obj).reduce(function (res, k) {
-    if (props.indexOf(k) < 0) {
-      res[k] = obj[k];
-    }
-    return res;
+const omitProps = (obj, properties) => Object.keys(obj).reduce((res, k) => {
+  if (properties.indexOf(k) < 0) {
+    res[k] = obj[k];
+  }
+  return res;
+}, {});
+
+const MODELS_FILTER = m => m.indexOf('crudgroup_') < 0;
+
+const getDefinitions = models => Object.keys(models)
+  .filter(MODELS_FILTER)
+  .reduce((res, k) => {
+    const result = res;
+    result[k] = models[k].attributes;
+    return result;
   }, {});
-};
-
-const MODELS_FILTER = (m) => {
-  return m.indexOf('crudgroup_') < 0
-};
-
-const getDefinitions = (models) => {
-  return Object.keys(models)
-    .filter(MODELS_FILTER)
-    .reduce(function (result, k) {
-      result[k] = models[k].attributes;
-      return result;
-    }, {});
-};
 
 const populate = async (resultPromise, modelName, sails) => {
   const definition = getDefinitions(sails.models)[modelName];
-  const fieldsToPopulate = Object.keys(definition).filter(k => {
-      return definition[k].model || definition[k].collection;
-    }).map(k => k);
+  const fieldsToPopulate = Object.keys(definition)
+    .filter(k => definition[k].model || definition[k].collection)
+    .map(k => k);
   let result = resultPromise;
-  fieldsToPopulate.forEach(field => {
+  fieldsToPopulate.forEach((field) => {
     result = result.populate(field);
-  })
+  });
   return result;
 };
 
@@ -60,8 +55,8 @@ const verifyAccess = ({ action, resource }) => async (req, res) => {
   const hasRightsAccess = AuthService.hasAccess({
     action,
     resource,
-    rights: data && data.user &&
-      data.user.rights || [],
+    rights: (data && data.user
+      && data.user.rights) || [],
   });
   return verification.success && hasRightsAccess;
 };
@@ -69,23 +64,21 @@ const verifyAccess = ({ action, resource }) => async (req, res) => {
 
 const crudForbiddenRoutes = () => {
   const routes = {};
-  CRUD_MODELS.forEach(modelName => {
-    HTTP_METHODS.forEach(method => {
+  CRUD_MODELS.forEach((modelName) => {
+    HTTP_METHODS.forEach((method) => {
       const key = `${method} /${modelName}`;
       // routes[key] = { response: 'notFound' };
-      routes[key] = (req, res) => {
-        return res.send(404,'Not found');
-      };
+      routes[key] = (req, res) => res.send(404, 'Not found');
     });
   });
   return routes;
 };
 
-const disableLog = (sails) => {
-  const log = sails.log;
-  const error = sails.log.error;
-  const verbose = sails.log.verbose;
-  sails.log = function () {};
+const disableLog = (sls) => {
+  const sails = sls;
+  const { log } = sails;
+  const { error, verbose } = log;
+  sails.log = function sailsLog() {};
   sails.log.info = () => {};
   sails.log.silly = () => {};
   sails.log.error = error;

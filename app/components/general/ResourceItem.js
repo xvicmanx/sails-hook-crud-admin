@@ -19,8 +19,8 @@ class ResourceItem extends React.Component {
     return (
       <div>
         {this.props.children(
-          this.state.result ||
-          this.props.defaultValue,
+          this.state.result
+          || this.props.defaultValue,
         )}
       </div>
     );

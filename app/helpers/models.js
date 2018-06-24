@@ -1,5 +1,4 @@
 import React from 'react';
-const template = require('lodash.template');
 import { Popup, Button, Icon } from 'semantic-ui-react';
 import JSONTable from 'simple-json-table';
 import _ from 'lodash';
@@ -8,10 +7,10 @@ import { getLabel, getModelRelatedValue } from './config';
 import Constants from '../constants';
 import './string';
 
-export const getModels = () => {
-  return typeof window !== 'undefined' && window.sailsModels ?
-  window.sailsModels : {};
-};
+const template = require('lodash.template');
+
+export const getModels = () => (typeof window !== 'undefined' && window.sailsModels
+  ? window.sailsModels : {});
 
 export const getModel = (name) => {
   const models = getModels();
@@ -19,21 +18,17 @@ export const getModel = (name) => {
 };
 
 
-export const inCreationHiddenFields = (field) => {
-  return [
-    'createdAt',
-    'updatedAt',
-    'id',
-  ].indexOf(field) > -1;
-};
+export const inCreationHiddenFields = field => [
+  'createdAt',
+  'updatedAt',
+  'id',
+].indexOf(field) > -1;
 
-export const inUpdateHiddenFields = (field) => {
-  return [
-    'createdAt',
-    'updatedAt',
-    'id',
-  ].indexOf(field) > -1;
-};
+export const inUpdateHiddenFields = field => [
+  'createdAt',
+  'updatedAt',
+  'id',
+].indexOf(field) > -1;
 
 const keysWeight = {
   id: -1,
@@ -42,12 +37,10 @@ const keysWeight = {
 };
 const weight = k => keysWeight[k] || 0;
 
-const isADateDefaultField = (field) => {
-  return [
-    'createdAt',
-    'updatedAt',
-  ].indexOf(field) > -1;
-};
+const isADateDefaultField = field => [
+  'createdAt',
+  'updatedAt',
+].indexOf(field) > -1;
 
 export const keysSorter = (a, b) => weight(a) - weight(b);
 
@@ -56,19 +49,15 @@ export const getType = (model, field) => {
   return model[field].type;
 };
 
-export const getFieldValueTemplate = (modelName, field) => {
-  return getModelRelatedValue(
-    `${modelName}.fields.${field}.valueTemplate`,
-    null
-  );
-};
+export const getFieldValueTemplate = (modelName, field) => getModelRelatedValue(
+  `${modelName}.fields.${field}.valueTemplate`,
+  null,
+);
 
-export const getModelValueTemplate = (modelName) => {
-  return getModelRelatedValue(
-    `${modelName}.valueTemplate`,
-    null
-  );
-};
+export const getModelValueTemplate = modelName => getModelRelatedValue(
+  `${modelName}.valueTemplate`,
+  null,
+);
 
 const isHTML = text => /<(\/)?\w+\s*>/.test(text);
 const asHTML = (text) => {
@@ -95,7 +84,7 @@ export const valueResolver = (model, field, modelName) => (item) => {
     const compiled = compiler({ [field]: data, _ });
     return isHTML(compiled) ? asHTML(compiled) : compiled;
   }
-  
+
   // if (isADateDefaultField(field)) {
   //   return new Date(+item[field]).toLocaleString();
   // }
@@ -107,14 +96,18 @@ export const valueResolver = (model, field, modelName) => (item) => {
   if (model[field].model || model[field].collection) {
     return (
       <Popup
-        trigger={<Button icon>{Constants.BUTTONS.SEE_DETAILS}</Button>}
-        on='click'
+        trigger={(
+          <Button icon>
+            {Constants.BUTTONS.SEE_DETAILS}
+          </Button>
+)}
+        on="click"
       >
         <JSONTable
           source={omit(item[field], ['createdAt', 'updatedAt'])}
         />
       </Popup>
-    ); 
+    );
   }
 
   return item[field];
@@ -123,35 +116,31 @@ export const valueResolver = (model, field, modelName) => (item) => {
 export const getFieldLabel = (modelName, field) => {
   const text = getModelRelatedValue(
     `${modelName}.fields.${field}.label`,
-    field.separateCamel().asTitle()
+    field.separateCamel().asTitle(),
   );
   const icon = getModelRelatedValue(
     `${modelName}.fields.${field}.icon`,
-    ''
+    '',
   );
   return (
     <span>
       {icon && (
         <Icon name={icon} color="teal" />
-      )} {text}
+      )}
+      {' '}
+      {text}
     </span>
   );
 };
 
-export const getFieldRenderer = (modelName, field) => {
-  return getModelRelatedValue(
-    `${modelName}.fields.${field}.renderer`,
-    field.separateCamel().asTitle()
-  );
-};
+export const getFieldRenderer = (modelName, field) => getModelRelatedValue(
+  `${modelName}.fields.${field}.renderer`,
+  field.separateCamel().asTitle(),
+);
 
-export const NON_CRUD_MODELS_FILTER = (model) => {
-  return Constants.CRUD_MODELS.indexOf(model) < 0
-};
+export const NON_CRUD_MODELS_FILTER = model => Constants.CRUD_MODELS.indexOf(model) < 0;
 
-export const CRUD_MODELS_FILTER = (model) => {
-  return Constants.CRUD_MODELS.indexOf(model) >= 0;
-};
+export const CRUD_MODELS_FILTER = model => Constants.CRUD_MODELS.indexOf(model) >= 0;
 
 export const modelTitle = (modelName) => {
   const text = getModelRelatedValue(
@@ -167,26 +156,28 @@ export const modelTitle = (modelName) => {
           name={icon}
           color="teal"
         />
-      )} {text}
+      )}
+      {' '}
+      {text}
     </span>
-  )
+  );
 };
 
-export const createRights = (modelName) => [
+export const createRights = modelName => [
   '*::*',
   `*::${modelName}`,
   'create::*',
   `create::${modelName}`,
 ];
 
-export const removeRights = (modelName) => [
+export const removeRights = modelName => [
   '*::*',
   `*::${modelName}`,
   'delete::*',
   `delete::${modelName}`,
 ];
 
-export const updateRights = (modelName) => [
+export const updateRights = modelName => [
   '*::*',
   `*::${modelName}`,
   'update::*',

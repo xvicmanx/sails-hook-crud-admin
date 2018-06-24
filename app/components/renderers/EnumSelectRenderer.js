@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from './Select';
 
-const EnumSelectRenderer = (items) => ({ field }) => (
+const EnumSelectRenderer = items => ({ field }) => (
   <Select
     {...field}
     options={items.map(x => (
       {
         value: x,
         key: x,
-        text: x
+        text: x,
       }
     ))}
   />
@@ -18,4 +18,3 @@ const EnumSelectRenderer = (items) => ({ field }) => (
 EnumSelectRenderer.propTypes = {};
 
 export default EnumSelectRenderer;
-

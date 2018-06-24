@@ -1,14 +1,15 @@
 const jwt = require('jsonwebtoken');
+
 const SECRET = '1h3s3cr3t@k3y';
 const ONE_DAY = 24 * 60 * 60;
 
 const AuthService = {
   verifyToken(token) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       try {
         const data = jwt.verify(token, SECRET);
         resolve({ success: !!data, data });
-      } catch(err) {
+      } catch (err) {
         resolve({ err, success: false, data: null });
       }
     });
@@ -35,10 +36,8 @@ const AuthService = {
       `${action}::*`,
       `${action}::${resource}`,
     ];
-    return rights.reduce((allowed, right) => {
-      return allowed ||
-        expectedRights.indexOf(right) >= 0;
-    }, false);
+    return rights.reduce((allowed, right) => allowed
+        || expectedRights.indexOf(right) >= 0, false);
   },
 };
 

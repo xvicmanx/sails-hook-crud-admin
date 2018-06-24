@@ -5,12 +5,10 @@ const CRUD_ACTIONS = [
   'delete',
   'upload-assets',
   'view-assets',
-  '*'
+  '*',
 ];
 
-const MODELS_FILTER = (m) => {
-  return m.indexOf('crudgroup_') < 0
-};
+const MODELS_FILTER = m => m.indexOf('crudgroup_') < 0;
 
 const seed = async (sails) => {
   const {
@@ -18,7 +16,7 @@ const seed = async (sails) => {
     crudgroup,
     crudresource,
     crudaction,
-    crudright
+    crudright,
   } = sails.models;
 
   const actionPromises = CRUD_ACTIONS
@@ -33,7 +31,7 @@ const seed = async (sails) => {
       return crudresource.findOrCreate(payload, payload);
     });
   resourcesPromises.push(
-    crudresource.findOrCreate({ name: '*' }, { name: '*' })
+    crudresource.findOrCreate({ name: '*' }, { name: '*' }),
   );
 
   await Promise.all(actionPromises);
@@ -56,19 +54,17 @@ const seed = async (sails) => {
         name: `${action.name}::${resource.name}`,
       };
       rightsPromises.push(
-        crudright.findOrCreate(query, payload)
+        crudright.findOrCreate(query, payload),
       );
-    })
+    });
   });
-  
+
   await Promise.all(rightsPromises);
 
   const rights = await crudright.find({})
     .populate('action')
     .populate('resource');
-  const rootRight = rights.find((right) => {
-    return right.action.name === '*' && right.resource.name === '*';
-  });
+  const rootRight = rights.find(right => right.action.name === '*' && right.resource.name === '*');
 
   const groupCriteria = {
     name: 'root-group',

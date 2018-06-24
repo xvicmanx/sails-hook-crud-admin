@@ -11,17 +11,17 @@ class LogoutScreen extends Component {
       done: false,
     };
   }
-  
+
   componentDidMount() {
     AuthStore.clear();
-    this.setState({ done:  true });
+    this.setState({ done: true });
   }
 
   render() {
     if (this.state.done) {
-      return <Redirect to="/" />
+      return <Redirect to="/" />;
     }
-    return <Header content="Processing..."/>
+    return <Header content="Processing..." />;
   }
 }
 

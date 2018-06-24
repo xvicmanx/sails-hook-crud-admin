@@ -14,34 +14,31 @@ const styles = {
   container: { marginBottom: '2rem' },
 };
 
-const backLink = (area) => {
-  return area === 'home' ? '/model' : '/permissions';
-};
+const backLink = area => (area === 'home' ? '/model' : '/permissions');
 
-const MainBreadcrumb = ({ modelName, area }) => {
-  return (
-    <Breadcrumb
-      size='huge'
-      style={styles.container}
+const MainBreadcrumb = ({ modelName, area }) => (
+  <Breadcrumb
+    size="huge"
+    style={styles.container}
+  >
+    <Breadcrumb.Section
+      link
+      as={Link}
+      to={backLink(area)}
     >
-      <Breadcrumb.Section
-        link
-        as={Link}
-        to={backLink(area)}
-      >
-        <Icon color="teal" name={iconForArea(area)} />&nbsp;
-        {Constants.LABELS[area.toUpperCase()]}
-      </Breadcrumb.Section>
-      <Breadcrumb.Divider icon='right angle' />
-      <Breadcrumb.Section active>
-        {modelTitle(modelName)}
-      </Breadcrumb.Section>
-    </Breadcrumb>
-  );
-};
+      <Icon color="teal" name={iconForArea(area)} />
+&nbsp;
+      {Constants.LABELS[area.toUpperCase()]}
+    </Breadcrumb.Section>
+    <Breadcrumb.Divider icon="right angle" />
+    <Breadcrumb.Section active>
+      {modelTitle(modelName)}
+    </Breadcrumb.Section>
+  </Breadcrumb>
+);
 
 MainBreadcrumb.defaultProps = {
-  area: 'home'
+  area: 'home',
 };
 
 export default MainBreadcrumb;

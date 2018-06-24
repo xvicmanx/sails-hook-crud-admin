@@ -9,10 +9,10 @@ import {
 } from '../helpers/models';
 
 
-const Main = loggedInProtected(LayoutMain)
+const Main = loggedInProtected(LayoutMain);
 
 
-const ModelsScreen = props => {
+const ModelsScreen = (props) => {
   const models = Object.keys(getModels())
     .filter(NON_CRUD_MODELS_FILTER);
   return (

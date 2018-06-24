@@ -11,15 +11,15 @@ import { modelTitle } from '../../helpers/models';
 
 const ProtectedStat = rightProtected(
   null,
-  null
+  null,
 )(Statistic);
 
 
 const ModelsNavigator = (props) => {
-  const queryString = `?area=${props.area}`;    
+  const queryString = `?area=${props.area}`;
   return (
     <div>
-      <Header size='huge'>
+      <Header size="huge">
         <Icon color="teal" name={iconForArea(props.area)} />
         {Constants.LABELS[props.area.toUpperCase()]}
       </Header>

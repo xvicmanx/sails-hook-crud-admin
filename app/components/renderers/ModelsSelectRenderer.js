@@ -9,8 +9,8 @@ const mapOptions = model => x => (
   {
     value: x.id,
     key: x.id,
-    text: getModelValue(model, x) ||
-      `${model} (id: ${x.id})`,
+    text: getModelValue(model, x)
+      || `${model} (id: ${x.id})`,
   }
 );
 
@@ -21,7 +21,7 @@ class ModelsSelect extends Component {
       items: [],
     };
   }
-  
+
   componentDidMount() {
     const service = Service(this.props.model);
     service.fetchAllItems({})
@@ -29,7 +29,7 @@ class ModelsSelect extends Component {
         this.setState({ items });
       });
   }
-  
+
   render() {
     const { field, model } = this.props;
     const { items } = this.state;
@@ -47,7 +47,7 @@ ModelsSelect.propTypes = {
   model: PropTypes.string.isRequired,
 };
 
-export default (model) => ({ field }) => (
+export default model => ({ field }) => (
   <ModelsSelect
     field={field}
     model={model}

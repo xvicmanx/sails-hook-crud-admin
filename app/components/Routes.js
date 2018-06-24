@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   HashRouter as Router,
   Route,
@@ -31,7 +31,7 @@ class Routes extends React.Component {
 
   updateCounts() {
     Service().countAllModels()
-      .then(counts => {
+      .then((counts) => {
         this.setState({ counts });
       });
   }

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   Segment, Container, Grid, Header,
 } from 'semantic-ui-react';
@@ -13,7 +12,7 @@ const styles = {
   },
 };
 
-const Footer = props => (
+const Footer = () => (
   <Segment
     inverted
     vertical
@@ -24,7 +23,7 @@ const Footer = props => (
         <Grid.Row>
           <Grid.Column width={16}>
             <Header as="h2" inverted>
-                CRUD Admin
+              CRUD Admin
             </Header>
           </Grid.Column>
         </Grid.Row>
@@ -32,9 +31,5 @@ const Footer = props => (
     </Container>
   </Segment>
 );
-
-Footer.propTypes = {
-
-};
 
 export default Footer;

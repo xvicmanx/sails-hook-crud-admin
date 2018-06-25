@@ -9,10 +9,8 @@ const styles = {
   segment: {
     width: '95%',
     margin: '0 auto',
-    paddingBottom: '4rem',
     border: 0,
     boxShadow: 'none',
-    paddingTop: 0,
     overflowX: 'auto',
     paddingTop: '1rem',
   },
@@ -27,21 +25,23 @@ class Main extends React.Component {
   }
 
   render() {
+    const { sidebarVisible } = this.state;
+    const { children } = this.props;
     return (
       <div>
         <NavigationSidebar
-          sidebarVisible={this.state.sidebarVisible}
+          sidebarVisible={sidebarVisible}
         >
           <div className="content-top">
             <Header
               onShowMenuClicked={() => {
                 this.setState({
-                  sidebarVisible: !this.state.sidebarVisible,
+                  sidebarVisible: !sidebarVisible,
                 });
               }}
             />
             <Segment basic style={styles.segment}>
-              {this.props.children}
+              {children}
             </Segment>
           </div>
           <Footer />
@@ -51,6 +51,8 @@ class Main extends React.Component {
   }
 }
 
-Main.propTypes = {};
+Main.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default Main;

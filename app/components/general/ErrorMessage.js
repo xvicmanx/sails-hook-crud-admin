@@ -11,6 +11,10 @@ const ErrorMessage = ({ field, errors, touched }) => {
   );
 };
 
-ErrorMessage.propTypes = {};
+ErrorMessage.propTypes = {
+  field: PropTypes.string.isRequired,
+  errors: PropTypes.instanceOf(Object).isRequired,
+  touched: PropTypes.instanceOf(Object).isRequired,
+};
 
 export default ErrorMessage;

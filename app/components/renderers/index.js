@@ -10,11 +10,11 @@ import PasswordRenderer from './PasswordRenderer';
 import PictureRenderer from './PictureRenderer';
 
 const RENDERERS = {
-  textarea: model => DescriptionRenderer,
-  input: model => InputRenderer,
-  password: model => PasswordRenderer,
-  checkbox: model => CheckboxRenderer,
-  rights: model => RightsRenderer,
+  textarea: () => DescriptionRenderer,
+  input: () => InputRenderer,
+  password: () => PasswordRenderer,
+  checkbox: () => CheckboxRenderer,
+  rights: () => RightsRenderer,
   picture: (model, field, modelName) => PictureRenderer(modelName),
   enum: (model, field) => EnumSelectRenderer(model[field].validations.isIn),
   modelSelect: (model, field) => ModelsSelectRenderer(model[field].model),

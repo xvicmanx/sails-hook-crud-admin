@@ -23,7 +23,8 @@ class ModelsSelect extends Component {
   }
 
   componentDidMount() {
-    const service = Service(this.props.model);
+    const { model } = this.props;
+    const service = Service(model);
     service.fetchAllItems({})
       .then((items) => {
         this.setState({ items });
@@ -45,11 +46,18 @@ class ModelsSelect extends Component {
 
 ModelsSelect.propTypes = {
   model: PropTypes.string.isRequired,
+  field: PropTypes.string.isRequired,
 };
 
-export default model => ({ field }) => (
-  <ModelsSelect
-    field={field}
-    model={model}
-  />
-);
+export default (model) => {
+  const Wrapper = ({ field }) => (
+    <ModelsSelect
+      field={field}
+      model={model}
+    />
+  );
+  Wrapper.propTypes = {
+    field: PropTypes.instanceOf(Object).isRequired,
+  };
+  return Wrapper;
+};

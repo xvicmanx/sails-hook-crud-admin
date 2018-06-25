@@ -9,6 +9,8 @@ const CheckboxRenderer = ({ field }) => (
   />
 );
 
-CheckboxRenderer.propTypes = {};
+CheckboxRenderer.propTypes = {
+  field: PropTypes.instanceOf(Object).isRequired,
+};
 
 export default CheckboxRenderer;

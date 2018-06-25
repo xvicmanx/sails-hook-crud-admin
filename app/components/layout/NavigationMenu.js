@@ -5,8 +5,9 @@ import { Container, Menu } from 'semantic-ui-react';
 import Constants from '../../constants';
 import AuthStore from '../../AuthStore';
 
-const NavigationMenu = props => (
-  <Container className={props.className}>
+
+const NavigationMenu = ({ className }) => (
+  <Container className={className}>
     <Menu.Item
       as={Link}
       icon="home"
@@ -41,7 +42,7 @@ const NavigationMenu = props => (
 );
 
 NavigationMenu.propTypes = {
-
+  className: PropTypes.string.isRequired,
 };
 
 export default NavigationMenu;

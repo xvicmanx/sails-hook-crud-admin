@@ -4,12 +4,10 @@ import { Sidebar, Segment, Menu } from 'semantic-ui-react';
 import NavigationMenu from './NavigationMenu';
 
 const styles = {
-  pushable: {
-    border: 0,
-  },
+  pushable: { border: 0 },
 };
 
-const NavigationSidebar = props => (
+const NavigationSidebar = ({ sidebarVisible, children }) => (
   <Sidebar.Pushable
     as={Segment}
     style={styles.pushable}
@@ -18,7 +16,7 @@ const NavigationSidebar = props => (
       as={Menu}
       animation="push"
       width="thin"
-      visible={props.sidebarVisible}
+      visible={sidebarVisible}
       icon="labeled"
       vertical
       inverted
@@ -26,13 +24,14 @@ const NavigationSidebar = props => (
       <NavigationMenu />
     </Sidebar>
     <Sidebar.Pusher>
-      {props.children}
+      {children}
     </Sidebar.Pusher>
   </Sidebar.Pushable>
 );
 
 NavigationSidebar.propTypes = {
-
+  children: PropTypes.node.isRequired,
+  sidebarVisible: PropTypes.bool.isRequired,
 };
 
 export default NavigationSidebar;

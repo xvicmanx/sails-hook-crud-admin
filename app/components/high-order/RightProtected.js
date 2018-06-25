@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import AuthStore from '../../AuthStore';
 
 const isAllowed = (right) => {
@@ -9,14 +9,27 @@ const isAllowed = (right) => {
 };
 
 export default (
-  right = '',
+  configRight = '',
   failValue = '',
-) => TargetComponent => (props) => {
-  const allowed = isAllowed(
-    props.right || right || '',
-  );
+) => (TargetComponent) => {
+  const Wrapper = (props) => {
+    const { right } = props;
+    const allowed = isAllowed(
+      right || configRight || '',
+    );
 
-  if (!allowed) return failValue;
+    if (!allowed) return failValue;
 
-  return <TargetComponent {...props} />;
+    return <TargetComponent {...props} />;
+  };
+
+  Wrapper.defaultProps = {
+    right: '',
+  };
+
+  Wrapper.propTypes = {
+    right: PropTypes.string,
+  };
+
+  return Wrapper;
 };

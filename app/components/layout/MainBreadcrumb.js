@@ -1,13 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Breadcrumb, Icon } from 'semantic-ui-react';
 import Constants from '../../constants';
 import '../../helpers/string';
 import { iconForArea } from '../../helpers/config';
-import {
-  getConfig,
-  getModelRelatedValue,
-} from '../../helpers/config';
 import { modelTitle } from '../../helpers/models';
 
 const styles = {
@@ -39,6 +36,11 @@ const MainBreadcrumb = ({ modelName, area }) => (
 
 MainBreadcrumb.defaultProps = {
   area: 'home',
+};
+
+MainBreadcrumb.propTypes = {
+  area: PropTypes.string,
+  modelName: PropTypes.string.isRequired,
 };
 
 export default MainBreadcrumb;

@@ -21,18 +21,12 @@ import {
   getType,
   valueResolver,
   getFieldLabel,
-} from '../helpers/models';
-import {
-  getConfig,
-  getModelRelatedValue,
-} from '../helpers/config';
-import { } from '../helpers/string';
-import {
   createRights,
   removeRights,
   updateRights,
   modelTitle,
 } from '../helpers/models';
+import '../helpers/string';
 import renderer from './renderers';
 import Constants from '../constants';
 import AuthStore from '../AuthStore';

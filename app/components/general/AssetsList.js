@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import {
-  Item, Card, Icon, Image,
-} from 'semantic-ui-react';
+import { Card, Icon, Image } from 'semantic-ui-react';
 import Constants from '../../constants';
 import { modelTitle } from '../../helpers/models';
 import AuthStore from '../../AuthStore';
@@ -61,9 +59,15 @@ const AssetItem = ({ type, url, name }) => (
   </Card>
 );
 
+AssetItem.propTypes = {
+  type: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+};
+
 const AssetsList = (props) => {
   const { items, type } = props;
-  const filteredItems = items.filter(x => x.type === props.type);
+  const filteredItems = items.filter(x => x.type === type);
   const groupedItems = _.groupBy(filteredItems, 'model');
   const keys = Object.keys(groupedItems);
 
@@ -80,7 +84,7 @@ const AssetsList = (props) => {
               <Card.Header>
                 {modelTitle(name)}
                 {' '}
-                {props.type}
+                {type}
 s
               </Card.Header>
             </Card.Content>
@@ -89,7 +93,7 @@ s
                 {groupedItems[name].map(item => (
                   <AssetItem
                     {...item}
-                    type={props.type}
+                    type={type}
                   />
                 ))}
               </Card.Group>

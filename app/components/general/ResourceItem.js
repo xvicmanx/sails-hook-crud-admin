@@ -10,17 +10,19 @@ class ResourceItem extends React.Component {
   }
 
   componentDidMount() {
-    this.props.data.then((result) => {
+    const { data } = this.props;
+    data.then((result) => {
       this.setState({ result });
     });
   }
 
   render() {
+    const { children, defaultValue } = this.props;
+    const { result } = this.state;
     return (
       <div>
-        {this.props.children(
-          this.state.result
-          || this.props.defaultValue,
+        {children(
+          result || defaultValue,
         )}
       </div>
     );
@@ -30,6 +32,7 @@ class ResourceItem extends React.Component {
 ResourceItem.propTypes = {
   data: PropTypes.instanceOf(Promise).isRequired,
   children: PropTypes.func.isRequired,
+  defaultValue: PropTypes.string.isRequired,
 };
 
 export default ResourceItem;

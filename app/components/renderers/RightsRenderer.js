@@ -23,7 +23,8 @@ class RightsItems extends Component {
 
   render() {
     const { items } = this.state;
-    return this.props.children(items);
+    const { children } = this.props;
+    return children(items);
   }
 }
 
@@ -34,7 +35,7 @@ RightsItems.propTypes = {
 const extractAction = r => r.replace(/(.+)::(.+)/, '$1');
 const extractResource = r => r.replace(/(.+)::(.+)/, '$2');
 
-export default ({ field }) => (
+const RightsRenderer = ({ field }) => (
   <RightsItems>
     {(items) => {
       const userRightsIds = (field.value || []).map(r => r.id || r);
@@ -97,4 +98,11 @@ export default ({ field }) => (
         />
       );
     }}
-  </RightsItems>);
+  </RightsItems>
+);
+
+RightsRenderer.propTypes = {
+  field: PropTypes.instanceOf(Object).isRequired,
+};
+
+export default RightsRenderer;

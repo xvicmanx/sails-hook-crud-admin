@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { string } from 'prop-types';
 
 class Select extends Component {
   constructor(props) {
@@ -8,9 +8,21 @@ class Select extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { value } = this.props;
+    if (nextProps.value !== value) {
+      this.setState({ value: nextProps.value });
+    }
+  }
+
+  getValue() {
+    const { value } = this.state;
+    return value;
+  }
 
   handleChange(evt) {
-    this.props.onChange(
+    const { onChange } = this.props;
+    onChange(
       evt,
       {
         value: evt.target.value,
@@ -18,26 +30,28 @@ class Select extends Component {
     );
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.value !== this.props.value) {
-      this.setState({ value: nextProps.value });
-    }
-  }
 
   render() {
+    const {
+      name,
+      value,
+      placeholder,
+      options,
+    } = this.props;
+    const stateValue = this.getValue();
     return (
       <select
-        name={this.props.name}
+        name={name}
         onChange={this.handleChange}
-        value={this.props.value || ''}
+        value={value || ''}
       >
         <option
           value=""
-          selected={!this.state.value}
+          selected={!stateValue}
         >
-          {this.props.placeholder}
+          {placeholder}
         </option>
-        {this.props.options.map(option => (
+        {options.map(option => (
           <option
             key={option.key}
             value={option.value}
@@ -51,7 +65,9 @@ class Select extends Component {
 }
 
 Select.propTypes = {
-  value: PropTypes.any,
+  placeholder: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.any,

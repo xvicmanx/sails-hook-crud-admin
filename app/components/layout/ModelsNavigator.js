@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Statistic, Header, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import '../../helpers/string';
 import { iconForArea } from '../../helpers/config';
-import { getModelRelatedValue } from '../../helpers/config';
 import rightProtected from '../high-order/RightProtected';
 import Constants from '../../constants';
 import { modelTitle } from '../../helpers/models';
@@ -16,18 +15,19 @@ const ProtectedStat = rightProtected(
 
 
 const ModelsNavigator = (props) => {
-  const queryString = `?area=${props.area}`;
+  const { area, models, counts } = props;
+  const queryString = `?area=${area}`;
   return (
     <div>
       <Header size="huge">
-        <Icon color="teal" name={iconForArea(props.area)} />
-        {Constants.LABELS[props.area.toUpperCase()]}
+        <Icon color="teal" name={iconForArea(area)} />
+        {Constants.LABELS[area.toUpperCase()]}
       </Header>
       <Statistic.Group
         size="mini"
         className="models-navigator"
       >
-        {props.models.map(modelName => (
+        {models.map(modelName => (
           <ProtectedStat
             right={`read::${modelName}`}
             className="models-navigator__link"
@@ -35,7 +35,7 @@ const ModelsNavigator = (props) => {
             to={`/model/${modelName}${queryString}`}
           >
             <Statistic.Value>
-              {props.counts[modelName] || 0}
+              {counts[modelName] || 0}
             </Statistic.Value>
             <Statistic.Label>
               {modelTitle(modelName)}
@@ -50,8 +50,13 @@ const ModelsNavigator = (props) => {
 ModelsNavigator.defaultProps = {
   models: [],
   area: 'home',
+  counts: {},
 };
 
-ModelsNavigator.propTypes = {};
+ModelsNavigator.propTypes = {
+  models: PropTypes.instanceOf(Array),
+  area: PropTypes.string,
+  counts: PropTypes.instanceOf(Object),
+};
 
 export default ModelsNavigator;

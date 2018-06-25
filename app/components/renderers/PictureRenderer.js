@@ -7,25 +7,29 @@ import Constants from '../../constants';
 
 const service = Service('crudasset');
 
-const PictureRenderer = modelName => ({ field }) => (
-  <ResourceItem data={service.fetchAllItems()}>
-    {(assets) => {
-      const imagesUrls = (assets || [])
-        .filter(a => a.type === Constants.ASSETS_TYPES.PICTURE)
-        .filter(a => a.model === modelName)
-        .map(i => i.url);
-      return (
-        <ImagesSelect
-          {...field}
-          images={imagesUrls}
-        />
-      );
-    }}
-  </ResourceItem>
-);
+const PictureRenderer = (modelName) => {
+  const Wrapper = ({ field }) => (
+    <ResourceItem data={service.fetchAllItems()}>
+      {(assets) => {
+        const imagesUrls = (assets || [])
+          .filter(a => a.type === Constants.ASSETS_TYPES.PICTURE)
+          .filter(a => a.model === modelName)
+          .map(i => i.url);
+        return (
+          <ImagesSelect
+            {...field}
+            images={imagesUrls}
+          />
+        );
+      }}
+    </ResourceItem>
+  );
 
-PictureRenderer.propTypes = {
-  field: PropTypes.instanceOf(Object).isRequired,
+  Wrapper.propTypes = {
+    field: PropTypes.instanceOf(Object).isRequired,
+  };
+
+  return Wrapper;
 };
 
 export default PictureRenderer;

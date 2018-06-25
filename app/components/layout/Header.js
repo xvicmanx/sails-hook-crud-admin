@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { Container, Menu, Button } from 'semantic-ui-react';
+import { Menu, Button } from 'semantic-ui-react';
 import Constants from '../../constants';
 import AuthStore from '../../AuthStore';
 import NavigationMenu from './NavigationMenu';
@@ -34,6 +33,8 @@ const Header = ({ onShowMenuClicked }) => (
   </Menu>
 );
 
-Header.propTypes = {};
+Header.propTypes = {
+  onShowMenuClicked: PropTypes.func.isRequired,
+};
 
 export default Header;

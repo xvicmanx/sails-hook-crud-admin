@@ -22,20 +22,22 @@ class ImagesSelect extends React.Component {
     };
   }
 
-  handleImageSelection(selectedImage, evt) {
-    this.setState({ selectedImage });
-    const event = evt;
-    event.target.value = selectedImage;
-    event.target.name = this.props.name;
-    this.props.onChange(event);
-  }
-
   componentWillReceiveProps(nextProps) {
     this.setState({ selectedImage: nextProps.value });
   }
 
+  handleImageSelection(selectedImage, evt) {
+    const { name, onChange } = this.props;
+    this.setState({ selectedImage });
+    const event = evt;
+    event.target.value = selectedImage;
+    event.target.name = name;
+    onChange(event);
+  }
+
   render() {
     const { images } = this.props;
+    const { selectedImage } = this.state;
 
     if (images.lenth <= 0) {
       return (
@@ -57,7 +59,7 @@ class ImagesSelect extends React.Component {
               }}
               raised
               image={image}
-              className={selectionClass(this.state.selectedImage === image)}
+              className={selectionClass(selectedImage === image)}
               style={styles.image}
             />
           ))}
@@ -71,6 +73,7 @@ ImagesSelect.propTypes = {
   images: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 export default ImagesSelect;

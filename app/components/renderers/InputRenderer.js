@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 const InputRenderer = ({ field }) => <input {...field} />;
 
-InputRenderer.propTypes = {};
+InputRenderer.propTypes = {
+  field: PropTypes.instanceOf(Object).isRequired,
+};
 
 export default InputRenderer;

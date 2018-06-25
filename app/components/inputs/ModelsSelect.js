@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Form } from 'semantic-ui-react';
 import {
   getModels,
@@ -14,16 +15,17 @@ const ModelsSelect = (props) => {
     value: m,
     text: modelTitle(m),
   }));
+  const { onChange, filter, name } = props;
   return (
     <Form.Select
       {...props}
-      options={options.filter(props.filter)}
+      options={options.filter(filter)}
       search
       onChange={(e, data) => {
-        props.onChange({
+        onChange({
           persist: () => {},
           target: {
-            name: props.name,
+            name,
             value: data.value,
           },
         });
@@ -34,6 +36,12 @@ const ModelsSelect = (props) => {
 
 ModelsSelect.defaultProps = {
   filter: () => true,
+};
+
+ModelsSelect.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  filter: PropTypes.func,
+  name: PropTypes.string.isRequired,
 };
 
 export default ModelsSelect;

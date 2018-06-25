@@ -8,17 +8,19 @@ class FileInput extends React.Component {
   }
 
   render() {
+    const { label, onChange } = this.props;
+    const { value } = this.state;
     return (
-      <label>
-        {this.props.label}
+      <label htmlFor="file">
+        {label}
         <input
           {...this.props}
           type="file"
-          value={this.state.value}
+          value={value}
           multiple="multiple"
           onChange={(event) => {
             this.setState({ value: event.target.value });
-            this.props.onChange({
+            onChange({
               persist: () => {},
               target: {
                 name: event.target.name,
@@ -35,6 +37,7 @@ class FileInput extends React.Component {
 
 FileInput.propTypes = {
   onChange: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
 };
 
 export default FileInput;

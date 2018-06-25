@@ -1,11 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Modal, Icon } from 'semantic-ui-react';
 import UploadAssetForm from '../forms/UploadAssetForm';
 
 const styles = {
-  content: {
-    padding: '1.5rem 0',
-  },
+  content: { padding: '1.5rem 0' },
 };
 
 class UploadAssetModal extends React.Component {
@@ -27,18 +26,20 @@ class UploadAssetModal extends React.Component {
   }
 
   render() {
+    const { type, onSuccess } = this.props;
+    const { open } = this.state;
     return (
       <div>
         <Button
           color="blue"
-          content={`Upload ${this.props.type}`}
+          content={`Upload ${type}`}
           icon="upload"
           onClick={() => {
             this.showModal();
           }}
         />
         <Modal
-          open={this.state.open}
+          open={open}
           onClose={() => {
             this.hideModal();
           }}
@@ -51,10 +52,10 @@ class UploadAssetModal extends React.Component {
           </Modal.Header>
           <Modal.Content style={styles.content}>
             <UploadAssetForm
-              type={this.props.type}
+              type={type}
               onSubmitSuccess={() => {
                 this.hideModal();
-                this.props.onSuccess();
+                onSuccess();
               }}
             />
           </Modal.Content>
@@ -63,5 +64,10 @@ class UploadAssetModal extends React.Component {
     );
   }
 }
+
+UploadAssetModal.propTypes = {
+  onSuccess: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
+};
 
 export default UploadAssetModal;

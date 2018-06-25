@@ -1,12 +1,10 @@
 import React from 'react';
-import { render } from 'react-dom';
+import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import {
   Button,
   Form,
-  Label,
   Input,
-  Header,
   Icon,
 } from 'semantic-ui-react';
 import FileInput from '../inputs/FileInput';
@@ -73,7 +71,7 @@ const UploadAssetForm = (props) => {
           />
         </Form.Field>
         <Form.Field style={styles.field}>
-          <label>
+          <label htmlFor="name">
             Name
             <Input
               fluid
@@ -103,19 +101,29 @@ const UploadAssetForm = (props) => {
         >
           <Icon name="send" />
           {' '}
-Send
+          Send
         </Button>
       </div>
     </Form>
   );
 };
 
+UploadAssetForm.propTypes = {
+  values: PropTypes.instanceOf(Object).isRequired,
+  touched: PropTypes.instanceOf(Object).isRequired,
+  errors: PropTypes.instanceOf(Object).isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+};
+
 export default withFormik({
-  mapPropsToValues: props => ({
+  mapPropsToValues: ({ type }) => ({
     file: null,
     model: '',
     name: '',
-    type: props.type,
+    type,
   }),
   validate: (values) => {
     const errors = {};
@@ -137,11 +145,14 @@ export default withFormik({
     return errors;
   },
   handleSubmit: (values, {
-    setSubmitting, setErrors, setError, props,
+    setSubmitting,
+    setError,
+    props,
   }) => Service(values.model)
     .upload(values)
     .then((res) => {
-      props.onSubmitSuccess(res);
+      const { onSubmitSuccess } = props;
+      onSubmitSuccess(res);
       setSubmitting(false);
       return res;
     }).catch((err) => {

@@ -10,11 +10,10 @@ const mapCondition = (x) => {
     case 'DOES_NOT_END_WITH': return '!=';
     case 'DOES_NOT_CONTAIN': return '!=';
     case 'LESS_THAN': return '<';
-    case 'IS_NOT_LESS_THAN': '>=';
+    case 'IS_NOT_LESS_THAN': return '>=';
     case 'GREATER_THAN': return '>';
     case 'IS_NOT_GREATER_THAN': return '<=';
     case 'LESS_OR_EQUALS_THAN': return '<=';
-    case 'IS_NOT_LESS_OR_EQUALS_THAN': return '>';
     case 'IS_NOT_LESS_OR_EQUALS_THAN': return '>';
     case 'GREATER_OR_EQUALS_THAN': return '>=';
     case 'IS_NOT_GREATER_OR_EQUALS_THAN': return '<';
@@ -32,7 +31,8 @@ const getValue = (rule) => {
   return rule.value;
 };
 
-const buildQuery = rules => rules.reduce((query, rule) => {
+const buildQuery = rules => rules.reduce((q, rule) => {
+  const query = q;
   const condition = mapCondition(rule.condition);
   const value = getValue(rule);
 

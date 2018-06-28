@@ -43,7 +43,8 @@ class LoginScreen extends React.Component {
   }
 
   render() {
-    if (this.state.loggedIn) {
+    const { loggedIn } = this.state;
+    if (loggedIn) {
       return <Redirect to="/model" />;
     }
     return (

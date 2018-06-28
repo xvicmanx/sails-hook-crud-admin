@@ -1,12 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   HashRouter as Router,
   Route,
-  Link,
   withRouter,
 } from 'react-router-dom';
 import Service from '../services/Service';
-import ModelsNavigator from './layout/ModelsNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import LogoutScreen from '../screens/LogoutScreen';
 import ModelDetailsScreen from '../screens/ModelDetailsScreen';
@@ -29,6 +28,16 @@ class Routes extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const { history } = this.props;
+    this.updateCounts();
+    history.listen((data) => {
+      if (NAVIGATOR_PATHS.indexOf(data.pathname) >= 0) {
+        this.updateCounts();
+      }
+    });
+  }
+
   updateCounts() {
     Service().countAllModels()
       .then((counts) => {
@@ -36,16 +45,8 @@ class Routes extends React.Component {
       });
   }
 
-  componentDidMount() {
-    this.updateCounts();
-    this.props.history.listen((data) => {
-      if (NAVIGATOR_PATHS.indexOf(data.pathname) >= 0) {
-        this.updateCounts();
-      }
-    });
-  }
-
   render() {
+    const { counts } = this.state;
     return (
       <div>
         <Route
@@ -58,7 +59,7 @@ class Routes extends React.Component {
           path="/model"
           component={() => (
             <ModelsScreen
-              counts={this.state.counts}
+              counts={counts}
             />
           )}
         />
@@ -67,7 +68,7 @@ class Routes extends React.Component {
           path="/permissions"
           component={() => (
             <PermissionsScreen
-              counts={this.state.counts}
+              counts={counts}
             />
           )}
         />
@@ -90,6 +91,10 @@ class Routes extends React.Component {
     );
   }
 }
+
+Routes.propTypes = {
+  history: PropTypes.instanceOf(Object).isRequired,
+};
 
 const AppRoutes = withRouter(Routes);
 

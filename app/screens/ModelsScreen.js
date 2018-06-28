@@ -12,21 +12,21 @@ import {
 const Main = loggedInProtected(LayoutMain);
 
 
-const ModelsScreen = (props) => {
+const ModelsScreen = ({ counts }) => {
   const models = Object.keys(getModels())
     .filter(NON_CRUD_MODELS_FILTER);
   return (
     <Main>
       <ModelsNavigator
         models={models}
-        counts={props.counts}
+        counts={counts}
       />
     </Main>
   );
 };
 
 ModelsScreen.propTypes = {
-  counts: PropTypes.instanceOf(Object),
+  counts: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default ModelsScreen;

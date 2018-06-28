@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Message } from 'semantic-ui-react';
 import queryString from 'query-string';
 import Service from '../services/Service';
@@ -50,5 +51,9 @@ const ModelDetailsScreen = ({ match, location }) => {
   );
 };
 
+ModelDetailsScreen.propTypes = {
+  match: PropTypes.instanceOf(Object).isRequired,
+  location: PropTypes.instanceOf(Object).isRequired,
+};
 
 export default ModelDetailsScreen;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';
 import CRUDTable,
 {
@@ -41,41 +42,6 @@ class ModelCrud extends React.Component {
     this.handleCreateSubmit = this.handleCreateSubmit.bind(this);
     this.handleUpdateSubmit = this.handleUpdateSubmit.bind(this);
     this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
-  }
-
-  handleCreateSubmit(item) {
-    const { service, onChange } = this.props;
-    return new Promise((resolve) => {
-      service.create(item).then((result) => {
-        onChange();
-        resolve(result);
-      });
-    });
-  }
-
-  handleUpdateSubmit(data) {
-    const { model, service } = this.props;
-    const payload = data;
-    Object.keys(payload).forEach((k) => {
-      if (model[k] && model[k].collection) {
-        payload[k] = payload[k].map(x => x.id || x);
-      }
-
-      if (model[k] && model[k].model) {
-        payload[k] = payload[k].id || payload[k];
-      }
-    });
-    return service.update(payload);
-  }
-
-  handleDeleteSubmit(item) {
-    const { onChange, service } = this.props;
-    return new Promise((resolve) => {
-      service.delete(item).then((result) => {
-        onChange();
-        resolve(result);
-      });
-    });
   }
 
   getCreateForm() {
@@ -155,12 +121,7 @@ class ModelCrud extends React.Component {
   }
 
   getDeleteForm() {
-    const {
-      model,
-      modelName,
-      service,
-      onChange,
-    } = this.props;
+    const { modelName } = this.props;
     const allowed = AuthStore.hasAnyOfRights(
       removeRights(modelName),
     );
@@ -197,13 +158,46 @@ class ModelCrud extends React.Component {
     );
   }
 
+  handleCreateSubmit(item) {
+    const { service, onChange } = this.props;
+    return new Promise((resolve) => {
+      service.create(item).then((result) => {
+        onChange();
+        resolve(result);
+      });
+    });
+  }
+
+  handleUpdateSubmit(data) {
+    const { model, service } = this.props;
+    const payload = data;
+    Object.keys(payload).forEach((k) => {
+      if (model[k] && model[k].collection) {
+        payload[k] = payload[k].map(x => x.id || x);
+      }
+
+      if (model[k] && model[k].model) {
+        payload[k] = payload[k].id || payload[k];
+      }
+    });
+    return service.update(payload);
+  }
+
+  handleDeleteSubmit(item) {
+    const { onChange, service } = this.props;
+    return new Promise((resolve) => {
+      service.delete(item).then((result) => {
+        onChange();
+        resolve(result);
+      });
+    });
+  }
+
   render() {
     const {
       model,
       modelName,
-      caption,
       service,
-      onChange,
     } = this.props;
     return (
       <div style={styles.container}>
@@ -216,14 +210,13 @@ class ModelCrud extends React.Component {
             return service.fetchItems(payload);
           }}
           showQueryBuilder
-          actionsLabel={Constants.LABELS.ACTIONS}
           actionsLabel={(
             <div>
               <Icon name="wrench" color="teal" />
               {' '}
               {Constants.LABELS.ACTIONS}
             </div>
-)}
+          )}
         >
           <Fields>
             {model
@@ -260,6 +253,11 @@ ModelCrud.defaultProps = {
   onChange: () => {},
 };
 
-ModelCrud.propTypes = {};
+ModelCrud.propTypes = {
+  onChange: PropTypes.func,
+  service: PropTypes.instanceOf(Object).isRequired,
+  modelName: PropTypes.string.isRequired,
+  model: PropTypes.instanceOf(Object).isRequired,
+};
 
 export default ModelCrud;

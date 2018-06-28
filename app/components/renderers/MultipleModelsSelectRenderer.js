@@ -5,7 +5,7 @@ import Select from './Select';
 import Service from '../../services/Service';
 import { getModelValue } from '../../helpers/models';
 
-const getText = (model, x) => x && getModelValue(model, x)
+const getText = (model, x) => (x && getModelValue(model, x))
 || `${model} (id: ${x.id})`;
 
 const mapOption = model => x => ({
@@ -49,6 +49,30 @@ class ModelsSelect extends Component {
     this.handleRemove = this.handleRemove.bind(this);
   }
 
+  componentDidMount() {
+    const { model } = this.props;
+    const service = Service(model);
+    service.fetchAllItems({}).then((items) => {
+      this.setState({ items });
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const ids = (nextProps.field.value
+      && nextProps.field.value.map(x => (x && x.id) || x)) || [];
+    this.setState({ ids });
+  }
+
+  triggerOnChange(evt, ids) {
+    const { field } = this.props;
+    const e = evt;
+    e.target = {
+      name: field.name,
+      value: ids,
+    };
+    field.onChange(e);
+  }
+
   handleAdd(evt) {
     evt.preventDefault();
     evt.stopPropagation();
@@ -63,60 +87,40 @@ class ModelsSelect extends Component {
     }
   }
 
-  triggerOnChange(evt, ids) {
-    const { field } = this.props;
-    const e = evt;
-    e.target = {
-      name: field.name,
-      value: ids,
-    };
-    field.onChange(e);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const ids = nextProps.field.value
-      && nextProps.field.value.map(x => x && x.id || x) || [];
-    this.setState({ ids });
-  }
-
   handleRemove(evt, id) {
     evt.preventDefault();
     evt.stopPropagation();
 
-    const ids = this.state.ids.filter(x => x !== id);
-    this.setState({ ids });
-    this.triggerOnChange(evt, ids);
+    const { ids } = this.state;
+    const filteredIds = ids.filter(x => x !== id);
+    this.setState({ ids: filteredIds });
+    this.triggerOnChange(evt, filteredIds);
   }
 
   handleChange(evt) {
     this.setState({ id: evt.target.value });
   }
 
-  componentDidMount() {
-    const service = Service(this.props.model);
-    service.fetchAllItems({}).then((items) => {
-      this.setState({ items });
-    });
-  }
-
   render() {
+    const { ids, items, id } = this.state;
+    const { model } = this.props;
     return (
       <div style={styles.container}>
         <List divided relaxed>
-          {this.state.ids.map(id => (
+          {ids.map(itemId => (
             <List.Item
-              key={id}
+              key={itemId}
             >
               <List.Content style={styles.item}>
                 {getText(
-                  this.props.model,
-                  this.state.items.find(x => x.id === id),
+                  model,
+                  items.find(x => x.id === itemId),
                 )}
 &nbsp;
                 <Button
                   color="red"
                   onClick={(evt) => {
-                    this.handleRemove(evt, id);
+                    this.handleRemove(evt, itemId);
                   }}
                   circular
                   icon="close"
@@ -129,10 +133,10 @@ class ModelsSelect extends Component {
         <Divider />
         <div>
           <Select
-            value={this.state.id}
+            value={id}
             onChange={this.handleChange}
-            options={this.state.items.map(
-              mapOption(this.props.model),
+            options={items.map(
+              mapOption(model),
             )}
           />
           <Button
@@ -150,11 +154,20 @@ class ModelsSelect extends Component {
 
 ModelsSelect.propTypes = {
   model: PropTypes.string.isRequired,
+  field: PropTypes.shape({
+    value: PropTypes.instanceOf(Array),
+  }).isRequired,
 };
 
-export default model => ({ field }) => (
-  <ModelsSelect
-    field={field}
-    model={model}
-  />
-);
+export default (model) => {
+  const Wrapper = ({ field }) => (
+    <ModelsSelect
+      field={field}
+      model={model}
+    />
+  );
+  Wrapper.propTypes = {
+    field: PropTypes.instanceOf(Object).isRequired,
+  };
+  return Wrapper;
+};

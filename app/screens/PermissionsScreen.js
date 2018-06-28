@@ -12,14 +12,14 @@ import {
 const Main = loggedInProtected(LayoutMain);
 
 
-const PermissionsScreen = (props) => {
+const PermissionsScreen = ({ counts }) => {
   const models = Object.keys(getModels())
     .filter(CRUD_MODELS_FILTER);
   return (
     <Main>
       <ModelsNavigator
         models={models}
-        counts={props.counts}
+        counts={counts}
         area="permissions"
       />
     </Main>
@@ -27,7 +27,7 @@ const PermissionsScreen = (props) => {
 };
 
 PermissionsScreen.propTypes = {
-  counts: PropTypes.instanceOf(Object),
+  counts: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default PermissionsScreen;

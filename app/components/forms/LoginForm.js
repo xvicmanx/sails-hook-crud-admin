@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import {
   Button,
@@ -23,6 +23,12 @@ const Error = ({ field, errors, touched }) => {
       {errors[field]}
     </Label>
   );
+};
+
+Error.propTypes = {
+  field: PropTypes.string.isRequired,
+  touched: PropTypes.instanceOf(Object).isRequired,
+  errors: PropTypes.instanceOf(Object).isRequired,
 };
 
 const styles = {
@@ -109,6 +115,16 @@ const LoginForm = (props) => {
       </Segment>
     </Form>
   );
+};
+
+LoginForm.propTypes = {
+  values: PropTypes.instanceOf(Object).isRequired,
+  touched: PropTypes.instanceOf(Object).isRequired,
+  errors: PropTypes.instanceOf(Object).isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleBlur: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 const transformAPIErrors = (error) => {

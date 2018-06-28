@@ -16,6 +16,7 @@ const readValue = (key) => {
     if (!value) return null;
     return JSON.parse(value);
   }
+  return null;
 };
 
 const KEYS = {
@@ -56,7 +57,7 @@ const AuthStore = {
   },
   getUserName() {
     const userData = readValue(KEYS.USER_DATA);
-    return userData && userData.name || '';
+    return (userData && userData.name) || '';
   },
   getToken() {
     const tokenInfo = readValue(KEYS.TOKEN_INFO);

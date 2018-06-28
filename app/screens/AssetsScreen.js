@@ -29,15 +29,6 @@ class Assets extends React.Component {
     this.loadItems = this.loadItems.bind(this);
   }
 
-  loadItems() {
-    service.fetchAssets({
-      type: this.props.type,
-    })
-      .then((items) => {
-        this.setState({ items, loading: false });
-      });
-  }
-
   componentDidMount() {
     const canView = AuthStore.canViewAssets();
     if (canView) {
@@ -47,10 +38,19 @@ class Assets extends React.Component {
     }
   }
 
+  loadItems() {
+    const { type } = this.props;
+    service.fetchAssets({ type })
+      .then((items) => {
+        this.setState({ items, loading: false });
+      });
+  }
+
   render() {
     const { type } = this.props;
+    const { loading, items } = this.state;
 
-    if (this.state.loading) return <Loader active />;
+    if (loading) return <Loader active />;
 
     const canUpload = AuthStore.canUploadAssets();
     const canView = AuthStore.canViewAssets();
@@ -66,7 +66,7 @@ class Assets extends React.Component {
         {canView && (
           <AssetsList
             type={type}
-            items={this.state.items}
+            items={items}
           />
         )}
         {!canView && (
@@ -80,6 +80,10 @@ class Assets extends React.Component {
     );
   }
 }
+
+Assets.propTypes = {
+  type: PropTypes.string.isRequired,
+};
 
 
 const panes = [
@@ -101,7 +105,7 @@ const panes = [
   },
 ];
 
-const AssetsScreen = props => (
+const AssetsScreen = () => (
   <Main>
     <Header as="h1">
       <Icon
@@ -109,7 +113,7 @@ const AssetsScreen = props => (
         color="teal"
       />
       {' '}
-Assets
+      Assets
     </Header>
     <Tab
       menu={{ pointing: true }}

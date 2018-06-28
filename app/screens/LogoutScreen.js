@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Header } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 import AuthStore from '../AuthStore';
@@ -18,7 +17,8 @@ class LogoutScreen extends Component {
   }
 
   render() {
-    if (this.state.done) {
+    const { done } = this.state;
+    if (done) {
       return <Redirect to="/" />;
     }
     return <Header content="Processing..." />;

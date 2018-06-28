@@ -2,8 +2,8 @@ import React from 'react';
 import { Popup, Button, Icon } from 'semantic-ui-react';
 import JSONTable from 'simple-json-table';
 import _ from 'lodash';
-import { omit, queryValue } from './object';
-import { getLabel, getModelRelatedValue } from './config';
+import { omit } from './object';
+import { getModelRelatedValue } from './config';
 import Constants from '../constants';
 import './string';
 
@@ -73,6 +73,7 @@ export const getModelValue = (modelName, item) => {
     const compiler = template(tpl);
     return compiler({ [modelName]: item, _ });
   }
+  return null;
 };
 
 export const valueResolver = (model, field, modelName) => (item) => {

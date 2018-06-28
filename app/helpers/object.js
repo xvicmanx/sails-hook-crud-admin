@@ -3,28 +3,28 @@ export const queryValue = (source, query = '', defaultValue = null) => {
   return value || defaultValue;
 };
 
-export const anyPropLike = (props, value) => (obj) => {
-  if (!props || props.length <= 0) return true;
-  return props.reduce((acc, x) => {
+export const anyPropLike = (properties, value) => (obj) => {
+  if (!properties || properties.length <= 0) return true;
+  return properties.reduce((acc, x) => {
     const target = (`${queryValue(obj, x, '')}`).toLowerCase();
     const needle = (`${value}`).toLowerCase();
     return acc || target.indexOf(needle) >= 0;
   }, false);
 };
 
-export const omit = (source, props) => {
+export const omit = (source, properties) => {
   if (!source) return source;
 
   if (Array.isArray(source)) {
     const result = JSON.parse(JSON.stringify(source));
     result.forEach((element, index) => {
-      result[index] = omit(result[index], props);
+      result[index] = omit(result[index], properties);
     });
     return result;
   }
 
   return Object.keys(source)
-    .filter(k => props.indexOf(k) < 0)
+    .filter(k => properties.indexOf(k) < 0)
     .reduce((acc, key) => {
       const result = acc;
       result[key] = source[key];

@@ -2,9 +2,9 @@ import AuthStore from '../AuthStore';
 
 const requester = require('simple-json-requester');
 
-const URL = (model, id) => (id ? `/${model}/${id}` : `/${model}`);
+// const URL = (model, id) => (id ? `/${model}/${id}` : `/${model}`);
 const UPLOAD_URL = '/administrator/model-upload-asset';
-const ASSET_URL = id => `/administrator/crud-asset/${id}`;
+// const ASSET_URL = id => `/administrator/crud-asset/${id}`;
 const ASSETS_URL = '/administrator/models-assets/';
 const COUNT_URL = '/administrator/model-count';
 const SEARCH_URL = '/administrator/model-search';
@@ -90,7 +90,8 @@ const Service = model => ({
       body: formData,
     }).then(response => response.json());
   },
-  create: (item) => {
+  create: (x) => {
+    const item = x;
     item.modelName = model;
     return requester.post(
       CREATE_URL,
@@ -98,7 +99,8 @@ const Service = model => ({
       getConfig(),
     );
   },
-  update: (data) => {
+  update: (x) => {
+    const data = x;
     data.modelName = model;
     return requester.put(
       `${UPDATE_URL}/${data.id}`,
@@ -106,7 +108,8 @@ const Service = model => ({
       getConfig(),
     );
   },
-  delete: (data) => {
+  delete: (x) => {
+    const data = x;
     data.modelName = model;
     return requester.delete(
       `${DELETE_URL}/${data.id}`,

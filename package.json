@@ -4,13 +4,14 @@
   "description": "An admin for SailsJS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint:client": "node ./node_modules/eslint/bin/eslint.js ./app --fix",
     "lint:server": "node ./node_modules/eslint/bin/eslint.js ./api --fix",
     "lint": "npm run lint:server && npm run lint:client",
     "build:server": "webpack --config webpack.server.config.js",
     "build:client": "webpack --config webpack.client.config.js",
-    "build": "npm run build:server && npm run build:client"
+    "build": "npm run build:server && npm run build:client",
+    "test": "jest --env=jsdom",
+    "test:coverage": "jest --coverage --collectCoverageFrom='[\"api/**/*.js\"]'"
   },
   "keywords": [
     "Sails",
@@ -36,6 +37,7 @@
     "eslint-plugin-react": "^7.9.1",
     "file-loader": "^1.1.11",
     "ignore-loader": "^0.1.2",
+    "jest": "^23.2.0",
     "node-sass": "^4.9.0",
     "sails": "~0.11.0",
     "sass-loader": "^7.0.3",
@@ -67,12 +69,5 @@
     "simple-json-requester": "0.0.4",
     "simple-json-table": "^1.0.0",
     "skipper-disk": "^0.5.11"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.js$": "babel-jest",
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/assetsTransformer.js",
-      "\\.(css|less)$": "<rootDir>/config/assetsTransformer.js"
-    }
   }
 }

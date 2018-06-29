@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`api::models::CRUDUser The model is defined properly 1`] = `
+Object {
+  "attributes": Object {
+    "groups": Object {
+      "collection": "crudgroup",
+    },
+    "password": Object {
+      "required": true,
+      "type": "string",
+    },
+    "username": Object {
+      "required": true,
+      "type": "string",
+    },
+  },
+  "beforeCreate": [Function],
+  "beforeUpdate": [Function],
+  "customToJSON": [Function],
+  "verifyPassword": [Function],
+}
+`;

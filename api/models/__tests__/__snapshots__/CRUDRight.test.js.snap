@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`api::models::CRUDRight The model is defined properly 1`] = `
+Object {
+  "attributes": Object {
+    "action": Object {
+      "model": "crudaction",
+      "required": true,
+    },
+    "name": Object {
+      "required": true,
+      "type": "string",
+    },
+    "resource": Object {
+      "model": "crudresource",
+      "required": true,
+    },
+  },
+}
+`;

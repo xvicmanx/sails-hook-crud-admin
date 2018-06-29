@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`api::constants::routes The url values are correct 1`] = `
+Object {
+  "ASSET": "GET /administrator/crud-asset/:hash",
+  "CLIENT_JS": "GET /administrator/client.js",
+  "INDEX": "GET /administrator",
+  "LOGIN": "POST /administrator/login",
+  "MODELS_ASSETS": "POST /administrator/models-assets",
+  "MODELS_COUNT": "GET /administrator/all-models-count",
+  "MODEL_COUNT": "POST /administrator/model-count",
+  "MODEL_CREATE": "POST /administrator/model-create",
+  "MODEL_DELETE": "DELETE /administrator/model-delete/:id",
+  "MODEL_SEARCH": "POST /administrator/model-search",
+  "MODEL_SEARCH_ALL": "GET /administrator/model-search-all",
+  "MODEL_UPDATE": "PUT /administrator/model-update/:id",
+  "UPLOAD": "POST /administrator/model-upload-asset",
+}
+`;

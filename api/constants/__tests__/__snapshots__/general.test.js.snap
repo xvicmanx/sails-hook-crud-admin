@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`api::constants::general The CRUD model names are correct 1`] = `
+Array [
+  "crudaction",
+  "crudresource",
+  "crudright",
+  "crudgroup",
+  "cruduser",
+  "crudasset",
+]
+`;
+
+exports[`api::constants::general The HTTP methods are correct 1`] = `
+Array [
+  "GET",
+  "POST",
+  "PUT",
+  "PATCH",
+  "DELETE",
+  "OPTIONS",
+]
+`;

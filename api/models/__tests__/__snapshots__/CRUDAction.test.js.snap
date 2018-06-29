@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`api::models::CRUDAction The model is defined properly 1`] = `
+Object {
+  "attributes": Object {
+    "name": Object {
+      "required": true,
+      "type": "string",
+    },
+  },
+}
+`;

@@ -6,7 +6,7 @@ import '../../helpers/string';
 import { iconForArea } from '../../helpers/config';
 import rightProtected from '../high-order/RightProtected';
 import Constants from '../../constants';
-import { modelTitle } from '../../helpers/models';
+import { modelTitle, modelIcon } from '../../helpers/models';
 
 const ProtectedStat = rightProtected(
   null,
@@ -35,10 +35,14 @@ const ModelsNavigator = (props) => {
             to={`/model/${modelName}${queryString}`}
           >
             <Statistic.Value>
-              {counts[modelName] || 0}
+              {modelIcon(modelName)}
             </Statistic.Value>
             <Statistic.Label>
-              {modelTitle(modelName)}
+              {modelTitle(modelName, false)}
+              {' '}
+              {'( '}
+              {counts[modelName] || 0}
+              {' )'}
             </Statistic.Label>
           </ProtectedStat>
         ))}

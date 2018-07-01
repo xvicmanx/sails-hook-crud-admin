@@ -143,13 +143,34 @@ export const NON_CRUD_MODELS_FILTER = model => Constants.CRUD_MODELS.indexOf(mod
 
 export const CRUD_MODELS_FILTER = model => Constants.CRUD_MODELS.indexOf(model) >= 0;
 
-export const modelTitle = (modelName) => {
+export const modelIcon = (modelName, size = 'small', color = 'white') => {
+  const icon = getModelRelatedValue(
+    `${modelName}.icon`,
+    'file',
+  );
+  return (
+    <span>
+      {icon && (
+        <Icon
+          name={icon}
+          color={color}
+          size={size}
+        />
+      )}
+    </span>
+  );
+};
+
+export const modelTitle = (modelName, includeIcon = true) => {
   const text = getModelRelatedValue(
     `${modelName}.label`,
   ) || modelName.asTitle();
-  const icon = getModelRelatedValue(
-    `${modelName}.icon`,
-  );
+  let icon = null;
+  if (includeIcon) {
+    icon = getModelRelatedValue(
+      `${modelName}.icon`,
+    );
+  }
   return (
     <span>
       {icon && (
@@ -202,4 +223,5 @@ export default {
   createRights,
   updateRights,
   removeRights,
+  modelIcon,
 };

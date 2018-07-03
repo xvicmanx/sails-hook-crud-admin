@@ -12,6 +12,15 @@ export const getLabel = (prop, defaultValue) => {
   );
 };
 
+export const getViews = () => {
+  const config = getConfig();
+  return queryValue(
+    config,
+    'views',
+    [],
+  );
+};
+
 export const getModelRelatedValue = (query, defaultValue) => {
   const config = getConfig();
   return queryValue(
@@ -30,7 +39,14 @@ export const getButtonText = (button, defaultValue) => {
   );
 };
 
-export const iconForArea = area => (area === 'home' ? 'home' : 'key');
+export const iconForArea = (area) => {
+  switch (area) {
+    case 'home': return 'home';
+    case 'permissions': return 'key';
+    case 'views': return 'code';
+    default: return 'permissions';
+  }
+};
 
 export default {
   getConfig,
@@ -38,4 +54,5 @@ export default {
   getButtonText,
   getModelRelatedValue,
   iconForArea,
+  getViews,
 };

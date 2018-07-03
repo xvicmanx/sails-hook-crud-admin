@@ -12,6 +12,8 @@ import ModelDetailsScreen from '../screens/ModelDetailsScreen';
 import PermissionsScreen from '../screens/PermissionsScreen';
 import ModelsScreen from '../screens/ModelsScreen';
 import AssetsScreen from '../screens/AssetsScreen';
+import ViewsScreen from '../screens/ViewsScreen';
+import ViewScreen from '../screens/ViewScreen';
 
 
 const NAVIGATOR_PATHS = [
@@ -62,6 +64,16 @@ class Routes extends React.Component {
               counts={counts}
             />
           )}
+        />
+        <Route
+          exact
+          path="/views"
+          component={ViewsScreen}
+        />
+        <Route
+          exact
+          path="/views/:viewName"
+          component={ViewScreen}
         />
         <Route
           exact

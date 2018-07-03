@@ -37,12 +37,18 @@ class Controller {
     this.uploadAsset = this.uploadAsset.bind(this);
     this.crudAsset = this.crudAsset.bind(this);
     this.modelsAssets = this.modelsAssets.bind(this);
+    this.viewContent = this.viewContent.bind(this);
     this.CLIENT_JS_FILE = `${__dirname}/../../dist/client.js`;
   }
 
   index(req, res) {
     const crudAdminConf = this.sails.config.crudAdmin || {};
     const config = {
+      views: Object.keys(queryValue(
+        crudAdminConf,
+        'views',
+        {},
+      )),
       general: {
         labels: queryValue(
           crudAdminConf,
@@ -265,6 +271,29 @@ class Controller {
         .pipe(res);
       return false;
     });
+  }
+
+  async viewContent(req, res) {
+    const config = this.sails.config.crudAdmin || {};
+    const { viewName } = req.body;
+    const view = config.views && config.views[viewName];
+    if (view) {
+      if (typeof view.content === 'function') {
+        view.content(this.sails, (err, content) => {
+          if (err) {
+            res.status(500);
+            res.json({ content: 'Error!' });
+          } else {
+            res.json({ content });
+          }
+        });
+      } else {
+        res.json({ content: view.content });
+      }
+    } else {
+      res.status(404);
+      res.json({ content: '<img class="fishy" src="http://sailsjs.org/images/fishy4.png">' });
+    }
   }
 }
 

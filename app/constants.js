@@ -17,6 +17,7 @@ const Constants = {
     SEE_DETAILS: getButtonText('seeDetails', 'See details'),
   },
   LABELS: {
+    VIEWS: getLabel('views', 'Views'),
     HOME: getLabel('home', 'Home'),
     LOGOUT: getLabel('logout', 'Logout'),
     PERMISSIONS: getLabel('permissions', 'Permissions'),

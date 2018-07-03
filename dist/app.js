@@ -61,7 +61,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -100,7 +100,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _simpleJsonTable = __webpack_require__(24);
+var _simpleJsonTable = __webpack_require__(25);
 
 var _simpleJsonTable2 = _interopRequireDefault(_simpleJsonTable);
 
@@ -110,19 +110,19 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 var _object = __webpack_require__(12);
 
-var _config = __webpack_require__(9);
+var _config = __webpack_require__(8);
 
 var _constants = __webpack_require__(5);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-__webpack_require__(8);
+__webpack_require__(11);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var template = __webpack_require__(26);
+var template = __webpack_require__(27);
 
 var getModels = exports.getModels = function getModels() {
   return typeof window !== 'undefined' && window.sailsModels ? window.sailsModels : {};
@@ -462,7 +462,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _config = __webpack_require__(9);
+var _config = __webpack_require__(8);
 
 var CRUD_MODELS = ['crudaction', 'crudresource', 'crudright', 'crudgroup', 'cruduser', 'crudasset'];
 
@@ -474,6 +474,7 @@ var Constants = {
     SEE_DETAILS: (0, _config.getButtonText)('seeDetails', 'See details')
   },
   LABELS: {
+    VIEWS: (0, _config.getLabel)('views', 'Views'),
     HOME: (0, _config.getLabel)('home', 'Home'),
     LOGOUT: (0, _config.getLabel)('logout', 'Logout'),
     PERMISSIONS: (0, _config.getLabel)('permissions', 'Permissions'),
@@ -514,7 +515,7 @@ var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var requester = __webpack_require__(27);
+var requester = __webpack_require__(28);
 
 // const URL = (model, id) => (id ? `/${model}/${id}` : `/${model}`);
 var UPLOAD_URL = '/administrator/model-upload-asset';
@@ -528,6 +529,7 @@ var UPDATE_URL = '/administrator/model-update';
 var SEARCH_ALL_URL = '/administrator/model-search-all';
 var COUNT_ALL_MODELS_URL = '/administrator/all-models-count';
 var LOGIN_URL = '/administrator/login';
+var VIEW_CONTENT_URL = '/administrator/view-content';
 
 var getDirection = function getDirection(d) {
   return d === 'ascending' ? 'ASC' : 'DESC';
@@ -619,6 +621,10 @@ var Service = function Service(model) {
       var data = x;
       data.modelName = model;
       return requester.delete(DELETE_URL + '/' + data.id, data, getConfig());
+    },
+    viewContent: function viewContent(_ref) {
+      var viewName = _ref.viewName;
+      return requester.post(VIEW_CONTENT_URL, { viewName: viewName }, getConfig());
     }
   };
 };
@@ -641,42 +647,7 @@ module.exports = require("react-router-dom");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.maskValue = undefined;
-
-var _vanillaMasker = __webpack_require__(25);
-
-var _vanillaMasker2 = _interopRequireDefault(_vanillaMasker);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/* eslint-disable */
-String.prototype.asTitle = function separateCamel() {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
-
-String.prototype.separateCamel = function separateCamel() {
-  return this.replace(/([a-z])([A-Z])/g, '$1 $2');
-};
-
-var maskValue = exports.maskValue = function maskValue(mask, value) {
-  return _vanillaMasker2.default.toPattern(value, mask);
-};
-
-exports.default = {
-  maskValue: maskValue
-};
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.iconForArea = exports.getButtonText = exports.getModelRelatedValue = exports.getLabel = exports.getConfig = undefined;
+exports.iconForArea = exports.getButtonText = exports.getModelRelatedValue = exports.getViews = exports.getLabel = exports.getConfig = undefined;
 
 var _object = __webpack_require__(12);
 
@@ -687,6 +658,11 @@ var getConfig = exports.getConfig = function getConfig() {
 var getLabel = exports.getLabel = function getLabel(prop, defaultValue) {
   var config = getConfig();
   return (0, _object.queryValue)(config, 'general.labels.' + prop, defaultValue);
+};
+
+var getViews = exports.getViews = function getViews() {
+  var config = getConfig();
+  return (0, _object.queryValue)(config, 'views', []);
 };
 
 var getModelRelatedValue = exports.getModelRelatedValue = function getModelRelatedValue(query, defaultValue) {
@@ -700,7 +676,16 @@ var getButtonText = exports.getButtonText = function getButtonText(button, defau
 };
 
 var iconForArea = exports.iconForArea = function iconForArea(area) {
-  return area === 'home' ? 'home' : 'key';
+  switch (area) {
+    case 'home':
+      return 'home';
+    case 'permissions':
+      return 'key';
+    case 'views':
+      return 'code';
+    default:
+      return 'permissions';
+  }
 };
 
 exports.default = {
@@ -708,11 +693,12 @@ exports.default = {
   getLabel: getLabel,
   getButtonText: getButtonText,
   getModelRelatedValue: getModelRelatedValue,
-  iconForArea: iconForArea
+  iconForArea: iconForArea,
+  getViews: getViews
 };
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -734,15 +720,15 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _Header = __webpack_require__(51);
+var _Header = __webpack_require__(52);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Footer = __webpack_require__(52);
+var _Footer = __webpack_require__(53);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
-var _NavigationSidebar = __webpack_require__(53);
+var _NavigationSidebar = __webpack_require__(54);
 
 var _NavigationSidebar2 = _interopRequireDefault(_NavigationSidebar);
 
@@ -827,7 +813,7 @@ Main.propTypes = {
 exports.default = Main;
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -857,6 +843,41 @@ exports.default = function (TargetComponent) {
 
     return _react2.default.createElement(TargetComponent, props);
   };
+};
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.maskValue = undefined;
+
+var _vanillaMasker = __webpack_require__(26);
+
+var _vanillaMasker2 = _interopRequireDefault(_vanillaMasker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/* eslint-disable */
+String.prototype.asTitle = function separateCamel() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+String.prototype.separateCamel = function separateCamel() {
+  return this.replace(/([a-z])([A-Z])/g, '$1 $2');
+};
+
+var maskValue = exports.maskValue = function maskValue(mask, value) {
+  return _vanillaMasker2.default.toPattern(value, mask);
+};
+
+exports.default = {
+  maskValue: maskValue
 };
 
 /***/ }),
@@ -1082,6 +1103,8 @@ var _AuthStore = __webpack_require__(4);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
+var _config = __webpack_require__(8);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var NavigationMenu = function NavigationMenu(_ref) {
@@ -1095,6 +1118,13 @@ var NavigationMenu = function NavigationMenu(_ref) {
       header: true,
       to: '/model',
       content: _constants2.default.LABELS.HOME
+    }),
+    !!(0, _config.getViews)().length && _react2.default.createElement(_semanticUiReact.Menu.Item, {
+      as: _reactRouterDom.Link,
+      icon: 'code',
+      header: true,
+      to: '/views',
+      content: _constants2.default.LABELS.VIEWS
     }),
     _AuthStore2.default.canAccessPermissionsArea() && _react2.default.createElement(_semanticUiReact.Menu.Item, {
       as: _reactRouterDom.Link,
@@ -1128,6 +1158,96 @@ exports.default = NavigationMenu;
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRouterDom = __webpack_require__(7);
+
+var _semanticUiReact = __webpack_require__(2);
+
+var _constants = __webpack_require__(5);
+
+var _constants2 = _interopRequireDefault(_constants);
+
+__webpack_require__(11);
+
+var _config = __webpack_require__(8);
+
+var _models = __webpack_require__(3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var styles = {
+  container: { marginBottom: '2rem' }
+};
+
+var backLink = function backLink(area) {
+  switch (area) {
+    case 'home':
+      return '/model';
+    case 'views':
+      return '/views';
+    default:
+      return '/permissions';
+  }
+};
+
+var MainBreadcrumb = function MainBreadcrumb(_ref) {
+  var modelName = _ref.modelName,
+      area = _ref.area;
+  return _react2.default.createElement(
+    _semanticUiReact.Breadcrumb,
+    {
+      size: 'huge',
+      style: styles.container
+    },
+    _react2.default.createElement(
+      _semanticUiReact.Breadcrumb.Section,
+      {
+        link: true,
+        as: _reactRouterDom.Link,
+        to: backLink(area)
+      },
+      _react2.default.createElement(_semanticUiReact.Icon, { color: 'teal', name: (0, _config.iconForArea)(area) }),
+      '\xA0',
+      _constants2.default.LABELS[area.toUpperCase()]
+    ),
+    _react2.default.createElement(_semanticUiReact.Breadcrumb.Divider, { icon: 'right angle' }),
+    _react2.default.createElement(
+      _semanticUiReact.Breadcrumb.Section,
+      { active: true },
+      (0, _models.modelTitle)(modelName)
+    )
+  );
+};
+
+MainBreadcrumb.defaultProps = {
+  area: 'home'
+};
+
+MainBreadcrumb.propTypes = {
+  area: _propTypes2.default.string,
+  modelName: _propTypes2.default.string.isRequired
+};
+
+exports.default = MainBreadcrumb;
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1186,7 +1306,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1208,11 +1328,11 @@ var _semanticUiReact = __webpack_require__(2);
 
 var _reactRouterDom = __webpack_require__(7);
 
-__webpack_require__(8);
+__webpack_require__(11);
 
-var _config = __webpack_require__(9);
+var _config = __webpack_require__(8);
 
-var _RightProtected = __webpack_require__(17);
+var _RightProtected = __webpack_require__(18);
 
 var _RightProtected2 = _interopRequireDefault(_RightProtected);
 
@@ -1291,7 +1411,7 @@ ModelsNavigator.propTypes = {
 exports.default = ModelsNavigator;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1301,13 +1421,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _server = __webpack_require__(20);
+var _server = __webpack_require__(21);
 
-var _Page = __webpack_require__(21);
+var _Page = __webpack_require__(22);
 
 var _Page2 = _interopRequireDefault(_Page);
 
-var _App = __webpack_require__(22);
+var _App = __webpack_require__(23);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -1325,13 +1445,13 @@ module.exports.renderPage = function (injection) {
 };
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom/server");
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1350,7 +1470,7 @@ var Page = function Page(_ref) {
 exports.default = Page;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1364,11 +1484,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Routes = __webpack_require__(23);
+var _Routes = __webpack_require__(24);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
-__webpack_require__(64);
+__webpack_require__(66);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1387,7 +1507,7 @@ var App = function App() {
 exports.default = App;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1413,15 +1533,15 @@ var _Service = __webpack_require__(6);
 
 var _Service2 = _interopRequireDefault(_Service);
 
-var _LoginScreen = __webpack_require__(28);
+var _LoginScreen = __webpack_require__(29);
 
 var _LoginScreen2 = _interopRequireDefault(_LoginScreen);
 
-var _LogoutScreen = __webpack_require__(31);
+var _LogoutScreen = __webpack_require__(32);
 
 var _LogoutScreen2 = _interopRequireDefault(_LogoutScreen);
 
-var _ModelDetailsScreen = __webpack_require__(32);
+var _ModelDetailsScreen = __webpack_require__(33);
 
 var _ModelDetailsScreen2 = _interopRequireDefault(_ModelDetailsScreen);
 
@@ -1436,6 +1556,14 @@ var _ModelsScreen2 = _interopRequireDefault(_ModelsScreen);
 var _AssetsScreen = __webpack_require__(57);
 
 var _AssetsScreen2 = _interopRequireDefault(_AssetsScreen);
+
+var _ViewsScreen = __webpack_require__(64);
+
+var _ViewsScreen2 = _interopRequireDefault(_ViewsScreen);
+
+var _ViewScreen = __webpack_require__(65);
+
+var _ViewScreen2 = _interopRequireDefault(_ViewScreen);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1508,6 +1636,16 @@ var Routes = function (_React$Component) {
         }),
         _react2.default.createElement(_reactRouterDom.Route, {
           exact: true,
+          path: '/views',
+          component: _ViewsScreen2.default
+        }),
+        _react2.default.createElement(_reactRouterDom.Route, {
+          exact: true,
+          path: '/views/:viewName',
+          component: _ViewScreen2.default
+        }),
+        _react2.default.createElement(_reactRouterDom.Route, {
+          exact: true,
           path: '/permissions',
           component: function component() {
             return _react2.default.createElement(_PermissionsScreen2.default, {
@@ -1552,31 +1690,31 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = require("simple-json-table");
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 module.exports = require("vanilla-masker");
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 module.exports = require("lodash.template");
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = require("simple-json-requester");
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1594,9 +1732,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _reactRouter = __webpack_require__(29);
+var _reactRouter = __webpack_require__(30);
 
-var _LoginForm = __webpack_require__(30);
+var _LoginForm = __webpack_require__(31);
 
 var _LoginForm2 = _interopRequireDefault(_LoginForm);
 
@@ -1690,13 +1828,13 @@ var LoginScreen = function (_React$Component) {
 exports.default = LoginScreen;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-router");
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1897,7 +2035,7 @@ exports.default = (0, _formik.withFormik)({
 })(LoginForm);
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1967,7 +2105,7 @@ var LogoutScreen = function (_Component) {
 exports.default = LogoutScreen;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1987,7 +2125,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _queryString = __webpack_require__(33);
+var _queryString = __webpack_require__(34);
 
 var _queryString2 = _interopRequireDefault(_queryString);
 
@@ -1995,25 +2133,25 @@ var _Service = __webpack_require__(6);
 
 var _Service2 = _interopRequireDefault(_Service);
 
-var _ModelCrud = __webpack_require__(34);
+var _ModelCrud = __webpack_require__(35);
 
 var _ModelCrud2 = _interopRequireDefault(_ModelCrud);
 
 var _models = __webpack_require__(3);
 
-var _Main = __webpack_require__(10);
+var _Main = __webpack_require__(9);
 
 var _Main2 = _interopRequireDefault(_Main);
 
-var _MainBreadcrumb = __webpack_require__(54);
+var _MainBreadcrumb = __webpack_require__(17);
 
 var _MainBreadcrumb2 = _interopRequireDefault(_MainBreadcrumb);
 
-var _RightProtected = __webpack_require__(17);
+var _RightProtected = __webpack_require__(18);
 
 var _RightProtected2 = _interopRequireDefault(_RightProtected);
 
-var _LoggedInProtected = __webpack_require__(11);
+var _LoggedInProtected = __webpack_require__(10);
 
 var _LoggedInProtected2 = _interopRequireDefault(_LoggedInProtected);
 
@@ -2070,13 +2208,13 @@ ModelDetailsScreen.propTypes = {
 exports.default = ModelDetailsScreen;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports) {
 
 module.exports = require("query-string");
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2098,7 +2236,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _reactCrudTable = __webpack_require__(35);
+var _reactCrudTable = __webpack_require__(36);
 
 var _reactCrudTable2 = _interopRequireDefault(_reactCrudTable);
 
@@ -2106,13 +2244,13 @@ var _lodash = __webpack_require__(13);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _validation = __webpack_require__(36);
+var _validation = __webpack_require__(37);
 
 var _models = __webpack_require__(3);
 
-__webpack_require__(8);
+__webpack_require__(11);
 
-var _renderers = __webpack_require__(37);
+var _renderers = __webpack_require__(38);
 
 var _renderers2 = _interopRequireDefault(_renderers);
 
@@ -2391,13 +2529,13 @@ ModelCrud.propTypes = {
 exports.default = ModelCrud;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-crud-table");
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2446,7 +2584,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2458,43 +2596,43 @@ Object.defineProperty(exports, "__esModule", {
 
 var _models = __webpack_require__(3);
 
-var _DescriptionRenderer = __webpack_require__(38);
+var _DescriptionRenderer = __webpack_require__(39);
 
 var _DescriptionRenderer2 = _interopRequireDefault(_DescriptionRenderer);
 
-var _InputRenderer = __webpack_require__(39);
+var _InputRenderer = __webpack_require__(40);
 
 var _InputRenderer2 = _interopRequireDefault(_InputRenderer);
 
-var _CheckboxRenderer = __webpack_require__(40);
+var _CheckboxRenderer = __webpack_require__(41);
 
 var _CheckboxRenderer2 = _interopRequireDefault(_CheckboxRenderer);
 
-var _EnumSelectRenderer = __webpack_require__(41);
+var _EnumSelectRenderer = __webpack_require__(42);
 
 var _EnumSelectRenderer2 = _interopRequireDefault(_EnumSelectRenderer);
 
-var _ModelsSelectRenderer = __webpack_require__(42);
+var _ModelsSelectRenderer = __webpack_require__(43);
 
 var _ModelsSelectRenderer2 = _interopRequireDefault(_ModelsSelectRenderer);
 
-var _MultipleModelsSelectRenderer = __webpack_require__(43);
+var _MultipleModelsSelectRenderer = __webpack_require__(44);
 
 var _MultipleModelsSelectRenderer2 = _interopRequireDefault(_MultipleModelsSelectRenderer);
 
-var _RightsRenderer = __webpack_require__(44);
+var _RightsRenderer = __webpack_require__(45);
 
 var _RightsRenderer2 = _interopRequireDefault(_RightsRenderer);
 
-var _PasswordRenderer = __webpack_require__(46);
+var _PasswordRenderer = __webpack_require__(47);
 
 var _PasswordRenderer2 = _interopRequireDefault(_PasswordRenderer);
 
-var _PictureRenderer = __webpack_require__(47);
+var _PictureRenderer = __webpack_require__(48);
 
 var _PictureRenderer2 = _interopRequireDefault(_PictureRenderer);
 
-var _DateRendererer = __webpack_require__(50);
+var _DateRendererer = __webpack_require__(51);
 
 var _DateRendererer2 = _interopRequireDefault(_DateRendererer);
 
@@ -2565,7 +2703,7 @@ var renderer = function renderer(model, field, modelName) {
 exports.default = renderer;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2597,7 +2735,7 @@ DescriptionRenderer.propTypes = {
 exports.default = DescriptionRenderer;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2617,7 +2755,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _string = __webpack_require__(8);
+var _string = __webpack_require__(11);
 
 var _models = __webpack_require__(3);
 
@@ -2647,7 +2785,7 @@ exports.default = function (modelName) {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2684,7 +2822,7 @@ CheckboxRenderer.propTypes = {
 exports.default = CheckboxRenderer;
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2732,7 +2870,7 @@ var EnumSelectRenderer = function EnumSelectRenderer(items) {
 exports.default = EnumSelectRenderer;
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2848,7 +2986,7 @@ exports.default = function (model) {
 };
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3100,7 +3238,7 @@ exports.default = function (model) {
 };
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3120,7 +3258,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _rightsSelector = __webpack_require__(45);
+var _rightsSelector = __webpack_require__(46);
 
 var _rightsSelector2 = _interopRequireDefault(_rightsSelector);
 
@@ -3275,13 +3413,13 @@ RightsRenderer.propTypes = {
 exports.default = RightsRenderer;
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = require("rights-selector");
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3315,7 +3453,7 @@ PasswordRenderer.propTypes = {
 exports.default = PasswordRenderer;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3339,11 +3477,11 @@ var _Service = __webpack_require__(6);
 
 var _Service2 = _interopRequireDefault(_Service);
 
-var _ImagesSelect = __webpack_require__(48);
+var _ImagesSelect = __webpack_require__(49);
 
 var _ImagesSelect2 = _interopRequireDefault(_ImagesSelect);
 
-var _ResourceItem = __webpack_require__(49);
+var _ResourceItem = __webpack_require__(50);
 
 var _ResourceItem2 = _interopRequireDefault(_ResourceItem);
 
@@ -3386,7 +3524,7 @@ var PictureRenderer = function PictureRenderer(modelName) {
 exports.default = PictureRenderer;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3515,7 +3653,7 @@ ImagesSelect.propTypes = {
 exports.default = ImagesSelect;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3596,7 +3734,7 @@ ResourceItem.propTypes = {
 exports.default = ResourceItem;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3630,7 +3768,7 @@ DateRenderer.propTypes = {
 exports.default = DateRenderer;
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3702,7 +3840,7 @@ Header.propTypes = {
 exports.default = Header;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3764,7 +3902,7 @@ var Footer = function Footer() {
 exports.default = Footer;
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3832,89 +3970,6 @@ NavigationSidebar.propTypes = {
 exports.default = NavigationSidebar;
 
 /***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactRouterDom = __webpack_require__(7);
-
-var _semanticUiReact = __webpack_require__(2);
-
-var _constants = __webpack_require__(5);
-
-var _constants2 = _interopRequireDefault(_constants);
-
-__webpack_require__(8);
-
-var _config = __webpack_require__(9);
-
-var _models = __webpack_require__(3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var styles = {
-  container: { marginBottom: '2rem' }
-};
-
-var backLink = function backLink(area) {
-  return area === 'home' ? '/model' : '/permissions';
-};
-
-var MainBreadcrumb = function MainBreadcrumb(_ref) {
-  var modelName = _ref.modelName,
-      area = _ref.area;
-  return _react2.default.createElement(
-    _semanticUiReact.Breadcrumb,
-    {
-      size: 'huge',
-      style: styles.container
-    },
-    _react2.default.createElement(
-      _semanticUiReact.Breadcrumb.Section,
-      {
-        link: true,
-        as: _reactRouterDom.Link,
-        to: backLink(area)
-      },
-      _react2.default.createElement(_semanticUiReact.Icon, { color: 'teal', name: (0, _config.iconForArea)(area) }),
-      '\xA0',
-      _constants2.default.LABELS[area.toUpperCase()]
-    ),
-    _react2.default.createElement(_semanticUiReact.Breadcrumb.Divider, { icon: 'right angle' }),
-    _react2.default.createElement(
-      _semanticUiReact.Breadcrumb.Section,
-      { active: true },
-      (0, _models.modelTitle)(modelName)
-    )
-  );
-};
-
-MainBreadcrumb.defaultProps = {
-  area: 'home'
-};
-
-MainBreadcrumb.propTypes = {
-  area: _propTypes2.default.string,
-  modelName: _propTypes2.default.string.isRequired
-};
-
-exports.default = MainBreadcrumb;
-
-/***/ }),
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3933,15 +3988,15 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _LoggedInProtected = __webpack_require__(11);
+var _LoggedInProtected = __webpack_require__(10);
 
 var _LoggedInProtected2 = _interopRequireDefault(_LoggedInProtected);
 
-var _ModelsNavigator = __webpack_require__(18);
+var _ModelsNavigator = __webpack_require__(19);
 
 var _ModelsNavigator2 = _interopRequireDefault(_ModelsNavigator);
 
-var _Main = __webpack_require__(10);
+var _Main = __webpack_require__(9);
 
 var _Main2 = _interopRequireDefault(_Main);
 
@@ -3991,15 +4046,15 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _LoggedInProtected = __webpack_require__(11);
+var _LoggedInProtected = __webpack_require__(10);
 
 var _LoggedInProtected2 = _interopRequireDefault(_LoggedInProtected);
 
-var _ModelsNavigator = __webpack_require__(18);
+var _ModelsNavigator = __webpack_require__(19);
 
 var _ModelsNavigator2 = _interopRequireDefault(_ModelsNavigator);
 
-var _Main = __webpack_require__(10);
+var _Main = __webpack_require__(9);
 
 var _Main2 = _interopRequireDefault(_Main);
 
@@ -4056,7 +4111,7 @@ var _Service = __webpack_require__(6);
 
 var _Service2 = _interopRequireDefault(_Service);
 
-var _LoggedInProtected = __webpack_require__(11);
+var _LoggedInProtected = __webpack_require__(10);
 
 var _LoggedInProtected2 = _interopRequireDefault(_LoggedInProtected);
 
@@ -4064,7 +4119,7 @@ var _constants = __webpack_require__(5);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _Main = __webpack_require__(10);
+var _Main = __webpack_require__(9);
 
 var _Main2 = _interopRequireDefault(_Main);
 
@@ -4924,6 +4979,207 @@ exports.default = AssetsList;
 
 /***/ }),
 /* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(7);
+
+var _semanticUiReact = __webpack_require__(2);
+
+var _Main = __webpack_require__(9);
+
+var _Main2 = _interopRequireDefault(_Main);
+
+var _LoggedInProtected = __webpack_require__(10);
+
+var _LoggedInProtected2 = _interopRequireDefault(_LoggedInProtected);
+
+var _config = __webpack_require__(8);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Main = (0, _LoggedInProtected2.default)(_Main2.default);
+// import PropTypes from 'prop-types';
+
+
+var styles = {
+  container: {
+    margin: 'auto',
+    width: 'fit-content'
+  }
+};
+
+var ViewScreen = function ViewScreen() {
+  return _react2.default.createElement(
+    Main,
+    null,
+    _react2.default.createElement(
+      _semanticUiReact.Header,
+      { as: 'h1' },
+      _react2.default.createElement(_semanticUiReact.Icon, {
+        name: 'code',
+        color: 'teal'
+      }),
+      ' ',
+      'Views'
+    ),
+    _react2.default.createElement(
+      'div',
+      { style: styles.container },
+      (0, _config.getViews)().map(function (key) {
+        return _react2.default.createElement(
+          _reactRouterDom.Link,
+          {
+            className: 'views-list-item',
+            to: '/views/' + key,
+            key: key
+          },
+          _react2.default.createElement(
+            'div',
+            { className: 'views-list-item__label' },
+            key
+          )
+        );
+      })
+    )
+  );
+};
+
+ViewScreen.propTypes = {};
+
+exports.default = ViewScreen;
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _Main = __webpack_require__(9);
+
+var _Main2 = _interopRequireDefault(_Main);
+
+var _MainBreadcrumb = __webpack_require__(17);
+
+var _MainBreadcrumb2 = _interopRequireDefault(_MainBreadcrumb);
+
+var _LoggedInProtected = __webpack_require__(10);
+
+var _LoggedInProtected2 = _interopRequireDefault(_LoggedInProtected);
+
+var _Service = __webpack_require__(6);
+
+var _Service2 = _interopRequireDefault(_Service);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Main = (0, _LoggedInProtected2.default)(_Main2.default);
+
+var service = (0, _Service2.default)();
+
+var styles = {
+  container: {
+    margin: 'auto',
+    width: 'fit-content'
+  }
+};
+
+var ViewScreen = function (_React$Component) {
+  _inherits(ViewScreen, _React$Component);
+
+  function ViewScreen(props) {
+    _classCallCheck(this, ViewScreen);
+
+    var _this = _possibleConstructorReturn(this, (ViewScreen.__proto__ || Object.getPrototypeOf(ViewScreen)).call(this, props));
+
+    _this.state = {
+      content: ''
+    };
+    return _this;
+  }
+
+  _createClass(ViewScreen, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var match = this.props.match;
+      var viewName = match.params.viewName;
+
+      service.viewContent({ viewName: viewName }).then(function (_ref) {
+        var content = _ref.content;
+
+        _this2.setState({ content: content });
+      }).catch(function () {
+        _this2.setState({ content: '<h1>Error!</h1>' });
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var content = this.state.content;
+      var match = this.props.match;
+      var viewName = match.params.viewName;
+
+      return _react2.default.createElement(
+        Main,
+        null,
+        _react2.default.createElement(_MainBreadcrumb2.default, {
+          area: 'views',
+          modelName: viewName
+        }),
+        _react2.default.createElement('div', {
+          style: styles.container,
+          dangerouslySetInnerHTML: {
+            __html: content
+          }
+        })
+      );
+    }
+  }]);
+
+  return ViewScreen;
+}(_react2.default.Component);
+
+ViewScreen.propTypes = {
+  match: _propTypes2.default.instanceOf(Object).isRequired
+};
+
+exports.default = ViewScreen;
+
+/***/ }),
+/* 66 */
 /***/ (function(module, exports) {
 
 

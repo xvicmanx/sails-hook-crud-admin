@@ -9,7 +9,8 @@ const {
   crudForbiddenRoutes,
 } = require('./api/helpers');
 
-module.exports = function (sails) {
+module.exports = function index(sls) {
+  sails = sls;
   sails.util = sails.util || {};
   sails.util.merge = sails.util.merge || _.merge;
   const data = {};
@@ -25,28 +26,28 @@ module.exports = function (sails) {
   return {
     initialize: (cb) => {
       const eventsToWaitFor = [];
-      if(sails.hooks.orm) eventsToWaitFor.push('hook:orm:loaded');
-      if(sails.hooks.pubsub) eventsToWaitFor.push('hook:pubsub:loaded');
+      if (sails.hooks.orm) eventsToWaitFor.push('hook:orm:loaded');
+      if (sails.hooks.pubsub) eventsToWaitFor.push('hook:pubsub:loaded');
 
       disableLog(sails);
 
-      
       loader.inject(
         {
-          models: __dirname + '/api/models',
+          models: `${__dirname}/api/models`,
         },
-        err => {
+        (err) => {
         // Enabling info logging again
-        sails.log = log;
-        sails
-        .after(eventsToWaitFor, () => {
-          seedData(sails).then(() => {
-            cb(err);
-          }).catch((error)  => {
-            cb(err || error);
-          });
-        });
-      });      
+          sails.log = log;
+          sails
+            .after(eventsToWaitFor, () => {
+              seedData(sails).then(() => {
+                cb(err);
+              }).catch((error) => {
+                cb(err || error);
+              });
+            });
+        },
+      );
     },
     routes: {
       before: Object.assign(
@@ -64,9 +65,10 @@ module.exports = function (sails) {
           [routes.UPLOAD]: mainController.uploadAsset,
           [routes.ASSET]: mainController.crudAsset,
           [routes.MODELS_ASSETS]: mainController.modelsAssets,
+          [routes.VIEW_CONTENT]: mainController.viewContent,
         },
-        crudForbiddenRoutes()
+        crudForbiddenRoutes(),
       ),
-    }
+    },
   };
 };

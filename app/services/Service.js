@@ -14,6 +14,7 @@ const UPDATE_URL = '/administrator/model-update';
 const SEARCH_ALL_URL = '/administrator/model-search-all';
 const COUNT_ALL_MODELS_URL = '/administrator/all-models-count';
 const LOGIN_URL = '/administrator/login';
+const VIEW_CONTENT_URL = '/administrator/view-content';
 
 const getDirection = d => (d === 'ascending' ? 'ASC' : 'DESC');
 
@@ -117,6 +118,11 @@ const Service = model => ({
       getConfig(),
     );
   },
+  viewContent: ({ viewName }) => requester.post(
+    VIEW_CONTENT_URL,
+    { viewName },
+    getConfig(),
+  ),
 });
 
 export default Service;

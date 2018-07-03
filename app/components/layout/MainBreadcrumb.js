@@ -11,7 +11,16 @@ const styles = {
   container: { marginBottom: '2rem' },
 };
 
-const backLink = area => (area === 'home' ? '/model' : '/permissions');
+const backLink = (area) => {
+  switch (area) {
+    case 'home':
+      return '/model';
+    case 'views':
+      return '/views';
+    default:
+      return '/permissions';
+  }
+};
 
 const MainBreadcrumb = ({ modelName, area }) => (
   <Breadcrumb

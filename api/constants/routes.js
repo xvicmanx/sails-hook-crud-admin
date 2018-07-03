@@ -11,5 +11,6 @@ module.exports = {
   LOGIN: 'POST /administrator/login',
   UPLOAD: 'POST /administrator/model-upload-asset',
   MODELS_ASSETS: 'POST /administrator/models-assets',
+  VIEW_CONTENT: 'POST /administrator/view-content',
   ASSET: 'GET /administrator/crud-asset/:hash',
 };

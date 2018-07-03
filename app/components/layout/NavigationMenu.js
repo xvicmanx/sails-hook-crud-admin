@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Container, Menu } from 'semantic-ui-react';
 import Constants from '../../constants';
 import AuthStore from '../../AuthStore';
+import { getViews } from '../../helpers/config';
 
 
 const NavigationMenu = ({ className }) => (
@@ -15,14 +16,23 @@ const NavigationMenu = ({ className }) => (
       to="/model"
       content={Constants.LABELS.HOME}
     />
+    {!!getViews().length && (
+      <Menu.Item
+        as={Link}
+        icon="code"
+        header
+        to="/views"
+        content={Constants.LABELS.VIEWS}
+      />
+    )}
     {AuthStore.canAccessPermissionsArea() && (
-    <Menu.Item
-      as={Link}
-      icon="key"
-      header
-      to="/permissions"
-      content={Constants.LABELS.PERMISSIONS}
-    />
+      <Menu.Item
+        as={Link}
+        icon="key"
+        header
+        to="/permissions"
+        content={Constants.LABELS.PERMISSIONS}
+      />
     )}
     <Menu.Item
       as={Link}

@@ -68,6 +68,8 @@
     "semantic-ui-react": "^0.80.2",
     "simple-json-requester": "0.0.4",
     "simple-json-table": "^1.0.0",
-    "skipper-disk": "^0.5.11"
+    "skipper-disk": "^0.5.11",
+    "string-mask": "^0.3.0",
+    "vanilla-masker": "^1.2.0"
   }
 }

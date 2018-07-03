@@ -8,11 +8,13 @@ import MultipleModelsSelectRenderer from './MultipleModelsSelectRenderer';
 import RightsRenderer from './RightsRenderer';
 import PasswordRenderer from './PasswordRenderer';
 import PictureRenderer from './PictureRenderer';
+import DateRendererer from './DateRendererer';
 
 const RENDERERS = {
   textarea: () => DescriptionRenderer,
-  input: () => InputRenderer,
+  input: (model, field, modelName) => InputRenderer(modelName),
   password: () => PasswordRenderer,
+  date: () => DateRendererer,
   checkbox: () => CheckboxRenderer,
   rights: () => RightsRenderer,
   picture: (model, field, modelName) => PictureRenderer(modelName),
@@ -53,7 +55,7 @@ const renderer = (model, field, modelName) => {
     return RENDERERS.modelMultipleSelect(model, field);
   }
 
-  return RENDERERS.input(model);
+  return RENDERERS.input(model, field, modelName);
 };
 
 export default renderer;

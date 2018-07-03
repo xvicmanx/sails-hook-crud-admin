@@ -20,6 +20,11 @@
     border-bottom: 1px solid rgba(4, 21, 37, 0.1);
     max-width: 250px;
     word-wrap: break-word;
+
+    .crud-button {
+      display: block;
+      margin: 0 auto;
+    }
   }
 
   &__cell-label {
@@ -149,6 +154,11 @@
 
       &:last-child {
         padding-bottom: 2rem;
+      }
+
+      .crud-button {
+        display: inline-block;
+        margin: 5px;
       }
     }
 

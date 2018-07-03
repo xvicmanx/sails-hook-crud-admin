@@ -134,6 +134,13 @@ export const getFieldLabel = (modelName, field) => {
   );
 };
 
+export const getFieldMask = (modelName, field) => {
+  const mask = getModelRelatedValue(
+    `${modelName}.fields.${field}.mask`,
+  );
+  return mask;
+};
+
 export const getFieldRenderer = (modelName, field) => getModelRelatedValue(
   `${modelName}.fields.${field}.renderer`,
   field.separateCamel().asTitle(),
@@ -224,4 +231,5 @@ export default {
   updateRights,
   removeRights,
   modelIcon,
+  getFieldMask,
 };

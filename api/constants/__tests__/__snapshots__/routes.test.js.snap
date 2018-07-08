@@ -15,5 +15,6 @@ Object {
   "MODEL_SEARCH_ALL": "GET /administrator/model-search-all",
   "MODEL_UPDATE": "PUT /administrator/model-update/:id",
   "UPLOAD": "POST /administrator/model-upload-asset",
+  "VIEW_CONTENT": "POST /administrator/view-content",
 }
 `;

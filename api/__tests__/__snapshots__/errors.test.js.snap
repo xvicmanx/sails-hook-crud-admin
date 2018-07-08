@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`api::errors missingParamError it returns the correct object 1`] = `
+Object {
+  "error": Object {
+    "fields": Object {
+      "test-param": "'test-param' missing!",
+    },
+    "message": "'test-param' missing!",
+  },
+}
+`;
+
+exports[`api::errors systemError it returns the correct object 1`] = `
+Object {
+  "error": Object {
+    "message": "Something happened while authenticating :(",
+  },
+}
+`;
+
+exports[`api::errors tokenAuthError it returns the correct object 1`] = `
+Object {
+  "error": Object {
+    "fields": Object {
+      "jwt-token": "Error in jwt token",
+    },
+    "message": "Error in jwt token",
+  },
+}
+`;
+
+exports[`api::errors userOrPassError it returns the correct object 1`] = `
+Object {
+  "error": Object {
+    "fields": Object {
+      "password": "Invalid \\"username or password\\"",
+      "username": "Invalid \\"username or password\\"",
+    },
+    "message": "Invalid \\"username or password\\"",
+  },
+}
+`;

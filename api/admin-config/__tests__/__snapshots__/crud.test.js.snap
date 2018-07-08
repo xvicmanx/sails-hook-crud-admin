@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`api::admin-config CRUD configuration it is configured as expected 1`] = `
+Object {
+  "models": Object {
+    "crudaction": Object {
+      "fields": Object {
+        "createdAt": Object {
+          "icon": "calendar",
+        },
+        "id": Object {
+          "icon": "hashtag",
+        },
+        "name": Object {
+          "icon": "wrench",
+        },
+        "updatedAt": Object {
+          "icon": "calendar",
+        },
+      },
+      "icon": "wrench",
+      "label": "CRUD Action",
+    },
+    "crudasset": Object {
+      "fields": Object {
+        "createdAt": Object {
+          "icon": "calendar",
+        },
+        "fileDirectory": Object {
+          "icon": "folder",
+        },
+        "hash": Object {
+          "icon": "hashtag",
+        },
+        "id": Object {
+          "icon": "hashtag",
+        },
+        "model": Object {
+          "icon": "globe",
+        },
+        "name": Object {
+          "icon": "file text",
+        },
+        "type": Object {
+          "icon": "file",
+        },
+        "updatedAt": Object {
+          "icon": "calendar",
+        },
+        "url": Object {
+          "icon": "linkify",
+        },
+      },
+      "icon": "image",
+    },
+    "crudgroup": Object {
+      "fields": Object {
+        "createdAt": Object {
+          "icon": "calendar",
+        },
+        "id": Object {
+          "icon": "hashtag",
+        },
+        "name": Object {
+          "icon": "users",
+        },
+        "rights": Object {
+          "icon": "key",
+          "valueTemplate": "
+            <ul>
+              <% _.forEach(rights, function(right) { %>
+                <li> <%= right.name %> </li>
+              <% }); %>
+            </ul>
+          ",
+        },
+        "updatedAt": Object {
+          "icon": "calendar",
+        },
+      },
+      "icon": "users",
+      "label": "CRUD Group",
+      "valueTemplate": "<%= crudgroup.name %>",
+    },
+    "crudresource": Object {
+      "fields": Object {
+        "createdAt": Object {
+          "icon": "calendar",
+        },
+        "id": Object {
+          "icon": "hashtag",
+        },
+        "name": Object {
+          "icon": "globe",
+        },
+        "updatedAt": Object {
+          "icon": "calendar",
+        },
+      },
+      "icon": "globe",
+      "label": "CRUD Resource",
+    },
+    "crudright": Object {
+      "fields": Object {
+        "action": Object {
+          "icon": "wrench",
+          "valueTemplate": "<%= action.name %>",
+        },
+        "createdAt": Object {
+          "icon": "calendar",
+        },
+        "id": Object {
+          "icon": "hashtag",
+        },
+        "name": Object {
+          "icon": "key",
+        },
+        "resource": Object {
+          "icon": "globe",
+          "valueTemplate": "<%= resource.name %>",
+        },
+        "updatedAt": Object {
+          "icon": "calendar",
+        },
+      },
+      "icon": "key",
+      "label": "CRUD Right",
+      "valueTemplate": "<%= crudright.name %>",
+    },
+    "cruduser": Object {
+      "fields": Object {
+        "createdAt": Object {
+          "icon": "calendar",
+        },
+        "groups": Object {
+          "icon": "users",
+          "valueTemplate": "
+            <ul>
+              <% _.forEach(groups, function(group) { %>
+                <li> <%= group.name %> </li>
+              <% }); %>
+            </ul>
+          ",
+        },
+        "id": Object {
+          "icon": "hashtag",
+        },
+        "password": Object {
+          "icon": "key",
+          "renderer": "password",
+          "valueTemplate": "*******",
+        },
+        "updatedAt": Object {
+          "icon": "calendar",
+        },
+        "username": Object {
+          "icon": "user",
+        },
+      },
+      "icon": "user",
+      "label": "CRUD User",
+      "valueTemplate": "<%= cruduser.username %>",
+    },
+  },
+}
+`;

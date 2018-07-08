@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`api::admin-services::AuthService verifyToken it verifies the token successfully 1`] = `
+Object {
+  "data": Object {
+    "exp": 1531173665,
+    "iat": 1531087265,
+    "user": Object {
+      "id": 12345,
+      "name": "test-user",
+    },
+  },
+  "success": true,
+}
+`;

@@ -5,9 +5,14 @@ const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxMjM0NSwi
 describe('api::admin-services::AuthService', () => {
   describe('verifyToken', () => {
     test('it verifies the token successfully', (done) => {
-      const result = service.verifyToken(token);
+      const user = {
+        id: 12345,
+        name: 'test-user',
+      };
+      const info = service.generateTokenInfo(user);
+      const result = service.verifyToken(info.token);
       result.then((data) => {
-        expect(data).toMatchSnapshot();
+        expect(data.user).toMatchSnapshot();
         done();
       });
     });

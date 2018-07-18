@@ -146,6 +146,8 @@ export const getFieldRenderer = (modelName, field) => getModelRelatedValue(
   field.separateCamel().asTitle(),
 );
 
+export const VISIBLE_MODELS_FILTER = models => model => !_.get(models, `${model}.hide`, false);
+
 export const NON_CRUD_MODELS_FILTER = model => Constants.CRUD_MODELS.indexOf(model) < 0;
 
 export const CRUD_MODELS_FILTER = model => Constants.CRUD_MODELS.indexOf(model) >= 0;

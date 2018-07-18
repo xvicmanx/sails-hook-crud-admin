@@ -118,9 +118,9 @@ const Service = model => ({
       getConfig(),
     );
   },
-  viewContent: ({ viewName }) => requester.post(
+  viewContent: ({ viewName, data }) => requester.post(
     VIEW_CONTENT_URL,
-    { viewName },
+    { viewName, data: data || {} },
     getConfig(),
   ),
 });

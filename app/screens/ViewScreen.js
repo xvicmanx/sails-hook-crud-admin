@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import queryString from 'query-string';
 import LayoutMain from '../components/layout/Main';
 import MainBreadcrumb from '../components/layout/MainBreadcrumb';
 import loggedInProtected from '../components/high-order/LoggedInProtected';
@@ -25,9 +26,28 @@ class ViewScreen extends React.Component {
   }
 
   componentDidMount() {
-    const { match } = this.props;
+    const { match, location } = this.props;
     const { viewName } = match.params;
-    service.viewContent({ viewName }).then(({ content }) => {
+    const data = queryString.parse(location.search);
+    this.loadContent({ data, viewName });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { match, location } = this.props;
+    const { viewName } = match.params;
+    const nextSearch = nextProps.location.search;
+    const nextViewName = nextProps.match.params.viewName;
+    if (
+      location.search !== nextSearch
+      || nextViewName !== viewName
+    ) {
+      const data = queryString.parse(nextSearch);
+      this.loadContent({ data, viewName: nextViewName });
+    }
+  }
+
+  loadContent({ viewName, data }) {
+    service.viewContent({ viewName, data }).then(({ content }) => {
       this.setState({ content });
     }).catch(() => {
       this.setState({ content: '<h1>Error!</h1>' });
@@ -58,6 +78,7 @@ class ViewScreen extends React.Component {
 
 ViewScreen.propTypes = {
   match: PropTypes.instanceOf(Object).isRequired,
+  location: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default ViewScreen;

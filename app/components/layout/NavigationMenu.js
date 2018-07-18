@@ -16,7 +16,7 @@ const NavigationMenu = ({ className }) => (
       to="/model"
       content={Constants.LABELS.HOME}
     />
-    {!!getViews().length && (
+    {!!Object.keys(getViews()).length && (
       <Menu.Item
         as={Link}
         icon="code"

@@ -15,6 +15,8 @@ const styles = {
   },
 };
 
+const views = getViews();
+
 const ViewScreen = () => (
   <Main>
     <Header as="h1">
@@ -26,17 +28,24 @@ const ViewScreen = () => (
       Views
     </Header>
     <div style={styles.container}>
-      {getViews().map(key => (
-        <Link
-          className="views-list-item"
-          to={`/views/${key}`}
-          key={key}
-        >
-          <div className="views-list-item__label">
-            {key}
-          </div>
-        </Link>
-      ))}
+      {Object.keys(views)
+        .filter(k => !views[k].hide)
+        .map(key => (
+          <Link
+            className="views-list-item"
+            to={`/views/${key}`}
+            key={key}
+          >
+            <div className="views-list-item__value">
+              <Icon
+                name={views[key].icon}
+              />
+            </div>
+            <div className="views-list-item__label">
+              {key}
+            </div>
+          </Link>
+        ))}
     </div>
   </Main>
 );

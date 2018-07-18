@@ -20,13 +20,17 @@
     background-color: white;
     border-radius: 5px;
     z-index: 1001;
-    position: relative;
+    position: fixed;
     padding: 1rem 0;
     margin: 3rem auto 0 auto;
-    top: 1rem;
     display: inline-block;
     width: 100%;
     max-width: 700px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 80%;
+    overflow: auto;
   }
 
   &__title {

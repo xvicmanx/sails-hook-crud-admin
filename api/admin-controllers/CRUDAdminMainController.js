@@ -44,11 +44,11 @@ class Controller {
   index(req, res) {
     const crudAdminConf = this.sails.config.crudAdmin || {};
     const config = {
-      views: Object.keys(queryValue(
+      views: queryValue(
         crudAdminConf,
         'views',
         {},
-      )),
+      ),
       general: {
         labels: queryValue(
           crudAdminConf,
@@ -275,11 +275,12 @@ class Controller {
 
   async viewContent(req, res) {
     const config = this.sails.config.crudAdmin || {};
-    const { viewName } = req.body;
+    const { viewName, data } = req.body;
     const view = config.views && config.views[viewName];
     if (view) {
-      if (typeof view.content === 'function') {
-        view.content(this.sails, (err, content) => {
+      const { body } = view;
+      if (typeof body.content === 'function') {
+        body.content(this.sails, data, (err, content) => {
           if (err) {
             res.status(500);
             res.json({ content: 'Error!' });
@@ -288,7 +289,7 @@ class Controller {
           }
         });
       } else {
-        res.json({ content: view.content });
+        res.json({ content: body.content });
       }
     } else {
       res.status(404);

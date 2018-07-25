@@ -38,6 +38,7 @@ class Controller {
     this.crudAsset = this.crudAsset.bind(this);
     this.modelsAssets = this.modelsAssets.bind(this);
     this.viewContent = this.viewContent.bind(this);
+    this.reportContent = this.reportContent.bind(this);
     this.CLIENT_JS_FILE = `${__dirname}/../../dist/client.js`;
   }
 
@@ -294,6 +295,33 @@ class Controller {
     } else {
       res.status(404);
       res.json({ content: '<img class="fishy" src="http://sailsjs.org/images/fishy4.png">' });
+    }
+  }
+
+  async reportContent(req, res) {
+    const config = this.sails.config.crudAdmin || {};
+    const { reportName } = req.query;
+    const report = config.reports && config.reports[reportName];
+    if (
+      report
+      && report.body
+      && report.body.content
+    ) {
+      report.body.content(this.sails, req.query, (err, stream) => {
+        if (err) {
+          res.status(500);
+          res.send('Error!');
+        } else {
+          res.set(
+            'Content-disposition',
+            `attachment; filename='${reportName}'`,
+          );
+          stream.pipe(res);
+        }
+      });
+    } else {
+      res.status(404);
+      res.send('Not Found!');
     }
   }
 }

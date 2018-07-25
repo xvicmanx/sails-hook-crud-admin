@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Loader, Dimmer } from 'semantic-ui-react';
 import queryString from 'query-string';
 import LayoutMain from '../components/layout/Main';
 import MainBreadcrumb from '../components/layout/MainBreadcrumb';
@@ -17,11 +18,20 @@ const styles = {
   },
 };
 
+const LoadingIndicator = ({ active }) => (
+  <Dimmer active={active} inverted>
+    <Loader inverted>
+      Loading
+    </Loader>
+  </Dimmer>
+);
+
 class ViewScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       content: '',
+      loading: false,
     };
   }
 
@@ -47,15 +57,19 @@ class ViewScreen extends React.Component {
   }
 
   loadContent({ viewName, data }) {
+    this.setState({ loading: true });
     service.viewContent({ viewName, data }).then(({ content }) => {
-      this.setState({ content });
+      this.setState({ content, loading: false });
     }).catch(() => {
-      this.setState({ content: '<h1>Error!</h1>' });
+      this.setState({
+        content: '<h1>Error!</h1>',
+        loading: false,
+      });
     });
   }
 
   render() {
-    const { content } = this.state;
+    const { content, loading } = this.state;
     const { match } = this.props;
     const { viewName } = match.params;
     return (
@@ -63,6 +77,9 @@ class ViewScreen extends React.Component {
         <MainBreadcrumb
           area="views"
           modelName={viewName}
+        />
+        <LoadingIndicator
+          active={loading}
         />
         <div
           style={styles.container}

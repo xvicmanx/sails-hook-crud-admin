@@ -33,7 +33,7 @@ const MainBreadcrumb = ({ modelName, area }) => (
       to={backLink(area)}
     >
       <Icon color="teal" name={iconForArea(area)} />
-&nbsp;
+      &nbsp;
       {Constants.LABELS[area.toUpperCase()]}
     </Breadcrumb.Section>
     <Breadcrumb.Divider icon="right angle" />

@@ -5100,6 +5100,8 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
+var _semanticUiReact = __webpack_require__(2);
+
 var _queryString = __webpack_require__(16);
 
 var _queryString2 = _interopRequireDefault(_queryString);
@@ -5139,6 +5141,19 @@ var styles = {
   }
 };
 
+var LoadingIndicator = function LoadingIndicator(_ref) {
+  var active = _ref.active;
+  return _react2.default.createElement(
+    _semanticUiReact.Dimmer,
+    { active: active, inverted: true },
+    _react2.default.createElement(
+      _semanticUiReact.Loader,
+      { inverted: true },
+      'Loading'
+    )
+  );
+};
+
 var ViewScreen = function (_React$Component) {
   _inherits(ViewScreen, _React$Component);
 
@@ -5148,7 +5163,8 @@ var ViewScreen = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ViewScreen.__proto__ || Object.getPrototypeOf(ViewScreen)).call(this, props));
 
     _this.state = {
-      content: ''
+      content: '',
+      loading: false
     };
     return _this;
   }
@@ -5181,24 +5197,30 @@ var ViewScreen = function (_React$Component) {
     }
   }, {
     key: 'loadContent',
-    value: function loadContent(_ref) {
+    value: function loadContent(_ref2) {
       var _this2 = this;
 
-      var viewName = _ref.viewName,
-          data = _ref.data;
+      var viewName = _ref2.viewName,
+          data = _ref2.data;
 
-      service.viewContent({ viewName: viewName, data: data }).then(function (_ref2) {
-        var content = _ref2.content;
+      this.setState({ loading: true });
+      service.viewContent({ viewName: viewName, data: data }).then(function (_ref3) {
+        var content = _ref3.content;
 
-        _this2.setState({ content: content });
+        _this2.setState({ content: content, loading: false });
       }).catch(function () {
-        _this2.setState({ content: '<h1>Error!</h1>' });
+        _this2.setState({
+          content: '<h1>Error!</h1>',
+          loading: false
+        });
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var content = this.state.content;
+      var _state = this.state,
+          content = _state.content,
+          loading = _state.loading;
       var match = this.props.match;
       var viewName = match.params.viewName;
 
@@ -5208,6 +5230,9 @@ var ViewScreen = function (_React$Component) {
         _react2.default.createElement(_MainBreadcrumb2.default, {
           area: 'views',
           modelName: viewName
+        }),
+        _react2.default.createElement(LoadingIndicator, {
+          active: loading
         }),
         _react2.default.createElement('div', {
           style: styles.container,

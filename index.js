@@ -66,6 +66,7 @@ module.exports = function index(sls) {
           [routes.ASSET]: mainController.crudAsset,
           [routes.MODELS_ASSETS]: mainController.modelsAssets,
           [routes.VIEW_CONTENT]: mainController.viewContent,
+          [routes.REPORT_CONTENT]: mainController.reportContent,
         },
         crudForbiddenRoutes(),
       ),

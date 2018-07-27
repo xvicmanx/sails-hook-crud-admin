@@ -78,6 +78,7 @@ class ModelCrud extends React.Component {
           </div>
 )}
         validate={validateModelRequiredValues(model)}
+        generalErrorMessage={Constants.LABELS.GENERAL_ERROR_MESSAGE}
       />
     );
   }
@@ -116,6 +117,7 @@ class ModelCrud extends React.Component {
           </div>
 )}
         validate={validateModelRequiredValues(model)}
+        generalErrorMessage={Constants.LABELS.GENERAL_ERROR_MESSAGE}
       />
     );
   }
@@ -154,6 +156,7 @@ class ModelCrud extends React.Component {
           </div>
 )}
         validate={validateModelDeletion}
+        generalErrorMessage={Constants.LABELS.GENERAL_ERROR_MESSAGE}
       />
     );
   }

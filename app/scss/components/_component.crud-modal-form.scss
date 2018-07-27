@@ -36,9 +36,9 @@
   &__error-message {
     background-color: #e81b1b;
     color: #fff;
-    padding: .8rem;
+    padding: .8rem!important;
     border-radius: 3px;
-    margin-bottom: 1rem;
+    margin: 0 1.5rem 1rem 1.5rem;
   }
 
   &__footer {

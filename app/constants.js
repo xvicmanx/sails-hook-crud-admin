@@ -31,6 +31,7 @@ const Constants = {
     CREATE_FORM_MESSAGE: getLabel('createFormMessage', 'Create a new item'),
     UPDATE_FORM_MESSAGE: getLabel('updateFormMessage', 'Update an existing item'),
     REMOVE_FORM_MESSAGE: getLabel('removeFormMessage', 'Are you sure you want to remove the item?'),
+    GENERAL_ERROR_MESSAGE: getLabel('generalErrorMessage', 'There are some errors.'),
   },
   CRUD_MODELS,
   ASSETS_TYPES: {

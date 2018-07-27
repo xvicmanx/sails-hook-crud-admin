@@ -3,6 +3,10 @@
   border: 1px solid rgba(52, 145, 238, 0.15);
   border-collapse: collapse;  
   box-shadow: 2px 2px 5px 0 #c7c7c7;
+  max-width: 93vw;
+  display: block;
+  overflow: auto;
+  padding-bottom: 1rem;
 
   &__header-cell {
     cursor: pointer;

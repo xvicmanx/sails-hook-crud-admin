@@ -112,7 +112,7 @@ var _object = __webpack_require__(12);
 
 var _config = __webpack_require__(8);
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -348,7 +348,55 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(5);
+var _config = __webpack_require__(8);
+
+var CRUD_MODELS = ['crudaction', 'crudresource', 'crudright', 'crudgroup', 'cruduser', 'crudasset'];
+
+var Constants = {
+  BUTTONS: {
+    CREATE: (0, _config.getButtonText)('create', 'Create'),
+    UPDATE: (0, _config.getButtonText)('update', 'Update'),
+    REMOVE: (0, _config.getButtonText)('remove', 'Remove'),
+    SEE_DETAILS: (0, _config.getButtonText)('seeDetails', 'See details')
+  },
+  LABELS: {
+    VIEWS: (0, _config.getLabel)('views', 'Views'),
+    HOME: (0, _config.getLabel)('home', 'Home'),
+    LOGOUT: (0, _config.getLabel)('logout', 'Logout'),
+    PERMISSIONS: (0, _config.getLabel)('permissions', 'Permissions'),
+    ASSETS: (0, _config.getLabel)('assets', 'Assets'),
+    ACTIONS: (0, _config.getLabel)('actions', 'Actions'),
+    RESOURCES: (0, _config.getLabel)('resources', 'Resources'),
+    WELCOME: (0, _config.getLabel)('welcome', 'Welcome'),
+    CREATE_FORM_TITLE: (0, _config.getLabel)('createFormTitle', 'Create Item'),
+    UPDATE_FORM_TITLE: (0, _config.getLabel)('updateFormTitle', 'Update Item'),
+    REMOVE_FORM_TITLE: (0, _config.getLabel)('removeFormTitle', 'Remove existing Item'),
+    CREATE_FORM_MESSAGE: (0, _config.getLabel)('createFormMessage', 'Create a new item'),
+    UPDATE_FORM_MESSAGE: (0, _config.getLabel)('updateFormMessage', 'Update an existing item'),
+    REMOVE_FORM_MESSAGE: (0, _config.getLabel)('removeFormMessage', 'Are you sure you want to remove the item?'),
+    GENERAL_ERROR_MESSAGE: (0, _config.getLabel)('generalErrorMessage', 'There are some errors.')
+  },
+  CRUD_MODELS: CRUD_MODELS,
+  ASSETS_TYPES: {
+    FILE: 'file',
+    PICTURE: 'picture'
+  }
+};
+
+exports.default = Constants;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -458,53 +506,6 @@ var AuthStore = {
 exports.default = AuthStore;
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _config = __webpack_require__(8);
-
-var CRUD_MODELS = ['crudaction', 'crudresource', 'crudright', 'crudgroup', 'cruduser', 'crudasset'];
-
-var Constants = {
-  BUTTONS: {
-    CREATE: (0, _config.getButtonText)('create', 'Create'),
-    UPDATE: (0, _config.getButtonText)('update', 'Update'),
-    REMOVE: (0, _config.getButtonText)('remove', 'Remove'),
-    SEE_DETAILS: (0, _config.getButtonText)('seeDetails', 'See details')
-  },
-  LABELS: {
-    VIEWS: (0, _config.getLabel)('views', 'Views'),
-    HOME: (0, _config.getLabel)('home', 'Home'),
-    LOGOUT: (0, _config.getLabel)('logout', 'Logout'),
-    PERMISSIONS: (0, _config.getLabel)('permissions', 'Permissions'),
-    ASSETS: (0, _config.getLabel)('assets', 'Assets'),
-    ACTIONS: (0, _config.getLabel)('actions', 'Actions'),
-    RESOURCES: (0, _config.getLabel)('resources', 'Resources'),
-    WELCOME: (0, _config.getLabel)('welcome', 'Welcome'),
-    CREATE_FORM_TITLE: (0, _config.getLabel)('createFormTitle', 'Create Item'),
-    UPDATE_FORM_TITLE: (0, _config.getLabel)('updateFormTitle', 'Update Item'),
-    REMOVE_FORM_TITLE: (0, _config.getLabel)('removeFormTitle', 'Remove existing Item'),
-    CREATE_FORM_MESSAGE: (0, _config.getLabel)('createFormMessage', 'Create a new item'),
-    UPDATE_FORM_MESSAGE: (0, _config.getLabel)('updateFormMessage', 'Update an existing item'),
-    REMOVE_FORM_MESSAGE: (0, _config.getLabel)('removeFormMessage', 'Are you sure you want to remove the item?')
-  },
-  CRUD_MODELS: CRUD_MODELS,
-  ASSETS_TYPES: {
-    FILE: 'file',
-    PICTURE: 'picture'
-  }
-};
-
-exports.default = Constants;
-
-/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -515,7 +516,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _AuthStore = __webpack_require__(4);
+var _AuthStore = __webpack_require__(5);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -836,7 +837,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(7);
 
-var _AuthStore = __webpack_require__(4);
+var _AuthStore = __webpack_require__(5);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -1108,11 +1109,11 @@ var _reactRouterDom = __webpack_require__(7);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _AuthStore = __webpack_require__(4);
+var _AuthStore = __webpack_require__(5);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -1192,7 +1193,7 @@ var _reactRouterDom = __webpack_require__(7);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -1278,7 +1279,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _AuthStore = __webpack_require__(4);
+var _AuthStore = __webpack_require__(5);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -1349,7 +1350,7 @@ var _RightProtected = __webpack_require__(19);
 
 var _RightProtected2 = _interopRequireDefault(_RightProtected);
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -1751,7 +1752,7 @@ var _LoginForm = __webpack_require__(32);
 
 var _LoginForm2 = _interopRequireDefault(_LoginForm);
 
-var _AuthStore = __webpack_require__(4);
+var _AuthStore = __webpack_require__(5);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -2068,7 +2069,7 @@ var _semanticUiReact = __webpack_require__(2);
 
 var _reactRouterDom = __webpack_require__(7);
 
-var _AuthStore = __webpack_require__(4);
+var _AuthStore = __webpack_require__(5);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -2261,11 +2262,11 @@ var _renderers = __webpack_require__(38);
 
 var _renderers2 = _interopRequireDefault(_renderers);
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _AuthStore = __webpack_require__(4);
+var _AuthStore = __webpack_require__(5);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -2330,7 +2331,8 @@ var ModelCrud = function (_React$Component) {
           ' ',
           _constants2.default.BUTTONS.CREATE
         ),
-        validate: (0, _validation.validateModelRequiredValues)(model)
+        validate: (0, _validation.validateModelRequiredValues)(model),
+        generalErrorMessage: _constants2.default.LABELS.GENERAL_ERROR_MESSAGE
       });
     }
   }, {
@@ -2368,7 +2370,8 @@ var ModelCrud = function (_React$Component) {
           ' ',
           _constants2.default.BUTTONS.UPDATE
         ),
-        validate: (0, _validation.validateModelRequiredValues)(model)
+        validate: (0, _validation.validateModelRequiredValues)(model),
+        generalErrorMessage: _constants2.default.LABELS.GENERAL_ERROR_MESSAGE
       });
     }
   }, {
@@ -2404,7 +2407,8 @@ var ModelCrud = function (_React$Component) {
           ' ',
           _constants2.default.BUTTONS.REMOVE
         ),
-        validate: _validation.validateModelDeletion
+        validate: _validation.validateModelDeletion,
+        generalErrorMessage: _constants2.default.LABELS.GENERAL_ERROR_MESSAGE
       });
     }
   }, {
@@ -3275,7 +3279,7 @@ var _Service2 = _interopRequireDefault(_Service);
 
 var _models = __webpack_require__(3);
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -3492,7 +3496,7 @@ var _ResourceItem = __webpack_require__(50);
 
 var _ResourceItem2 = _interopRequireDefault(_ResourceItem);
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -3795,11 +3799,11 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
-var _AuthStore = __webpack_require__(4);
+var _AuthStore = __webpack_require__(5);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -4124,7 +4128,7 @@ var _LoggedInProtected = __webpack_require__(10);
 
 var _LoggedInProtected2 = _interopRequireDefault(_LoggedInProtected);
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
@@ -4140,7 +4144,7 @@ var _AssetsList = __webpack_require__(63);
 
 var _AssetsList2 = _interopRequireDefault(_AssetsList);
 
-var _AuthStore = __webpack_require__(4);
+var _AuthStore = __webpack_require__(5);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -4450,7 +4454,7 @@ var _ErrorMessage = __webpack_require__(62);
 
 var _ErrorMessage2 = _interopRequireDefault(_ErrorMessage);
 
-var _AuthStore = __webpack_require__(4);
+var _AuthStore = __webpack_require__(5);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -4850,13 +4854,13 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 var _semanticUiReact = __webpack_require__(2);
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(4);
 
 var _constants2 = _interopRequireDefault(_constants);
 
 var _models = __webpack_require__(3);
 
-var _AuthStore = __webpack_require__(4);
+var _AuthStore = __webpack_require__(5);
 
 var _AuthStore2 = _interopRequireDefault(_AuthStore);
 
@@ -5005,6 +5009,10 @@ var _reactRouterDom = __webpack_require__(7);
 
 var _semanticUiReact = __webpack_require__(2);
 
+var _constants = __webpack_require__(4);
+
+var _constants2 = _interopRequireDefault(_constants);
+
 var _Main = __webpack_require__(9);
 
 var _Main2 = _interopRequireDefault(_Main);
@@ -5017,9 +5025,8 @@ var _config = __webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Main = (0, _LoggedInProtected2.default)(_Main2.default);
 // import PropTypes from 'prop-types';
-
+var Main = (0, _LoggedInProtected2.default)(_Main2.default);
 
 var styles = {
   container: {
@@ -5042,7 +5049,7 @@ var ViewScreen = function ViewScreen() {
         color: 'teal'
       }),
       ' ',
-      'Views'
+      _constants2.default.LABELS.VIEWS
     ),
     _react2.default.createElement(
       'div',

@@ -2,6 +2,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Header, Icon } from 'semantic-ui-react';
+import Constants from '../constants';
 import LayoutMain from '../components/layout/Main';
 import loggedInProtected from '../components/high-order/LoggedInProtected';
 import { getViews } from '../helpers/config';
@@ -25,7 +26,7 @@ const ViewScreen = () => (
         color="teal"
       />
       {' '}
-      Views
+      {Constants.LABELS.VIEWS}
     </Header>
     <div style={styles.container}>
       {Object.keys(views)

@@ -1,4 +1,4 @@
-# sails-hook-crud-admin
+# Sails Hook Crud Admin
 
 
 ## Introduction
